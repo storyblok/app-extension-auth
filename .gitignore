@@ -1,0 +1,20 @@
+# js
+node_modules/
+
+# Output
+dist/
+stats.html
+
+# Yarn
+yarn-error.log
+yarn-debug.log*
+yarn-error.log*
+
+# IDE
+.idea
+
+# Environment
+.env.*
+
+# This project uses yarn. We must not have conflicting lock files.
+package-lock.json
