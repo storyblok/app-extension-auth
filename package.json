@@ -1,6 +1,6 @@
 {
   "name": "@storyblok/app-extension-auth",
-  "version": "0.0.1-development",
+  "version": "0.0.1-alpha",
   "author": "Johannes Lindgren",
   "repository": {
     "type": "git",
