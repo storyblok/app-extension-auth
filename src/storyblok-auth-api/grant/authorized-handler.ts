@@ -2,12 +2,13 @@ import http from "http";
 // @ts-ignore
 import makeSessionParser from "grant/lib/session";
 import {appendQueryParams} from "@src/utils/append-query-params";
-import {UserInfo, sessionCookieStore, AppSessionQueryParams} from "@src/index";
 import {makeCookieStore} from "@src/utils/cookie-store";
-import {AppSession} from "@src/session/app-session";
+import {AppSession, AppSessionQueryParams} from "@src/session/app-session";
 import {JwtCookieParams} from "@src/storyblok-auth-api/params/jwt-cookie-params";
 import {AppParams} from "@src/storyblok-auth-api/params/app-params";
 import {grantCookieName} from "@src/storyblok-auth-api/grant/grant-handler";
+import {sessionCookieStore} from "@src/session";
+import {UserInfo} from "@src/storyblok-auth-api";
 
 export type CallbackParams =  {
     // Will redirect back to this route after a successful authentication
