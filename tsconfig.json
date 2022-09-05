@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
-    "target": "esnext",
+    "outDir": "dist",
+    "target": "es5",
     "module": "esnext",
     "lib": [
       "es2017",
@@ -17,7 +18,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "skipLibCheck": true,
-    "declaration": false,
+    "declaration": true,
     "esModuleInterop": true,
     "removeComments": false,
     "forceConsistentCasingInFileNames": true,

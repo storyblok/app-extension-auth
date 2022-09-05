@@ -1,16 +1,16 @@
-// import typescript froyarn m 'rollup-plugin-typescript2'
-import typescript from '@rollup/plugin-typescript';
-
+// import typescript from '@rollup/plugin-typescript';
+import typescript from 'rollup-plugin-typescript2'
 import resolve from '@rollup/plugin-node-resolve';
+import external from 'rollup-plugin-peer-deps-external';
 import commonjs from '@rollup/plugin-commonjs';
-import json from '@rollup/plugin-json';
 import {visualizer} from 'rollup-plugin-visualizer'
 import summary from "rollup-plugin-summary";
+import json from '@rollup/plugin-json';
 
 const packageJson = require('./package.json');
 
 export default ({
-    input: `src/index.ts`,
+    input: `./src/index.ts`,
     output: [{
         file: packageJson.module,
         format: 'esm',
@@ -21,13 +21,11 @@ export default ({
         sourcemap: true,
     }],
     plugins: [
-        json(),
+        external(),
         resolve(),
+        json(),
         commonjs(),
-        typescript({
-            declaration: true,
-            declarationDir: `./dist`
-        }),
+        typescript(),
         summary(),
         visualizer(),
     ]
