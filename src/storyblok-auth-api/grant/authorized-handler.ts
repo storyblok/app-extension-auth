@@ -107,26 +107,3 @@ const getGrantResponse = (grantSession: any): GrantResponse | undefined => (
     // TODO validate
     grantSession.grant.response
 )
-
-// const grantResponseSchema = Joi.object<GrantResponse, true>().keys({
-//     raw: Joi.object<GrantResponse['raw']>().keys({
-//         expires_in: Joi.number().optional(),
-//     }).optional(),
-//     profile: Joi.object<UserInfo>().keys({
-//         roles: Joi.array().items(
-//             Joi.object<Role>().keys({
-//                 name: Joi.string().required(),
-//             })
-//         ).required(),
-//         user: Joi.object<User>().keys({
-//             id: Joi.number().required(),
-//             friendly_name: Joi.string().required()
-//         }).required(),
-//         space: Joi.object<Space>().keys({
-//             id: Joi.number().required(),
-//             name: Joi.string().required(),
-//         }).required(),
-//     }),
-//     access_token: Joi.string().required(),
-//     refresh_token: Joi.string().required(),
-// })
