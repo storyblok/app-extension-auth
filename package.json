@@ -1,7 +1,10 @@
 {
   "name": "@storyblok/app-extension-auth",
-  "version": "0.0.1-alpha",
-  "author": "Johannes Lindgren",
+  "version": "0.0.2-alpha",
+  "author": {
+    "name": "Johannes Lindgren",
+    "email": "johannes.lindgren@storyblok.com"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/storyblok/app-extension-auth.git"
