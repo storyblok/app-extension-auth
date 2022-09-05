@@ -1,6 +1,6 @@
 {
   "name": "@storyblok/app-extension-auth",
-  "version": "0.0.2-alpha",
+  "version": "0.0.3-alpha",
   "author": {
     "name": "Johannes Lindgren",
     "email": "johannes.lindgren@storyblok.com"
