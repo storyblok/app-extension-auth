@@ -11,6 +11,7 @@
     "type": "git",
     "url": "https://github.com/storyblok/app-extension-auth.git"
   },
+  "type": "module",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
