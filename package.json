@@ -1,26 +1,22 @@
 {
   "name": "@storyblok/app-extension-auth",
   "description": "A typed JavaScript library for handling authentication for Storyblok apps.",
-  "version": "0.0.4-alpha",
+  "version": "0.0.5-alpha",
   "author": {
     "name": "Johannes Lindgren",
     "email": "johannes.lindgren@storyblok.com"
   },
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/storyblok/app-extension-auth.git"
   },
-  "license": "MIT",
-  "type": "module",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.esm.js",
   "types": "dist/esm/index.d.ts",
-  "exports": {
-    "import": "./dist/index.js"
-  },
   "sideEffects": false,
   "files": [
-    "dist"
+    "dist/"
   ],
   "scripts": {
     "build": "rollup -c",
