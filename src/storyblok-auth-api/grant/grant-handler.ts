@@ -1,7 +1,6 @@
 import grant from 'grant'
 import {RequestHandler} from "@src/storyblok-auth-api/request-handler";
 import {JwtCookieParams} from "@src/storyblok-auth-api/params/jwt-cookie-params";
-import {appCookieOptions} from "@src/storyblok-auth-api/cookie-options";
 import {AppParams} from "@src/storyblok-auth-api/params/app-params";
 import {UrlParams} from "@src/storyblok-auth-api/url-params";
 import {StoryblokOauthParams} from "@src/storyblok-auth-api/grant/storyblok-oauth-params";
@@ -42,7 +41,12 @@ export const grantHandler = (params: GrantHandlerParams): RequestHandler => asyn
         session: {
             secret: jwtSecret,
             name: grantCookieName,
-            cookie: appCookieOptions(true),
+            cookie: ({
+                path: '/',
+                secure: true,
+                sameSite: 'none', // Needed since custom apps are embedded in iframes
+                httpOnly: true, // The refresh token must not be accessible via client-side javascript
+            }),
         },
     })(req, res)
 }

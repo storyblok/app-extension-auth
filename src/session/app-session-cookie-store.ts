@@ -1,8 +1,9 @@
 import {AppSessionStore} from "@src/session/app-session-store";
-import {makeJwtCookieStore} from "@src/utils/jwt-cookie-store";
 import {AppSession, AppSessionKeys, AppSessionQuery} from "@src/session/app-session";
 import {RequestParams} from "@src/session/request-params";
 import {AppParams} from "@src/storyblok-auth-api/params/app-params";
+import {getSignedCookie} from "@src/utils/signed-cookie/get-signed-cookie";
+import {setSignedCookie} from "@src/utils/signed-cookie/set-signed-cookie";
 
 export type AppSessionCookieStoreFactory = (staticParams: CookieParams & AppParams) =>
     (requestParams: RequestParams) => AppSessionStore
@@ -43,13 +44,11 @@ type AppSessionCookiePayload = {
 export const simpleSessionCookieStore: AppSessionCookieStoreFactory =
     (params) =>
         (requestParams) => {
-            const {cookieName, appClientId} = params
-            const jwtCookieStore = makeJwtCookieStore<AppSessionCookiePayload>({
-                jwtSecret: params.jwtSecret,
-                ...requestParams
-            })
-            const getPayload = () => (jwtCookieStore.get(cookieName) as AppSessionCookiePayload | undefined)
-            const getSessions = () => (getPayload() ?? {sessions: []}).sessions
+            const {cookieName, appClientId, jwtSecret} = params
+            const {req, res} = requestParams
+            const getCookie = getSignedCookie(jwtSecret)<AppSessionCookiePayload>(cookieName)
+            const setCookie = setSignedCookie(jwtSecret)<AppSessionCookiePayload>(cookieName)
+            const getSessions = () => (getCookie(req) ?? {sessions: []}).sessions
             return {
                 get: async (params) => (
                     getSessions().find(matches({...toKeys(params), appClientId}))
@@ -66,14 +65,15 @@ export const simpleSessionCookieStore: AppSessionCookieStoreFactory =
                         ...otherSessions,
                         session,
                     ]
-                    jwtCookieStore.set(cookieName, {sessions: allSessions})
+
+                    setCookie({sessions: allSessions})(res)
                     return session
                 },
                 remove: async (params) => {
                     const sessions = getSessions()
                     const toRemove = sessions.find(matches({...toKeys(params), appClientId}))
                     const allOther = sessions.filter(s => s !== toRemove)
-                    jwtCookieStore.set(cookieName, {sessions: allOther})
+                    setCookie({sessions: allOther})(res)
                     return toRemove
                 }
             }
