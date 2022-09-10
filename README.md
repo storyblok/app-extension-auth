@@ -27,25 +27,38 @@ https://_[your-domain]_/api/connect/storyblok/callback
 
 (Substitute _[your-domain]_ to your app's domain.)
 
-### Generate a JWT secret key
-
-On Linux/Mac, run:
-
-```shell
-openssl rand -base64 64
-```
-
 ### Define constants
 
-In your source code, create an options object:
+In your source code, create the following object (you will need it later):
 
 ```typescript
 import { AuthHandlerParams,} from '@storyblok/app-extension-auth'
 
 export const params: AuthHandlerParams = {
-    // Provide values for all keys
+  jwtSecret: process.env.JWT_SECRET,       
+  appClientId: process.env.APP_CLIENT_ID,      
+  appClientSecret: process.env.APP_CLIENT_SECRET,
+  appUrl: process.env.APP_CLIENT_SECRET,  
+  successCallback: '/',
+  errorCallback: '/401',
+  baseUrl: '/api/connect',  
+  scope: ['read_content', 'write_content'], 
 }
 ```
+
+Some variables should be loaded via environmental variables (`.env.local`):
+
+* `jwtSecret` -- Random 64-bit base64-encoded string. Generate with `openssl rand -base64 64`.
+* `appClientId` -- The client ID from the app's Oauth settings on Storyblok.
+* `appClientSecret` -- The client secret from the app's Oauth settings on Storyblok.
+* `appUrl` -- The base URL to your app. For example, `https://my.app.com`
+
+The other variables can be hard-coded:
+
+* `successCallback` -- After successfully completing the OAuth authentication flow, the app will redirect the user client to this address.
+* `errorCallback` -- If the OAuth authentication flow for whatever reason fails the app will redirect the user client to this address.
+* `baseUrl` -- Prefix for all OAuth routes. For example, with the value `/api/connect`, the OAuth flow will be initiated when the user agent is redirected to `/api/connect/storyblok`.
+* `scope` -- List of the scopes that the app will request. Omit `write_content` if your app doesn't need it.
 
 ### Create an API route
 
@@ -63,14 +76,14 @@ export default authHandler(params)
 
 Sign in a user by redirecting to the api route: `/api/connect/storyblok`
 
-This will initiate the oauth flow and redirect the user to the url specified in the `successCallback` url. The following query parameters will be appended:
+This will initiate the oauth flow and redirect the user to the url specified in the `successCallback` URL. The following query parameters will be appended to the `successCallback` URL:
 
 * `userId`
 * `spaceId`
 
 ### Retrieve the session
 
-Now use these query parameters to retrieve the session object:
+Now, use these two query parameters to retrieve the session object:
 
 ```typescript
 import { sessionCookieStore } from '@storyblok/app-extension-auth'
@@ -82,6 +95,48 @@ if(appSession === undefined){
     // The user is not authenticated
     //  redirect to /api/connect/storyblok
 }
+```
+
+### Use the session
+
+The `AppSession` object contain user information for personalized content, and an access token to the Storyblok management API.   
+
+```typescript
+const {
+  userId, userName,
+  spaceId, spaceName,
+  roles,
+  accessToken
+} = appSession
+```
+
+### Routing
+
+Storyblok apps are embedded within Storyblok via iframes. When a page is requested, the server must get to know
+
+a) `spaceId`: the space the page is being embedded within
+b) `userId`: the user who loaded the page
+
+These two values needs to be encoded within the page request.
+
+If these two values cannot be retrieved, you need to initiate the OAuth flow by redirecting the user agent to `/api/connect/storyblok`. After a successful authentication, the `spaceId` and `userId` will be added as query parameters to the `successCallback` value. Now, it should be possible to retrieve the session like so
+
+```typescript
+import { sessionCookieStore } from '@storyblok/app-extension-auth'
+
+const sessionStore = sessionCookieStore(params)(context)
+const appSession = await sessionStore.get(query)
+```
+
+When you redirect the user agent to a new page within your application, you need to _append the `spaceId` and `userId` query parameters_. Only if you do this can you retrieve the session from the `sessionCookieStore` from the other route.
+
+```typescript
+import { appendQueryParams } from '@storyblok/app-extension-auth'
+
+const href =  appendQueryParams(
+  '/my/other/page', 
+  { userId, spaceId }
+)
 ```
 
 ## API Route for various frameworks
