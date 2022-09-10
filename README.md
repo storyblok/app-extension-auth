@@ -131,12 +131,7 @@ const appSession = await sessionStore.get(query)
 When you redirect the user agent to a new page within your application, you need to _append the `spaceId` and `userId` query parameters_. Only if you do this can you retrieve the session from the `sessionCookieStore` from the other route.
 
 ```typescript
-import { appendQueryParams } from '@storyblok/app-extension-auth'
-
-const href =  appendQueryParams(
-  '/my/other/page', 
-  { userId, spaceId }
-)
+const href =  `/my/other/page?spaceId=${spaceId}&userId=${userId}`
 ```
 
 ## API Route for various frameworks
