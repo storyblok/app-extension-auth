@@ -1,4 +1,4 @@
 export type UrlParams = {
-    appUrl: string
-    baseUrl: string
+  appUrl: string
+  baseUrl: string
 }

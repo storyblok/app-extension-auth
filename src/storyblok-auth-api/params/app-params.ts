@@ -1,4 +1,4 @@
 export type AppParams = {
-    appClientId: string
-    appClientSecret: string
+  appClientId: string
+  appClientSecret: string
 }

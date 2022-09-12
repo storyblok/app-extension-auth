@@ -5,7 +5,10 @@ const dummyOrigin = 'https://dummy.com'
  * @param url
  * @param params
  */
-export const appendQueryParams = (url: string, params: Record<string, string>): string => {
+export const appendQueryParams = (
+  url: string,
+  params: Record<string, string>,
+): string => {
   const hasLeadingSlash = url.startsWith('/')
 
   const urlObj = new URL(url, dummyOrigin)
@@ -15,12 +18,9 @@ export const appendQueryParams = (url: string, params: Record<string, string>): 
 
   const urlWithLeadingSlash = urlObj
     .toString()
-    .replace(
-      new RegExp(`^${dummyOrigin}`),
-      ''
-    )
+    .replace(new RegExp(`^${dummyOrigin}`), '')
 
-  return hasLeadingSlash ? urlWithLeadingSlash : (
-    urlWithLeadingSlash.replace(/^\//, '')
-  )
+  return hasLeadingSlash
+    ? urlWithLeadingSlash
+    : urlWithLeadingSlash.replace(/^\//, '')
 }

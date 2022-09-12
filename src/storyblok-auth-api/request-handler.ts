@@ -1,6 +1,6 @@
-import http from "http";
+import http from 'http'
 
 export type RequestHandler = (
-    request: http.IncomingMessage,
-    response: http.ServerResponse
+  request: http.IncomingMessage,
+  response: http.ServerResponse,
 ) => Promise<void>

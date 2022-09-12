@@ -1,2 +1,5 @@
-export * from './user-info'
+export * from './user-info/UserInfo/user-info'
 export * from './auth-handler'
+export { User } from '@src/storyblok-auth-api/user-info/User/user'
+export { Space } from '@src/storyblok-auth-api/user-info/Space/space'
+export { Role } from '@src/storyblok-auth-api/user-info/Role/role'

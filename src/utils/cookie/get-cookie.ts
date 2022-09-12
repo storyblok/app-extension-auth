@@ -1,4 +1,4 @@
-import http from "http";
+import http from 'http'
 
 /**
  * RegExp to match all characters to escape in a RegExp.
@@ -6,16 +6,16 @@ import http from "http";
 
 const REGEXP_ESCAPE_CHARS_REGEXP = /[\^$\\.*+?()[\]{}|]/g
 
-const getPattern = (name: string) => (
+const getPattern = (name: string) =>
   new RegExp(
-    '(?:^|;) *' +
-    name.replace(REGEXP_ESCAPE_CHARS_REGEXP, '\\$&') +
-    '=([^;]*)'
+    '(?:^|;) *' + name.replace(REGEXP_ESCAPE_CHARS_REGEXP, '\\$&') + '=([^;]*)',
   )
-)
 
-export const getCookie = (request: http.IncomingMessage, name: string): string | undefined => {
-  const header = request.headers["cookie"]
+export const getCookie = (
+  request: http.IncomingMessage,
+  name: string,
+): string | undefined => {
+  const header = request.headers['cookie']
   if (!header) {
     return undefined
   }

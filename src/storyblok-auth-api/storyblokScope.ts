@@ -1,1 +1,1 @@
-type StoryblokScope = 'read_content' | 'write_content'
+export type StoryblokScope = 'read_content' | 'write_content'

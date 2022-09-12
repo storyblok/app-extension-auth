@@ -1,17 +1,13 @@
-import {AppSession, AppSessionQuery} from "@src/session/app-session";
+import { AppSession, AppSessionQuery } from '@src/session/app-session'
 
 export type AppSessionStore = {
-    get: (
-        keys: AppSessionQuery,
-        options?: {
-            autoRefresh?: boolean
-        }
-    ) => Promise<AppSession | undefined>
-    getAll: () => Promise<AppSession[]>
-    put: (
-        session: AppSession,
-    ) => Promise<AppSession | undefined>
-    remove: (
-        keys: AppSessionQuery
-    ) => Promise<AppSession | undefined>
+  get: (
+    keys: AppSessionQuery,
+    options?: {
+      autoRefresh?: boolean
+    },
+  ) => Promise<AppSession | undefined>
+  getAll: () => Promise<AppSession[]>
+  put: (session: AppSession) => Promise<AppSession | undefined>
+  remove: (keys: AppSessionQuery) => Promise<AppSession | undefined>
 }
