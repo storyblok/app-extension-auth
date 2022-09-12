@@ -6,8 +6,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import {visualizer} from 'rollup-plugin-visualizer'
 import summary from "rollup-plugin-summary";
 import json from '@rollup/plugin-json';
-
-const packageJson = require('./package.json');
+import packageJson from './package.json'
 
 export default ({
     input: `./src/index.ts`,

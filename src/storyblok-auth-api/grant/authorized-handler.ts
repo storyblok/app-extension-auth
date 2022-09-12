@@ -1,5 +1,4 @@
 import http from "http";
-// @ts-ignore
 import makeSessionParser from "grant/lib/session";
 import {appendQueryParams} from "@src/utils/query-params/append-query-params";
 import {AppSession, AppSessionQueryParams} from "@src/session/app-session";
