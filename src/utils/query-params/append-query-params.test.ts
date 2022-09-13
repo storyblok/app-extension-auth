@@ -1,9 +1,16 @@
 import { appendQueryParams } from './append-query-params'
 
 describe('appendQueryParams()', () => {
-  it('should work for one query parameter', () => {
+  it('should work for urls without trailing slash', () => {
     expect(
       appendQueryParams('https://test.com', {
+        page: '1',
+      }),
+    ).toBe('https://test.com/?page=1')
+  })
+  it('should work for urls with trailing slash', () => {
+    expect(
+      appendQueryParams('https://test.com/', {
         page: '1',
       }),
     ).toBe('https://test.com/?page=1')
