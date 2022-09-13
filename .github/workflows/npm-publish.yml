@@ -12,6 +12,7 @@ on:
 
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -27,6 +28,7 @@ jobs:
           name: dist
           path: dist/
   publish-npm:
+    name: Publish to NPM
     needs: build
     runs-on: ubuntu-latest
     steps:
