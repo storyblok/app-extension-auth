@@ -8,16 +8,11 @@ import { RequestParams } from '@src/session/request-params'
 import { AppParams } from '@src/storyblok-auth-api/params/app-params'
 import { getSignedCookie } from '@src/utils/signed-cookie/get-signed-cookie'
 import { setSignedCookie } from '@src/utils/signed-cookie/set-signed-cookie'
+import { JwtCookieParams } from '@src/storyblok-auth-api/params/jwt-cookie-params'
 
 export type AppSessionCookieStoreFactory = (
-  staticParams: CookieParams & AppParams,
+  staticParams: JwtCookieParams & AppParams,
 ) => (requestParams: RequestParams) => AppSessionStore
-
-export type CookieParams = {
-  jwtSecret: string
-  // The name of the cookie that will be issued by this api endpoint handler
-  cookieName: string
-}
 
 const toKeys = (keys: AppSessionQuery): AppSessionKeys => {
   const { spaceId, userId } = keys
@@ -50,7 +45,8 @@ type AppSessionCookiePayload = {
 
 export const simpleSessionCookieStore: AppSessionCookieStoreFactory =
   (params) => (requestParams) => {
-    const { cookieName, appClientId, jwtSecret } = params
+    const { appClientId, jwtSecret } = params
+    const cookieName = params.cookieName ?? 'storyblok'
     const { req, res } = requestParams
     const getCookie =
       getSignedCookie(jwtSecret)<AppSessionCookiePayload>(cookieName)

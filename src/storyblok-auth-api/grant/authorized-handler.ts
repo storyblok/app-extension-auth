@@ -32,7 +32,7 @@ export const authorizedHandler =
       })
 
       if (!grantCookie) {
-        console.log('No grant session is present')
+        console.debug('Authentication failed: no grant session is present')
         response.writeHead(401).end()
         return
       }

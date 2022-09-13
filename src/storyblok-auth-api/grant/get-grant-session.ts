@@ -4,6 +4,7 @@ import http from 'http'
 import makeSessionParser from 'grant/lib/session'
 import { isStoryblokGrantCookie } from '@src/storyblok-auth-api/grant/StoryblokGrantCookie/isStoryblokGrantCookie'
 import { StoryblokGrantSession } from '@src/storyblok-auth-api/grant/StoryblokGrantSession/StoryblokGrantSession'
+import { grantCookieName } from '@src/storyblok-auth-api/grant/grant-handler'
 
 type MakeSessionParser = (options: {
   // The cookie name
@@ -15,14 +16,12 @@ type MakeSessionParser = (options: {
 }
 
 export const getGrantSession = async (params: {
-  // The cookie name
-  cookieName: string
   // JWT secret
   jwtSecret: string
   request: http.IncomingMessage
 }): Promise<StoryblokGrantSession | undefined> => {
   const grantCookieParser = (makeSessionParser as MakeSessionParser)({
-    name: params.cookieName,
+    name: grantCookieName,
     secret: params.jwtSecret,
   })
   const cookie = await grantCookieParser(params.request).get()
