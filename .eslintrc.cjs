@@ -9,8 +9,6 @@ module.exports = {
         'plugin:@typescript-eslint/recommended',
         'prettier',
     ],
-    'overrides': [
-    ],
     'parser': '@typescript-eslint/parser',
     'parserOptions': {
         'ecmaVersion': 'latest',
@@ -42,5 +40,7 @@ module.exports = {
                 caughtErrorsIgnorePattern: '^_',
             },
         ]
-    }
+    },
+    'overrides': [
+    ],
 }

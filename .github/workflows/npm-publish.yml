@@ -20,8 +20,8 @@ jobs:
           node-version: 16
           cache: 'yarn'
       - run: yarn install --frozen-lockfile
-      - run: yarn build
       - run: yarn test
+      - run: yarn build
       - uses: actions/upload-artifact@master
         with:
           name: dist
