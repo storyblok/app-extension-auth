@@ -14,31 +14,54 @@
 
 ## Usage
 
+### Install the app
 
-### Set up App in Storyblok
+Install with npm:
 
-Under the app settings > _Oauth 2_, handle configure the following:
+```shell
+npm install @storyblok/app-extension-auth
+```
 
-**URL to your app**: 
+or with Yarn:
+
+```shell
+yarn add @storyblok/app-extension-auth
+```
+
+### Set a URL
+
+Decide a URL for your app. As a first step, this should be a URL for local development. For this you will need a secure tunnel, for example [ngrok](https://ngrok.com/).
+
+To open a secure tunnel with ngrok, run:
+
+```shell
+ngrok http 3000
+```
+
+### Set up an App in Storyblok's Partner Portal
+
+Create an App in Storyblok's Partner Portal. Then open app's settings, navigate to _Oauth 2_, and configure the following values.
+
+**URL to your app**:
 https://_[your-domain]_/
 
 **OAuth2 callback URL**
 https://_[your-domain]_/api/connect/storyblok/callback
 
-(Substitute _[your-domain]_ to your app's domain.)
+Substitute _[your-domain]_ with your app's domain.
 
 ### Define constants
 
 In your source code, create the following object (you will need it later):
 
 ```typescript
-import { AuthHandlerParams,} from '@storyblok/app-extension-auth'
+import { AuthHandlerParams } from '@storyblok/app-extension-auth'
 
 export const params: AuthHandlerParams = {
   jwtSecret: process.env.JWT_SECRET,       
   appClientId: process.env.APP_CLIENT_ID,      
   appClientSecret: process.env.APP_CLIENT_SECRET,
-  appUrl: process.env.APP_CLIENT_SECRET,  
+  appUrl: process.env.APP_URL,  
   successCallback: '/',
   errorCallback: '/401',
   baseUrl: '/api/connect',  
@@ -159,4 +182,7 @@ app.all(
 )
 ```
 
-TODO: This has not been tested
+## Useful Resources
+
+* [Authentication Oauth2 flow](https://www.storyblok.com/docs/plugins/authentication-apps)
+* [Custom Applications](https://www.storyblok.com/docs/plugins/custom-application)
