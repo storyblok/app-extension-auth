@@ -1,5 +1,5 @@
 import grant from 'grant'
-import { RequestHandler } from '@src/storyblok-auth-api/request-handler'
+import { RequestHandler } from '@src/storyblok-auth-api/RequestHandler'
 import { AuthHandlerParams } from '@src/storyblok-auth-api'
 import { profile_url } from '@src/storyblok-auth-api/storyblok-oauth-api-endpoints'
 

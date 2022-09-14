@@ -1,11 +1,11 @@
 import { authorizedHandler } from '@src/storyblok-auth-api/grant/authorized-handler'
 import * as url from 'url'
-import { RequestHandler } from '@src/storyblok-auth-api/request-handler'
+import { RequestHandler } from '@src/storyblok-auth-api/RequestHandler'
 import {
   callbackRouteSlug,
   grantHandler,
 } from '@src/storyblok-auth-api/grant/grant-handler'
-import { StoryblokScope } from '@src/storyblok-auth-api/storyblokScope'
+import { StoryblokScope } from '@src/storyblok-auth-api/StoryblokScope'
 import { validateAppBaseUrl } from '@src/storyblok-auth-api/validation/validateAppBaseUrl'
 import { validateEndpointPrefix } from '@src/storyblok-auth-api/validation/validateEndpointPrefix'
 
@@ -84,10 +84,14 @@ export const authHandler = (params: AuthHandlerParams): RequestHandler => {
     const slugs = request.url && url.parse(request.url)?.pathname?.split('/')
     const lastSlug = slugs && slugs[slugs.length - 1]
     switch (lastSlug) {
-      case callbackRouteSlug:
+      case callbackRouteSlug: {
+        // The grant callback path /authorized that will be invoked with a grant cookie when the flow has completed
         return authorizedHandler(params)(request, response)
-      default:
+      }
+      default: {
+        // Grant paths: 1) / for init flow, 2) /callback for completing it
         return grantHandler(params)(request, response)
+      }
     }
   }
 }
