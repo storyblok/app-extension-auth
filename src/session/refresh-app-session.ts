@@ -15,11 +15,13 @@ export const refreshAppSession =
     if (!oldSession.refreshToken) {
       return undefined
     }
-    return refreshToken(params)(oldSession.refreshToken)
-      .then(({ access_token, expires_in }) => ({
-        ...oldSession,
-        accessToken: access_token,
-        expiresAt: Date.now() + expires_in * 1000,
-      }))
-      .catch(() => undefined)
+    const refreshedValue = await refreshToken(params)(oldSession.refreshToken)
+    if (!refreshedValue) {
+      return undefined
+    }
+    return {
+      ...oldSession,
+      accessToken: refreshedValue.access_token,
+      expiresAt: Date.now() + refreshedValue.expires_in * 1000,
+    }
   }
