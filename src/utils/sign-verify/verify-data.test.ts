@@ -20,15 +20,15 @@ describe('verifyData', () => {
   it('should be the inverse of signData', () => {
     expect(testCookieValue).toEqual(verify(sign(testCookieValue)))
   })
-  it('should return undefined if the jwtSecret is invalid', () => {
+  it('should return undefined if the secret is invalid', () => {
     expect(
       verifyData('incorrectJwtSecret')(sign(testCookieValue)),
     ).toBeUndefined()
   })
-  it('should return undefined if the jwtToken is invalid', () => {
+  it('should return undefined if the secret is invalid', () => {
     expect(verify('ey.thisis.gibberish==')).toBeUndefined()
   })
-  it('should return undefined if the jwtSecret is signed without signSession', () => {
+  it('should return undefined if the secret is signed without signSession', () => {
     expect(verify(jwt.sign({ hello: 'world' }, testSecret))).toBeUndefined()
   })
 })

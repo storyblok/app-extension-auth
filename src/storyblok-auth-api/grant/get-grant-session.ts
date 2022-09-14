@@ -17,12 +17,12 @@ type MakeSessionParser = (options: {
 
 export const getGrantSession = async (params: {
   // JWT secret
-  jwtSecret: string
+  secret: string
   request: http.IncomingMessage
 }): Promise<StoryblokGrantSession | undefined> => {
   const grantCookieParser = (makeSessionParser as MakeSessionParser)({
     name: grantCookieName,
-    secret: params.jwtSecret,
+    secret: params.secret,
   })
   const cookie = await grantCookieParser(params.request).get()
   return isStoryblokGrantCookie(cookie) ? cookie.grant : undefined

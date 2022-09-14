@@ -9,7 +9,6 @@ export type AppSessionQuery = Record<
 >
 
 export type AppSession = {
-  // sessionId: string // TODO, do we need this? Before reading from db, must know if user is authorized
   spaceId: number // primary key
   userId: number // primary key
   appClientId: string // primary key
@@ -20,12 +19,3 @@ export type AppSession = {
   refreshToken: string
   accessToken: string
 }
-
-// TODO decide whether to use this schema instead?
-//  Drawback: AppSession won't inherit from AppSessionQuery
-// export type AppSession = {
-//     appClientId: string // primary key
-//     expiresAt: number
-//     refreshToken: string
-//     accessToken: string
-// } & UserInfo

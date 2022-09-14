@@ -2,7 +2,7 @@ import {
   AppSessionCookieStoreFactory,
   simpleSessionCookieStore,
 } from '@src/session/app-session-cookie-store'
-import { shouldRefresh } from '@src/session/app-session-refresh-times'
+import { shouldRefresh } from '@src/session/shouldRefresh/shouldRefresh'
 import { refreshAppSession } from '@src/session/refresh-app-session'
 
 export const sessionCookieStore: AppSessionCookieStoreFactory =

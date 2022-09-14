@@ -1,15 +1,19 @@
 import grant from 'grant'
 import { RequestHandler } from '@src/storyblok-auth-api/request-handler'
-import { JwtCookieParams } from '@src/storyblok-auth-api/params/jwt-cookie-params'
-import { AppParams } from '@src/storyblok-auth-api/params/app-params'
-import { UrlParams } from '@src/storyblok-auth-api/url-params'
-import { StoryblokOauthParams } from '@src/storyblok-auth-api/grant/storyblok-oauth-params'
 import { profile_url } from '@src/storyblok-auth-api/storyblok-issuer'
+import { AuthHandlerParams } from '@src/storyblok-auth-api'
 
-export type GrantHandlerParams = JwtCookieParams &
-  AppParams &
-  UrlParams &
-  StoryblokOauthParams
+export type GrantHandlerParams = Pick<
+  AuthHandlerParams,
+  | 'successCallback'
+  | 'errorCallback'
+  | 'cookieName'
+  | 'clientId'
+  | 'clientSecret'
+  | 'baseUrl'
+  | 'endpointPrefix'
+  | 'scope'
+>
 
 export const grantCookieName = 'grant'
 export const callbackRouteSlug = 'authorized'
@@ -17,19 +21,19 @@ export const callbackRouteSlug = 'authorized'
 export const grantHandler =
   (params: GrantHandlerParams): RequestHandler =>
   async (req, res) => {
-    const { jwtSecret, appClientId, appClientSecret, appUrl, baseUrl } = params
+    const { clientId, clientSecret, endpointPrefix, baseUrl } = params
     void (await grant.node({
       config: {
         defaults: {
-          origin: appUrl,
+          origin: baseUrl,
           transport: 'session',
-          prefix: baseUrl,
+          prefix: endpointPrefix,
         },
         storyblok: {
-          client_id: appClientId,
-          client_secret: appClientSecret,
+          client_id: clientId,
+          client_secret: clientSecret,
           scope: ['read_content'],
-          callback: `${baseUrl}/${callbackRouteSlug}`,
+          callback: `${endpointPrefix}/${callbackRouteSlug}`,
           profile_url, // TODO add to grant profile.json > storyblok
           response: ['tokens', 'profile', 'raw'], // raw is needed for the expires_in, token is needed for profile
           pkce: true,
@@ -38,7 +42,7 @@ export const grantHandler =
         },
       },
       session: {
-        secret: jwtSecret,
+        secret: clientSecret,
         name: grantCookieName,
         cookie: {
           path: '/',

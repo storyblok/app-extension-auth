@@ -1,6 +1,8 @@
 import { refreshToken } from '@src/storyblok-auth-api/refresh-token'
-import { AppSession } from '@src/session/app-session'
-import { AppParams } from '@src/storyblok-auth-api/params/app-params'
+import { AppSession } from '@src/session/app-session-types'
+import { AuthHandlerParams } from '@src/storyblok-auth-api'
+
+type Params = Pick<AuthHandlerParams, 'clientId' | 'clientSecret'>
 
 /**
  * Returns a new session that is refreshed
@@ -8,7 +10,7 @@ import { AppParams } from '@src/storyblok-auth-api/params/app-params'
  * @param params
  */
 export const refreshAppSession =
-  (params: AppParams) =>
+  (params: Params) =>
   async (oldSession: AppSession): Promise<AppSession | undefined> => {
     if (!oldSession.refreshToken) {
       return undefined

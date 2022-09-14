@@ -3,15 +3,19 @@ import {
   AppSession,
   AppSessionKeys,
   AppSessionQuery,
-} from '@src/session/app-session'
+} from '@src/session/app-session-types'
 import { RequestParams } from '@src/session/request-params'
-import { AppParams } from '@src/storyblok-auth-api/params/app-params'
 import { getSignedCookie } from '@src/utils/signed-cookie/get-signed-cookie'
 import { setSignedCookie } from '@src/utils/signed-cookie/set-signed-cookie'
-import { JwtCookieParams } from '@src/storyblok-auth-api/params/jwt-cookie-params'
+import { AuthHandlerParams } from '@src/storyblok-auth-api'
+
+type AppSessionCookieStoreFactoryParams = Pick<
+  AuthHandlerParams,
+  'clientId' | 'cookieName' | 'clientSecret'
+>
 
 export type AppSessionCookieStoreFactory = (
-  staticParams: JwtCookieParams & AppParams,
+  params: AppSessionCookieStoreFactoryParams,
 ) => (requestParams: RequestParams) => AppSessionStore
 
 const toKeys = (keys: AppSessionQuery): AppSessionKeys => {
@@ -22,42 +26,27 @@ const toKeys = (keys: AppSessionQuery): AppSessionKeys => {
   }
 }
 
-export const isAppSessionQuery = (obj: unknown): obj is AppSessionQuery => {
-  if (
-    !(
-      typeof obj === 'object' &&
-      obj !== null &&
-      'userId' in obj &&
-      'spaceId' in obj
-    )
-  ) {
-    return false
-  }
-  const r = obj as Record<string, unknown>
-  return (
-    (typeof r.userId === 'string' || typeof r.userId === 'number') &&
-    (typeof r.spaceId === 'string' || typeof r.spaceId === 'number')
-  )
-}
 type AppSessionCookiePayload = {
   sessions: AppSession[]
 }
 
 export const simpleSessionCookieStore: AppSessionCookieStoreFactory =
   (params) => (requestParams) => {
-    const { appClientId, jwtSecret } = params
+    const { clientId, clientSecret } = params
     const cookieName = params.cookieName ?? 'storyblok'
     const { req, res } = requestParams
     const getCookie =
-      getSignedCookie(jwtSecret)<AppSessionCookiePayload>(cookieName)
+      getSignedCookie(clientSecret)<AppSessionCookiePayload>(cookieName)
     const setCookie =
-      setSignedCookie(jwtSecret)<AppSessionCookiePayload>(cookieName)
+      setSignedCookie(clientSecret)<AppSessionCookiePayload>(cookieName)
     const getSessions = () => (getCookie(req) ?? { sessions: [] }).sessions
     return {
       get: async (params) =>
-        getSessions().find(matches({ ...toKeys(params), appClientId })),
+        getSessions().find(
+          matches({ ...toKeys(params), appClientId: clientId }),
+        ),
       getAll: async () =>
-        getSessions().filter((session) => session.appClientId === appClientId),
+        getSessions().filter((session) => session.appClientId === clientId),
       put: async (session) => {
         const filter = matches(session)
         const otherSessions = getSessions().filter((s) => !filter(s))
@@ -69,7 +58,7 @@ export const simpleSessionCookieStore: AppSessionCookieStoreFactory =
       remove: async (params) => {
         const sessions = getSessions()
         const toRemove = sessions.find(
-          matches({ ...toKeys(params), appClientId }),
+          matches({ ...toKeys(params), appClientId: clientId }),
         )
         const allOther = sessions.filter((s) => s !== toRemove)
         setCookie({ sessions: allOther })(res)

@@ -19,14 +19,16 @@
 Install with npm:
 
 ```shell
-npm install @storyblok/app-extension-auth
+npm install --save-exact @storyblok/app-extension-auth
 ```
 
 or with Yarn:
 
 ```shell
-yarn add @storyblok/app-extension-auth
+yarn add --exact @storyblok/app-extension-auth
 ```
+
+Note: the `@storyblok/app-extension-auth` is currently in alpha, and is prone to changes. Therefore, save the [exact version](https://docs.npmjs.com/cli/v8/configuring-npm/package-json#dependencies) to your `package.json` with the commands above. 
 
 ### Set a URL
 
@@ -58,34 +60,51 @@ In your source code, create the following object (you will need it later):
 import { AuthHandlerParams } from '@storyblok/app-extension-auth'
 
 export const params: AuthHandlerParams = {
-  jwtSecret: process.env.JWT_SECRET,       
-  appClientId: process.env.APP_CLIENT_ID,      
-  appClientSecret: process.env.APP_CLIENT_SECRET,
-  appUrl: process.env.APP_URL,  
+  clientId: process.env.APP_CLIENT_ID,      
+  clientSecret: process.env.APP_CLIENT_SECRET,
+  baseUrl: process.env.APP_URL,  
   successCallback: '/',
   errorCallback: '/401',
-  baseUrl: '/api/connect',  
+  endpointPrefix: '/api/connect',  
   scope: ['read_content', 'write_content'], 
 }
 ```
 
 Some variables should be loaded via environmental variables (`.env.local`):
 
-* `jwtSecret` -- Random 64-bit base64-encoded string. Generate with `openssl rand -base64 64`.
-* `appClientId` -- The client ID from the app's Oauth settings on Storyblok.
-* `appClientSecret` -- The client secret from the app's Oauth settings on Storyblok.
-* `appUrl` -- The base URL to your app. For example, `https://my.app.com`
+* `clientId` -- The client ID is a public identifier for your apps. Find the Client ID in the app settings on Storyblok.
+* `clientSecret` -- The client secret is a secret known only to the application and the authorization server. Find the client secret in the app settings on Storyblok.
+    
+    Load it into the application as an environmental variable.
+    It must be kept confidential.
+* `baseUrl` -- The base URL specifies the base URL to use for all relative authentication API endpoints created by authHandler().
+  The base URL must be absolute and secure with https.
+  
+  For example, the base URL `https://my-app.my-domain.com/` will create the following api endpoints:
+  - `https://my-app.my-domain.com/storyblok` for initiating the authentication flow
+  - `https://my-app.my-domain.com/storyblok/callback` as the OAuth2 callback URL
 
 The other variables can be hard-coded:
 
-* `successCallback` -- After successfully completing the OAuth authentication flow, the app will redirect the user client to this address.
-* `errorCallback` -- If the OAuth authentication flow for whatever reason fails the app will redirect the user client to this address.
-* `baseUrl` -- Prefix for all OAuth routes. For example, with the value `/api/connect`, the OAuth flow will be initiated when the user agent is redirected to `/api/connect/storyblok`.
-* `scope` -- List of the scopes that the app will request. Omit `write_content` if your app doesn't need it.
+* `successCallback` -- Specifies the URL that the user agent will be redirected to after a _successful_ authentication flow. Defaults to `"/"`.
+* `errorCallback` -- Specifies the URL that the user agent will be redirected to after an _unsuccessful_ authentication flow. If omitted, the user agent will receive a 401 response without redirect.
+* `endpointPrefix` -- Specifies a partial URL that will be inserted between the baseUrl and the
+  authentication API endpoints.
+
+    For example, the following two properties
+    - `baseUrl: "https://app.com"`
+    - `endpointPrefix: "api/authenticate"`
+
+    will result in the API endpoints
+    - `https://my-app.my-domain.com/api/authenticate/storyblok` for initiating the authentication flow
+    - `https://my-app.my-domain.com/api/authenticate/storyblok/callback` as the OAuth2 callback URL
+* `scope` -- The scope is a list of strings that determines what the app will request access to. The following values are accepted in the array:
+  * `read_content`
+  * `write_content`
 
 ### Create an API route
 
-In NodeJS, create a dynamic route that handles the incoming requests with `authHandler()`. See [Framework examples](#framework-examples).
+In NodeJS, create a dynamic route that handles the incoming requests with `authHandler()`. See [Framework examples](#Routing for various frameworks).
 
 For example, in Next.js, create a file `pages/api/connect/[...slugs].ts`:
 
@@ -157,7 +176,7 @@ When you redirect the user agent to a new page within your application, you need
 const href =  `/my/other/page?spaceId=${spaceId}&userId=${userId}`
 ```
 
-## API Route for various frameworks
+## Routing for various frameworks
 
 ### Next.js
 

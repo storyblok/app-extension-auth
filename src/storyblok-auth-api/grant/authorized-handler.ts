@@ -1,23 +1,23 @@
 import http from 'http'
 import { appendQueryParams } from '@src/utils/query-params/append-query-params'
-import { AppSession, AppSessionQueryParams } from '@src/session/app-session'
-import { JwtCookieParams } from '@src/storyblok-auth-api/params/jwt-cookie-params'
-import { AppParams } from '@src/storyblok-auth-api/params/app-params'
+import {
+  AppSession,
+  AppSessionQueryParams,
+} from '@src/session/app-session-types'
 import { grantCookieName } from '@src/storyblok-auth-api/grant/grant-handler'
 import { sessionCookieStore } from '@src/session'
 import { expireCookie } from '@src/utils/cookie/set-cookie'
 import { getGrantSession } from '@src/storyblok-auth-api/grant/get-grant-session'
+import { AuthHandlerParams } from '@src/storyblok-auth-api'
 
-export type CallbackParams = {
-  // Will redirect back to this route after a successful authentication
-  successCallback?: string
-  // Will redirect back to this route after an unsuccessful authentication
-  errorCallback?: string
-}
-
-export type GrantCallbackHandlerParams = CallbackParams &
-  JwtCookieParams &
-  AppParams
+export type GrantCallbackHandlerParams = Pick<
+  AuthHandlerParams,
+  | 'successCallback'
+  | 'errorCallback'
+  | 'cookieName'
+  | 'clientId'
+  | 'clientSecret'
+>
 
 export const authorizedHandler =
   (params: GrantCallbackHandlerParams) =>
@@ -27,7 +27,7 @@ export const authorizedHandler =
   ): Promise<void> => {
     try {
       const grantCookie = await getGrantSession({
-        ...params,
+        secret: params.clientSecret,
         request,
       })
 
@@ -51,7 +51,7 @@ export const authorizedHandler =
         userName: grantResponse.profile.user.friendly_name,
         spaceId: grantResponse.profile.space.id,
         spaceName: grantResponse.profile.space.name,
-        appClientId: params.appClientId,
+        appClientId: params.clientId,
         roles: grantResponse.profile.roles.map((role) => role.name),
         expiresAt:
           Date.now() + (grantResponse.raw.expires_in ?? 60 * 10) * 1000,

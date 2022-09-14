@@ -1,11 +1,13 @@
 import { storyblokIssuer } from '@src/storyblok-auth-api/storyblok-issuer'
-import { AppParams } from '@src/storyblok-auth-api/params/app-params'
+import { AuthHandlerParams } from '@src/storyblok-auth-api/auth-handler'
+
+type Params = Pick<AuthHandlerParams, 'clientId' | 'clientSecret'>
 
 export const refreshToken =
-  (params: AppParams) => async (refreshToken: string) => {
+  (params: Params) => async (refreshToken: string) => {
     const refreshClient = new storyblokIssuer.Client({
-      client_id: params.appClientId,
-      client_secret: params.appClientSecret,
+      client_id: params.clientId,
+      client_secret: params.clientSecret,
     })
     const { access_token, expires_in } = await refreshClient.refresh(
       refreshToken,
