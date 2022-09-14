@@ -1,7 +1,7 @@
 import grant from 'grant'
 import { RequestHandler } from '@src/storyblok-auth-api/request-handler'
-import { profile_url } from '@src/storyblok-auth-api/storyblok-issuer'
 import { AuthHandlerParams } from '@src/storyblok-auth-api'
+import { profile_url } from '@src/storyblok-auth-api/storyblok-oauth-api-endpoints'
 
 export type GrantHandlerParams = Pick<
   AuthHandlerParams,
@@ -34,7 +34,7 @@ export const grantHandler =
           client_secret: clientSecret,
           scope: ['read_content'],
           callback: `${endpointPrefix}/${callbackRouteSlug}`,
-          profile_url, // TODO add to grant profile.json > storyblok
+          profile_url,
           response: ['tokens', 'profile', 'raw'], // raw is needed for the expires_in, token is needed for profile
           pkce: true,
           state: true,

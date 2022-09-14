@@ -42,15 +42,15 @@ ngrok http 3000
 
 ### Set up an App in Storyblok's Partner Portal
 
-Create an App in Storyblok's Partner Portal. Then open app's settings, navigate to _Oauth 2_, and configure the following values.
+Create an App in Storyblok's Partner Portal. Then open app's settings, navigate to _Oauth 2_, and configure the following values:
 
-**URL to your app**:
-https://_[your-domain]_/
+* **URL to your app**: the index page of your app. For example, `https://my-app.com/`.
 
-**OAuth2 callback URL**
-https://_[your-domain]_/api/connect/storyblok/callback
+* **OAuth2 callback URL**: the api endpoint that will initiate the OAuth flow.
+  * Calculated as: `{baseUrl}/{endpointPrefix}/storyblok/callback`
+  * Example value: `https://my-app.com/api/connect/storyblok/callback`
 
-Substitute _[your-domain]_ with your app's domain.
+Substitute `{baseUrl}` and `{endpointPrefix}` for your own values. These parameters will be referenced again in your code; see the next section.
 
 ### Define constants
 

@@ -30,10 +30,12 @@ type AppSessionCookiePayload = {
   sessions: AppSession[]
 }
 
+const defaultCookieName = 'sb.auth'
+
 export const simpleSessionCookieStore: AppSessionCookieStoreFactory =
   (params) => (requestParams) => {
     const { clientId, clientSecret } = params
-    const cookieName = params.cookieName ?? 'storyblok'
+    const cookieName = params.cookieName ?? defaultCookieName
     const { req, res } = requestParams
     const getCookie =
       getSignedCookie(clientSecret)<AppSessionCookiePayload>(cookieName)

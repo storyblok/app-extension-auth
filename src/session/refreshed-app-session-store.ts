@@ -3,7 +3,8 @@ import {
   simpleSessionCookieStore,
 } from '@src/session/app-session-cookie-store'
 import { shouldRefresh } from '@src/session/shouldRefresh/shouldRefresh'
-import { refreshAppSession } from '@src/session/refresh-app-session'
+import { refreshAppSession } from '@src/session/refreshAppSession'
+import { refreshToken } from '@src/storyblok-auth-api/refreshToken'
 
 export const sessionCookieStore: AppSessionCookieStoreFactory =
   (params) => (requestParams) => {
@@ -19,7 +20,9 @@ export const sessionCookieStore: AppSessionCookieStoreFactory =
           return undefined
         }
         if (shouldRefresh(currentSession)) {
-          const newSession = await refreshAppSession(params)(currentSession)
+          const newSession = await refreshAppSession(refreshToken(params))(
+            currentSession,
+          )
 
           if (!newSession) {
             // Refresh failed -> user becomes unauthenticated
