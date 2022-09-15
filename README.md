@@ -14,6 +14,12 @@
 
 ## Usage
 
+`@storyblok/app-extension-auth` helps you manage authentication for Storyblok apps. For your project, you will need both a frontend and a backend (which can be serverless).
+
+See our starters:
+
+* [Next.js](https://github.com/storyblok/custom-app-examples/tree/main/app-nextjs-starter)
+
 ### Install the app
 
 Install with npm:
