@@ -1,5 +1,5 @@
 import { shouldRefresh } from './shouldRefresh'
-import { AppSession } from '../types/AppSession'
+import { AppSession } from '../types'
 
 const session: Omit<AppSession, 'expiresAt'> = {
   spaceId: 124,

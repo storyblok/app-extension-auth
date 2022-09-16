@@ -1,5 +1,5 @@
 import { refreshAppSession, RefreshToken } from './refreshAppSession'
-import { AppSession } from '../types/AppSession'
+import { AppSession } from '../types'
 
 const validRefreshToken = 'abc123abc123'
 const invalidRefreshToken = 'oo0o0o0o0o0o0o0o0oo'

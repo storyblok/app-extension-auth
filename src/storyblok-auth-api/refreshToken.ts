@@ -1,10 +1,10 @@
-import { AuthHandlerParams } from '@src/storyblok-auth-api/auth-handler'
+import { AuthHandlerParams } from './auth-handler'
 import { Issuer } from 'openid-client'
 import {
   authorization_endpoint,
   profile_url,
   token_endpoint,
-} from '@src/storyblok-auth-api/storyblok-oauth-api-endpoints'
+} from './storyblok-oauth-api-endpoints'
 
 export const storyblokIssuer = new Issuer({
   issuer: 'storyblok',

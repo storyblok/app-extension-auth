@@ -1,7 +1,7 @@
 {
   "name": "@storyblok/app-extension-auth",
   "description": "A typed JavaScript library for handling authentication with Storyblok apps.",
-  "version": "0.0.8-alpha",
+  "version": "0.0.9-alpha",
   "author": {
     "name": "Johannes Lindgren",
     "email": "johannes.lindgren@storyblok.com"

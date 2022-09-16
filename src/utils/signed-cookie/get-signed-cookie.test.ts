@@ -1,5 +1,5 @@
 import httpMocks from 'node-mocks-http'
-import { getSignedCookie } from '@src/utils/signed-cookie/get-signed-cookie'
+import { getSignedCookie } from './get-signed-cookie'
 import { signData } from '../sign-verify/sign-data'
 
 const testSecret =

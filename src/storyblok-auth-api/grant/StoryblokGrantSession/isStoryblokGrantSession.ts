@@ -1,8 +1,8 @@
-import { hasKey } from '@src/utils/validation/hasKey'
-import { isStoryblokGrantResponse } from '@src/storyblok-auth-api/grant/StoryblokGrantResponse/isStoryblokGrantResponse'
-import { StoryblokGrantSession } from '@src/storyblok-auth-api/grant/StoryblokGrantSession/StoryblokGrantSession'
-
 // TODO add tests
+
+import { hasKey } from '../../../utils/validation/hasKey'
+import { StoryblokGrantSession } from './StoryblokGrantSession'
+import { isStoryblokGrantResponse } from '../StoryblokGrantResponse/isStoryblokGrantResponse'
 
 export const isStoryblokGrantSession = (
   obj: unknown,

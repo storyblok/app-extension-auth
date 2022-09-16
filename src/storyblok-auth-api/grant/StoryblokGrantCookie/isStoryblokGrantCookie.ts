@@ -1,8 +1,8 @@
-import { hasKey } from '@src/utils/validation/hasKey'
-import { StoryblokGrantCookie } from '@src/storyblok-auth-api/grant/StoryblokGrantCookie/StoryblokGrantCookie'
-import { isStoryblokGrantSession } from '@src/storyblok-auth-api/grant/StoryblokGrantSession/isStoryblokGrantSession'
-
 // TODO add tests
+
+import { StoryblokGrantCookie } from './StoryblokGrantCookie'
+import { hasKey } from '../../../utils/validation/hasKey'
+import { isStoryblokGrantSession } from '../StoryblokGrantSession/isStoryblokGrantSession'
 
 export const isStoryblokGrantCookie = (
   obj: unknown,

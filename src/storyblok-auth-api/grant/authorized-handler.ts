@@ -1,11 +1,11 @@
 import http from 'http'
-import { appendQueryParams } from '@src/utils/query-params/append-query-params'
-import { grantCookieName } from '@src/storyblok-auth-api/grant/grant-handler'
-import { sessionCookieStore } from '@src/session'
-import { expireCookie } from '@src/utils/cookie/set-cookie'
-import { getGrantSession } from '@src/storyblok-auth-api/grant/get-grant-session'
-import { AuthHandlerParams } from '@src/storyblok-auth-api'
-import { AppSession } from '@src/session/types/AppSession'
+import { grantCookieName } from './grant-handler'
+import { sessionCookieStore } from '../../session/sessionCookieStore'
+import { expireCookie } from '../../utils/cookie/set-cookie'
+import { getGrantSession } from './get-grant-session'
+import { AuthHandlerParams } from '../auth-handler'
+import { AppSession } from '../../session'
+import { appendQueryParams } from '../../utils/query-params/append-query-params'
 
 type AppSessionQueryParams = Record<
   keyof Pick<AppSession, 'spaceId' | 'userId'>,

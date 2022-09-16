@@ -1,4 +1,4 @@
-import { StoryblokScope } from '@src/storyblok-auth-api/StoryblokScope'
+import { StoryblokScope } from '../StoryblokScope'
 
 export type StoryblokOauthParams = {
   scope: StoryblokScope[]

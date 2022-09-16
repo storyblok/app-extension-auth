@@ -2,9 +2,9 @@ import http from 'http'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import makeSessionParser from 'grant/lib/session'
-import { isStoryblokGrantCookie } from '@src/storyblok-auth-api/grant/StoryblokGrantCookie/isStoryblokGrantCookie'
-import { StoryblokGrantSession } from '@src/storyblok-auth-api/grant/StoryblokGrantSession/StoryblokGrantSession'
-import { grantCookieName } from '@src/storyblok-auth-api/grant/grant-handler'
+import { StoryblokGrantSession } from './StoryblokGrantSession/StoryblokGrantSession'
+import { isStoryblokGrantCookie } from './StoryblokGrantCookie/isStoryblokGrantCookie'
+import { grantCookieName } from './grant-handler'
 
 type MakeSessionParser = (options: {
   // The cookie name

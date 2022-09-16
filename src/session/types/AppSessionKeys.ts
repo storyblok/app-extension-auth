@@ -1,4 +1,4 @@
-import { AppSession } from '@src/session/types/AppSession'
+import { AppSession } from './AppSession'
 
 export type AppSessionKeys = Pick<AppSession, 'spaceId' | 'userId'>
 export type AppSessionQuery = Record<

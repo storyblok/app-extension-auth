@@ -1,6 +1,6 @@
-import { AppSessionStore } from '@src/session/types/AppSessionStore'
-import { AuthHandlerParams } from '@src/storyblok-auth-api'
 import http from 'http'
+import { AuthHandlerParams } from '../../storyblok-auth-api'
+import { AppSessionStore } from './AppSessionStore'
 
 export type AppSessionCookieStoreFactoryParams = Pick<
   AuthHandlerParams,

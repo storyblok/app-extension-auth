@@ -1,13 +1,10 @@
-import { authorizedHandler } from '@src/storyblok-auth-api/grant/authorized-handler'
+import { authorizedHandler } from './grant/authorized-handler'
 import * as url from 'url'
-import { RequestHandler } from '@src/storyblok-auth-api/RequestHandler'
-import {
-  callbackRouteSlug,
-  grantHandler,
-} from '@src/storyblok-auth-api/grant/grant-handler'
-import { StoryblokScope } from '@src/storyblok-auth-api/StoryblokScope'
-import { validateAppBaseUrl } from '@src/storyblok-auth-api/validation/validateAppBaseUrl'
-import { validateEndpointPrefix } from '@src/storyblok-auth-api/validation/validateEndpointPrefix'
+import { RequestHandler } from './RequestHandler'
+import { callbackRouteSlug, grantHandler } from './grant/grant-handler'
+import { StoryblokScope } from './StoryblokScope'
+import { validateAppBaseUrl } from './validation/validateAppBaseUrl'
+import { validateEndpointPrefix } from './validation/validateEndpointPrefix'
 
 export type AuthHandlerParams = {
   /*

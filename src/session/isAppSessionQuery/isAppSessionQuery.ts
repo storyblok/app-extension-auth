@@ -1,4 +1,4 @@
-import { AppSessionQuery } from '@src/session/types/AppSessionKeys'
+import { AppSessionQuery } from '../types'
 
 export const isAppSessionQuery = (obj: unknown): obj is AppSessionQuery => {
   if (

@@ -1,7 +1,7 @@
 import grant from 'grant'
-import { RequestHandler } from '@src/storyblok-auth-api/RequestHandler'
-import { AuthHandlerParams } from '@src/storyblok-auth-api'
-import { profile_url } from '@src/storyblok-auth-api/storyblok-oauth-api-endpoints'
+import { RequestHandler } from '../RequestHandler'
+import { AuthHandlerParams } from '../auth-handler'
+import { profile_url } from '../storyblok-oauth-api-endpoints'
 
 export type GrantHandlerParams = Pick<
   AuthHandlerParams,

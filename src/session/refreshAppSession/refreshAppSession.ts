@@ -1,4 +1,4 @@
-import { AppSession } from '@src/session/types/AppSession'
+import { AppSession } from '../types'
 
 export type RefreshToken = (
   refreshToken: string,

@@ -1,11 +1,11 @@
 import {
+  AppSession,
+  AppSessionCookieStoreFactory,
   AppSessionKeys,
   AppSessionQuery,
-} from '@src/session/types/AppSessionKeys'
-import { getSignedCookie } from '@src/utils/signed-cookie/get-signed-cookie'
-import { setSignedCookie } from '@src/utils/signed-cookie/set-signed-cookie'
-import { AppSessionCookieStoreFactory } from '@src/session/types/AppSessionCookieStoreFactory'
-import { AppSession } from '@src/session/types/AppSession'
+} from './types'
+import { getSignedCookie } from '../utils/signed-cookie/get-signed-cookie'
+import { setSignedCookie } from '../utils/signed-cookie/set-signed-cookie'
 
 const toKeys = (keys: AppSessionQuery): AppSessionKeys => {
   const { spaceId, userId } = keys

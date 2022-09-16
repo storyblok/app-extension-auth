@@ -1,5 +1,5 @@
-import { Space } from '@src/storyblok-auth-api'
-import { hasKey } from '@src/utils/validation/hasKey'
+import { hasKey } from '../../../utils/validation/hasKey'
+import { Space } from './space'
 
 export const isSpace = (obj: unknown): obj is Space =>
   hasKey(obj, 'id') &&

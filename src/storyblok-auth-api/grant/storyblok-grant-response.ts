@@ -1,4 +1,4 @@
-import { UserInfo } from '@src/storyblok-auth-api'
+import { UserInfo } from '../user-info/UserInfo/user-info'
 
 export type StoryblokGrantResponse = {
   refresh_token: string

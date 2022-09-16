@@ -1,4 +1,4 @@
-import { StoryblokGrantSession } from '@src/storyblok-auth-api/grant/StoryblokGrantSession/StoryblokGrantSession'
+import { StoryblokGrantSession } from '../StoryblokGrantSession/StoryblokGrantSession'
 
 export type StoryblokGrantCookie = {
   grant: StoryblokGrantSession

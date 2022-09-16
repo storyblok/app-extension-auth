@@ -1,5 +1,5 @@
-import { User } from '@src/storyblok-auth-api'
-import { hasKey } from '@src/utils/validation/hasKey'
+import { hasKey } from '../../../utils/validation/hasKey'
+import { User } from './user'
 
 export const isUser = (obj: unknown): obj is User =>
   hasKey(obj, 'id') &&
