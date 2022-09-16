@@ -1,4 +1,5 @@
-import { AppSession, AppSessionQuery } from '@src/session/app-session-types'
+import { AppSessionQuery } from '@src/session/types/AppSessionKeys'
+import { AppSession } from '@src/session/types/AppSession'
 
 export type AppSessionStore = {
   get: (

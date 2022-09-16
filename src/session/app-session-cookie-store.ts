@@ -1,22 +1,11 @@
-import { AppSessionStore } from '@src/session/app-session-store'
 import {
-  AppSession,
   AppSessionKeys,
   AppSessionQuery,
-} from '@src/session/app-session-types'
-import { RequestParams } from '@src/session/request-params'
+} from '@src/session/types/AppSessionKeys'
 import { getSignedCookie } from '@src/utils/signed-cookie/get-signed-cookie'
 import { setSignedCookie } from '@src/utils/signed-cookie/set-signed-cookie'
-import { AuthHandlerParams } from '@src/storyblok-auth-api'
-
-type AppSessionCookieStoreFactoryParams = Pick<
-  AuthHandlerParams,
-  'clientId' | 'cookieName' | 'clientSecret'
->
-
-export type AppSessionCookieStoreFactory = (
-  params: AppSessionCookieStoreFactoryParams,
-) => (requestParams: RequestParams) => AppSessionStore
+import { AppSessionCookieStoreFactory } from '@src/session/types/AppSessionCookieStoreFactory'
+import { AppSession } from '@src/session/types/AppSession'
 
 const toKeys = (keys: AppSessionQuery): AppSessionKeys => {
   const { spaceId, userId } = keys

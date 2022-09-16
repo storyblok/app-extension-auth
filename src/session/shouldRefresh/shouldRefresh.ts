@@ -1,4 +1,4 @@
-import { AppSession } from '@src/session/app-session-types'
+import { AppSession } from '@src/session/types/AppSession'
 
 /**
  * Whether the server should refresh the token, while keeping some margin.

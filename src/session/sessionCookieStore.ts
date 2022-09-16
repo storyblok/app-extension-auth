@@ -1,13 +1,13 @@
-import {
-  AppSessionCookieStoreFactory,
-  simpleSessionCookieStore,
-} from '@src/session/app-session-cookie-store'
+import { simpleSessionCookieStore } from '@src/session/app-session-cookie-store'
 import { shouldRefresh } from '@src/session/shouldRefresh/shouldRefresh'
-import { refreshAppSession } from '@src/session/refreshAppSession'
+import { refreshAppSession } from '@src/session/refreshAppSession/refreshAppSession'
 import { refreshToken } from '@src/storyblok-auth-api/refreshToken'
+import { AppSessionCookieStoreFactory } from '@src/session/types/AppSessionCookieStoreFactory'
+import { AppSessionStore } from '@src/session/types/AppSessionStore'
 
 export const sessionCookieStore: AppSessionCookieStoreFactory =
-  (params) => (requestParams) => {
+  (params) =>
+  (requestParams): AppSessionStore => {
     const store = simpleSessionCookieStore(params)(requestParams)
     return {
       ...store,

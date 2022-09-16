@@ -1,14 +1,16 @@
 import http from 'http'
 import { appendQueryParams } from '@src/utils/query-params/append-query-params'
-import {
-  AppSession,
-  AppSessionQueryParams,
-} from '@src/session/app-session-types'
 import { grantCookieName } from '@src/storyblok-auth-api/grant/grant-handler'
 import { sessionCookieStore } from '@src/session'
 import { expireCookie } from '@src/utils/cookie/set-cookie'
 import { getGrantSession } from '@src/storyblok-auth-api/grant/get-grant-session'
 import { AuthHandlerParams } from '@src/storyblok-auth-api'
+import { AppSession } from '@src/session/types/AppSession'
+
+type AppSessionQueryParams = Record<
+  keyof Pick<AppSession, 'spaceId' | 'userId'>,
+  string
+>
 
 export type GrantCallbackHandlerParams = Pick<
   AuthHandlerParams,
