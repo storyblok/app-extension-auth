@@ -3,7 +3,7 @@ import { User } from '../../user-info/User/user'
 import { Space } from '../../user-info/Space/space'
 import { Role } from '../../user-info/Role/role'
 import { isStoryblokGrantCookie } from './isStoryblokGrantCookie'
-import { StoryblokGrantResponse } from '../storyblok-grant-response'
+import { StoryblokGrantResponse } from '../StoryblokGrantResponse'
 
 const user: User = {
   id: 123,

@@ -1,6 +1,6 @@
 // TODO add tests
 
-import { StoryblokGrantResponse } from '../storyblok-grant-response'
+import { StoryblokGrantResponse } from '../StoryblokGrantResponse'
 import { hasKey } from '../../../utils/hasKey/hasKey'
 import { isUserInfo } from '../../user-info/UserInfo/isUserInfo'
 

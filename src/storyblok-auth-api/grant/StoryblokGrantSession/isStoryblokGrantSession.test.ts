@@ -2,7 +2,7 @@ import { UserInfo } from '../../user-info/UserInfo/user-info'
 import { User } from '../../user-info/User/user'
 import { Space } from '../../user-info/Space/space'
 import { Role } from '../../user-info/Role/role'
-import { StoryblokGrantResponse } from '../storyblok-grant-response'
+import { StoryblokGrantResponse } from '../StoryblokGrantResponse'
 import { isStoryblokGrantSession } from './isStoryblokGrantSession'
 
 const user: User = {

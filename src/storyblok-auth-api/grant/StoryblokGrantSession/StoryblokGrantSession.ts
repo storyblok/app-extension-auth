@@ -1,4 +1,4 @@
-import { StoryblokGrantResponse } from '../storyblok-grant-response'
+import { StoryblokGrantResponse } from '../StoryblokGrantResponse'
 
 export type StoryblokGrantSession = {
   provider: 'storyblok'
