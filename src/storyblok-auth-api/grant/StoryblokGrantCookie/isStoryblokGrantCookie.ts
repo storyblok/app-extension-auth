@@ -1,7 +1,7 @@
 // TODO add tests
 
 import { StoryblokGrantCookie } from './StoryblokGrantCookie'
-import { hasKey } from '../../../utils/validation/hasKey'
+import { hasKey } from '../../../utils/hasKey/hasKey'
 import { isStoryblokGrantSession } from '../StoryblokGrantSession/isStoryblokGrantSession'
 
 export const isStoryblokGrantCookie = (

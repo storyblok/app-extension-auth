@@ -1,4 +1,4 @@
-import { hasKey } from '../../../utils/validation/hasKey'
+import { hasKey } from '../../../utils/hasKey/hasKey'
 import { Role } from './role'
 
 export const isRole = (obj: unknown): obj is Role =>

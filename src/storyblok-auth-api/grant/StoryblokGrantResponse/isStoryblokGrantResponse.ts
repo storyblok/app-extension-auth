@@ -1,7 +1,7 @@
 // TODO add tests
 
 import { StoryblokGrantResponse } from '../storyblok-grant-response'
-import { hasKey } from '../../../utils/validation/hasKey'
+import { hasKey } from '../../../utils/hasKey/hasKey'
 import { isUserInfo } from '../../user-info/UserInfo/isUserInfo'
 
 export const isStoryblokGrantResponse = (
