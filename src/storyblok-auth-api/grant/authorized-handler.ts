@@ -3,9 +3,9 @@ import { grantCookieName } from './grant-handler'
 import { sessionCookieStore } from '../../session/sessionCookieStore'
 import { expireCookie } from '../../utils/cookie/set-cookie'
 import { getGrantSession } from './get-grant-session'
-import { AuthHandlerParams } from '../auth-handler'
 import { AppSession } from '../../session'
 import { appendQueryParams } from '../../utils/query-params/append-query-params'
+import { AuthHandlerParams } from '../AuthHandlerParams'
 
 type AppSessionQueryParams = Record<
   keyof Pick<AppSession, 'spaceId' | 'userId'>,

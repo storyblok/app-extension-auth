@@ -1,7 +1,7 @@
 import grant from 'grant'
 import { RequestHandler } from '../RequestHandler'
-import { AuthHandlerParams } from '../auth-handler'
 import { userinfo_endpoint } from '../storyblok-oauth-api-endpoints'
+import { AuthHandlerParams } from '../AuthHandlerParams'
 
 export type GrantHandlerParams = Pick<
   AuthHandlerParams,
