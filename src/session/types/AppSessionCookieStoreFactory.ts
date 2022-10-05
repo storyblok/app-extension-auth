@@ -4,7 +4,7 @@ import { AppSessionStore } from './AppSessionStore'
 
 export type AppSessionCookieStoreFactoryParams = Pick<
   AuthHandlerParams,
-  'clientId' | 'cookieName' | 'clientSecret'
+  'clientId' | 'cookieName' | 'clientSecret' | 'baseUrl' | 'endpointPrefix'
 >
 export type AppSessionCookieStoreFactory = (
   staticParams: AppSessionCookieStoreFactoryParams,

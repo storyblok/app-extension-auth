@@ -94,7 +94,7 @@ The other variables can be hard-coded:
 
 * `successCallback` -- Specifies the URL that the user agent will be redirected to after a _successful_ authentication flow. Defaults to `"/"`.
 * `errorCallback` -- Specifies the URL that the user agent will be redirected to after an _unsuccessful_ authentication flow. If omitted, the user agent will receive a 401 response without redirect.
-* `endpointPrefix` -- Specifies a partial URL that will be inserted between the baseUrl and the
+* `endpointPrefix` -- Specifies the partial URL that is located between the baseUrl and the
   authentication API endpoints.
 
     For example, the following two properties

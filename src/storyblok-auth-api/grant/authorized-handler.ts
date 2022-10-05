@@ -19,6 +19,8 @@ export type GrantCallbackHandlerParams = Pick<
   | 'cookieName'
   | 'clientId'
   | 'clientSecret'
+  | 'baseUrl'
+  | 'endpointPrefix'
 >
 
 export const authorizedHandler =

@@ -51,7 +51,7 @@ export type AuthHandlerParams = {
    */
   errorCallback?: string
   /**
-   * Specifies a partial URL that will be inserted between the baseUrl and the
+   * Specifies the partial URL that is located between the baseUrl and the
    *  authentication API endpoints.
    *
    * For example
@@ -63,7 +63,7 @@ export type AuthHandlerParams = {
    *  - `https://my-app.my-domain.com/api/authenticate/storyblok` for initiating the authentication flow
    *  - `https://my-app.my-domain.com/api/authenticate/storyblok/callback` as the OAuth2 callback URL
    */
-  endpointPrefix?: string
+  endpointPrefix: string | undefined // To make explicit, do not make this optional.
 }
 
 export const authHandler = (params: AuthHandlerParams): RequestHandler => {
