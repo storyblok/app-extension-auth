@@ -20,9 +20,9 @@ export const sessionCookieStore: AppSessionCookieStoreFactory =
           return undefined
         }
         if (shouldRefresh(currentSession)) {
-          const newSession = await refreshAppSession(refreshToken(params))(
-            currentSession,
-          )
+          const newSession = await refreshAppSession(
+            refreshToken(fetch)(params),
+          )(currentSession)
 
           if (!newSession) {
             // Refresh failed -> user becomes unauthenticated

@@ -1,42 +1,76 @@
 import { AuthHandlerParams } from './auth-handler'
-import { Issuer } from 'openid-client'
-import {
-  authorization_endpoint,
-  profile_url,
-  token_endpoint,
-} from './storyblok-oauth-api-endpoints'
+import { token_endpoint } from './storyblok-oauth-api-endpoints'
+import { hasKey } from '../utils/hasKey/hasKey'
+import { trimSlashes } from '../utils/trimSlashes/trimSlashes'
 
-export const storyblokIssuer = new Issuer({
-  issuer: 'storyblok',
-  authorization_endpoint,
-  token_endpoint,
-  userinfo_endpoint: profile_url,
-})
+export type RefreshTokenWithFetchParams = Pick<
+  AuthHandlerParams,
+  'clientId' | 'clientSecret' | 'baseUrl' | 'endpointPrefix'
+>
 
-type Params = Pick<AuthHandlerParams, 'clientId' | 'clientSecret'>
+const isTokenResponse = (
+  data: unknown,
+): data is { access_token: string; expires_in: number } =>
+  hasKey(data, 'access_token') &&
+  typeof data.access_token === 'string' &&
+  hasKey(data, 'expires_in') &&
+  typeof data.expires_in === 'number'
+
+export type RefreshTokenResponse =
+  | { access_token: string; expires_in: number }
+  | undefined
 
 /**
  * Uses a refresh token to request a new accessToken
- * @param params
+ * @param fetchRequest
  */
 export const refreshToken =
-  (params: Params) =>
-  async (
-    refreshToken: string,
-  ): Promise<{ access_token: string; expires_in: number } | undefined> => {
+  (fetchRequest: typeof fetch) =>
+  (params: RefreshTokenWithFetchParams) =>
+  async (refreshToken: string): Promise<RefreshTokenResponse> => {
     try {
-      const refreshClient = new storyblokIssuer.Client({
+      const formData = {
+        grant_type: 'refresh_token',
+        refresh_token: refreshToken,
         client_id: params.clientId,
         client_secret: params.clientSecret,
+        redirect_uri: params.endpointPrefix
+          ? `${trimSlashes(params.baseUrl)}/${trimSlashes(
+              params.endpointPrefix,
+            )}/storyblok/callback`
+          : `${trimSlashes(params.baseUrl)}/storyblok/callback`,
+      }
+      const formBody = new URLSearchParams(formData).toString()
+      const res = await fetchRequest(token_endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          Accept: 'application/json',
+        },
+        body: formBody,
       })
-      const { access_token, expires_in } = await refreshClient.refresh(
-        refreshToken,
-      )
-      if (!access_token || !expires_in) {
+      if (!res.ok) {
+        const textMessage = await res.text()
+        console.error(
+          `Failed to refresh token. Server responded with "${textMessage}". Check your parameters: ${Object.keys(
+            formData,
+          )}`,
+        )
         return undefined
       }
-      return { access_token, expires_in }
+      const tokenData = (await res.json()) as unknown
+      if (!isTokenResponse(tokenData)) {
+        console.error(
+          'Unexpected format: the server returned an object with an unexpected format',
+        )
+        return undefined
+      }
+      return {
+        access_token: tokenData.access_token,
+        expires_in: tokenData.expires_in,
+      }
     } catch (e) {
+      console.error('Refresh token failed with an exception')
       return undefined
     }
   }
