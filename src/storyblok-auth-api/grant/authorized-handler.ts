@@ -23,30 +23,43 @@ export type GrantCallbackHandlerParams = Pick<
   | 'endpointPrefix'
 >
 
+const makeEndWithError =
+  (response: http.ServerResponse, redirectTo: string | undefined) =>
+  (message?: string) => {
+    if (message) {
+      console.debug(message)
+    }
+
+    if (redirectTo) {
+      response
+        .writeHead(302, {
+          Location: redirectTo,
+        })
+        .end()
+    } else {
+      response.writeHead(401).end()
+    }
+  }
+
 export const authorizedHandler =
   (params: GrantCallbackHandlerParams) =>
   async (
     request: http.IncomingMessage,
     response: http.ServerResponse,
   ): Promise<void> => {
+    const endWithError = makeEndWithError(response, params.errorCallback)
     try {
       const grantCookie = await getGrantSession({
         secret: params.clientSecret,
         request,
       })
 
-      if (!grantCookie) {
-        console.debug('Authentication failed: no grant session is present')
-        response.writeHead(401).end()
+      if (typeof grantCookie === 'undefined') {
+        endWithError('Authentication failed: no grant session is present')
         return
       }
 
       const grantResponse = grantCookie.response
-
-      if (!grantResponse) {
-        response.writeHead(401).end()
-        return
-      }
 
       const appSession: AppSession = {
         refreshToken: grantResponse.refresh_token,
@@ -86,15 +99,6 @@ export const authorizedHandler =
         })
         .end()
     } catch (e) {
-      console.error(e)
-      if (params?.errorCallback) {
-        response
-          .writeHead(302, {
-            Location: params.errorCallback,
-          })
-          .end()
-      } else {
-        response.writeHead(401).end()
-      }
+      endWithError()
     }
   }
