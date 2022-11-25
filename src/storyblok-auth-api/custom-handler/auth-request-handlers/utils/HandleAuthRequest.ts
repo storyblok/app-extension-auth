@@ -1,6 +1,6 @@
-import { HandleAnyAuthRequestParams } from '../../../../node/node-auth-request-handler'
 import { HandleAuthRequestResult } from '../types/HandleAuthRequestResult'
+import { AuthHandlerParams } from '../../../AuthHandlerParams'
 
 export type HandleAuthRequest = (
-  params: HandleAnyAuthRequestParams,
+  params: AuthHandlerParams,
 ) => Promise<HandleAuthRequestResult>

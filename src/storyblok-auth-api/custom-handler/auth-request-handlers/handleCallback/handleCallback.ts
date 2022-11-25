@@ -1,6 +1,6 @@
 import { createOpenidClient } from '../../openidClient'
 import { getCallbackCookie } from '../../callback-cookie'
-import { AppSession, createSessionCookieStore } from '../../../../session'
+import { AppSession } from '../../../../session'
 import { isUserInfo } from '../../../user-info/UserInfo/isUserInfo'
 import { appendQueryParams } from '../../../../utils/query-params/append-query-params'
 import { redirectUri } from '../../redirectUri'
@@ -8,8 +8,12 @@ import { isTokenSet } from './isTokenSet'
 import { HandleAuthRequest } from '../utils/HandleAuthRequest'
 import { signData } from '../../../../utils/sign-verify/sign-data'
 import { clearCallbackCookieResult } from '../utils/clearCallbackCookieResult'
-import { authCookieName } from '../../../../session/app-session-cookie-store'
+import {
+  authCookieName,
+  getAllSessions,
+} from '../../../../session/app-session-cookie-store'
 import { HandleAuthRequestResultSetCookie } from '../types/HandleAuthRequestResult'
+import { GetCookie } from '../../../../types/cookie'
 
 export type AppSessionQueryParams = Record<
   keyof Pick<AppSession, 'spaceId' | 'userId'>,
@@ -17,12 +21,10 @@ export type AppSessionQueryParams = Record<
 >
 
 export const handleCallback =
-  (url: string): HandleAuthRequest =>
+  (url: string, getCookie: GetCookie): HandleAuthRequest =>
   async (params) => {
     try {
-      const callbackCookie = getCallbackCookie(params.clientSecret)(
-        params.getCookie,
-      )
+      const callbackCookie = getCallbackCookie(params.clientSecret)(getCookie)
       if (!callbackCookie) {
         return {
           type: 'error',
@@ -81,8 +83,7 @@ export const handleCallback =
       }
       const redirectTo = appendQueryParams(returnTo, queryParams)
 
-      const appSessions = createSessionCookieStore(params)
-      const existingSessions = await appSessions.getAll()
+      const existingSessions = getAllSessions(params)(getCookie)
       const setSessions: HandleAuthRequestResultSetCookie = {
         name: authCookieName(params),
         value: signData(params.clientSecret)({

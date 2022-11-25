@@ -1,31 +1,26 @@
 import http from 'http'
 import { AuthHandlerParams } from '../storyblok-auth-api/AuthHandlerParams'
-import { GetCookie, SetCookie } from '../types/cookie'
-import { expireNodeCookie, setNodeCookie } from './index'
+import { expireNodeCookie, getNodeCookie, setNodeCookie } from './index'
 import { HandleAuthRequestResult } from '../storyblok-auth-api/custom-handler/auth-request-handlers/types/HandleAuthRequestResult'
 import { handleAuthRequest } from '../storyblok-auth-api/handle-auth-request'
 
-export type HandleAnyAuthRequestParams = AuthHandlerParams & {
-  getCookie: GetCookie
-  setCookie: SetCookie
-}
-
-export const nodeAuthRequestHandler = (
-  params: HandleAnyAuthRequestParams,
+export const handleNodeRequest = (
+  params: AuthHandlerParams,
 ): http.RequestListener => {
   return async (req, res) => {
     if (typeof req.url !== 'string') {
       res.writeHead(400).end()
       return
     }
-    const results = await handleAuthRequest(req.url)(params)
-    nodeHandleAuthResult(results)(req, res)
+    const results = await handleAuthRequest(req.url, getNodeCookie(req))(params)
+    handleNodeRequestResult(results)(req, res)
   }
 }
 
-const nodeHandleAuthResult =
+const handleNodeRequestResult =
   (result: HandleAuthRequestResult): http.RequestListener =>
   (_req, res) => {
+    console.log(result)
     if (result.message) {
       // TODO handle better. We want to print an error if the app is misconfigured
       console.error(result.message)
