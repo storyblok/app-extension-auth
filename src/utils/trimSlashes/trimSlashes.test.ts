@@ -15,4 +15,10 @@ describe('trimSlashes', () => {
       'hello/my/fellow/bloker',
     )
   })
+  it('should trim double slashes', () => {
+    expect(trimSlashes('//hello//')).toEqual('hello')
+  })
+  it('should a slash characters to empty string', () => {
+    expect(trimSlashes('//')).toEqual('')
+  })
 })

@@ -1,14 +1,17 @@
 import http from 'http'
 import { grantCookieName } from './grant-handler'
 import { createSessionCookieStore } from '../../session/createSessionCookieStore'
-import { expireCookie, setNodeCookie } from '../../node/cookie/setNodeCookie'
+import {
+  expireNodeCookie,
+  setNodeCookie,
+} from '../../node/cookie/setNodeCookie'
 import { getGrantSession } from './get-grant-session'
 import { AppSession } from '../../session'
 import { appendQueryParams } from '../../utils/query-params/append-query-params'
 import { AuthHandlerParams } from '../AuthHandlerParams'
 import { getNodeCookie } from '../../node'
 
-type AppSessionQueryParams = Record<
+export type AppSessionQueryParams = Record<
   keyof Pick<AppSession, 'spaceId' | 'userId'>,
   string
 >
@@ -24,7 +27,7 @@ export type GrantCallbackHandlerParams = Pick<
   | 'endpointPrefix'
 >
 
-const makeEndWithError =
+const createEndWithError =
   (response: http.ServerResponse, redirectTo: string | undefined) =>
   (message?: string) => {
     if (message) {
@@ -48,7 +51,8 @@ export const authorizedHandler =
     request: http.IncomingMessage,
     response: http.ServerResponse,
   ): Promise<void> => {
-    const endWithError = makeEndWithError(response, params.errorCallback)
+    const endWithError = createEndWithError(response, params.errorCallback)
+    // TODO remove try block
     try {
       const grantCookie = await getGrantSession({
         secret: params.clientSecret,
@@ -93,7 +97,7 @@ export const authorizedHandler =
       await appSessions.put(appSession)
 
       // Cleanup the cookie that was set by grant during the oauth flow
-      expireCookie(response, grantCookieName)
+      expireNodeCookie(response)(grantCookieName)
 
       response
         .writeHead(302, {

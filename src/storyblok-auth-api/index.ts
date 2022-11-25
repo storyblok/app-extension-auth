@@ -1,5 +1,6 @@
 export * from './user-info/UserInfo/user-info'
 export * from './auth-handler'
+export * from './custom-handler'
 export { User } from './user-info/User/user'
 export { Space } from './user-info/Space/space'
 export { Role } from './user-info/Role/role'

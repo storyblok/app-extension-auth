@@ -17,6 +17,7 @@ const getHeaders = (res: http.ServerResponse): string[] => {
 const setCookieHeaderValue = (name: string, value: string) =>
   `${name}=${value}; path=/; samesite=none; secure; httponly`
 
+// TODO decide if to move this outside of setNodeCookie. Otherwise, when implementing, the cookie attributes needs to be set again
 const expiredCookieHeaderValue = (name: string) =>
   `${name}=""; path=/; samesite=none; secure; httponly; expires=Thu, 01 Jan 1970 00:00:00 GMT`
 
@@ -42,5 +43,5 @@ export const setNodeCookie =
       withSetCookie(getHeaders(res), name, value),
     )
 
-export const expireCookie = (res: http.ServerResponse, name: string) =>
+export const expireNodeCookie = (res: http.ServerResponse) => (name: string) =>
   void res.setHeader('Set-Cookie', withExpiredCookie(getHeaders(res), name))

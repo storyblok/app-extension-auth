@@ -6,6 +6,7 @@ import {
 } from './types'
 import { getSignedCookie } from '../utils/signed-cookie/get-signed-cookie'
 import { setSignedCookie } from '../utils/signed-cookie/set-signed-cookie'
+import { AuthHandlerParams } from '../storyblok-auth-api'
 
 const toKeys = (keys: AppSessionQuery): AppSessionKeys => {
   const { spaceId, userId } = keys
@@ -22,18 +23,21 @@ type AppSessionCookiePayload =
   | undefined
 
 const defaultCookieName = 'sb.auth'
+export const authCookieName = (params: Pick<AuthHandlerParams, 'cookieName'>) =>
+  params.cookieName ?? defaultCookieName
 
 export const simpleSessionCookieStore: CreateSessionCookieStore = (params) => {
   const { clientId } = params
-  const cookieName = params.cookieName ?? defaultCookieName
   const getSessions = (): AppSession[] => {
     const signedCookie = getSignedCookie(params.clientSecret)(params.getCookie)(
-      cookieName,
+      authCookieName(params),
     ) as AppSessionCookiePayload
     return signedCookie?.sessions ?? []
   }
   const setSessions = (sessions: AppSession[]) => {
-    setSignedCookie(params.clientSecret)(params.setCookie)(cookieName)({
+    setSignedCookie(params.clientSecret)(params.setCookie)(
+      authCookieName(params),
+    )({
       sessions,
     })
   }

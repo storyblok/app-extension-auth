@@ -1,5 +1,5 @@
 import httpMocks from 'node-mocks-http'
-import { expireCookie, setNodeCookie } from './setNodeCookie'
+import { expireNodeCookie, setNodeCookie } from './setNodeCookie'
 import http from 'http'
 import { getSetCookies } from '../../utils/__tests__/get-set-cookies'
 
@@ -69,13 +69,13 @@ describe('Setting app cookies', () => {
 describe('Expiring cookies', () => {
   it('Should contain the expiration attribute', () => {
     const res = mockResponse()
-    expireCookie(res, testCookieName)
+    expireNodeCookie(res)(testCookieName)
 
     expect(getTestCookie(res)).toContain('; expires')
   })
   it('The expiration date should be the start of Unix epoch', () => {
     const res = mockResponse()
-    expireCookie(res, testCookieName)
+    expireNodeCookie(res)(testCookieName)
 
     expect(getTestCookie(res)).toContain(
       `; expires=${new Date(0).toUTCString()}`,
@@ -83,7 +83,7 @@ describe('Expiring cookies', () => {
   })
   it('should have no value', () => {
     const res = mockResponse()
-    expireCookie(res, testCookieName)
+    expireNodeCookie(res)(testCookieName)
 
     expect(getTestCookie(res)).toContain(`${testCookieName}=""`)
   })
