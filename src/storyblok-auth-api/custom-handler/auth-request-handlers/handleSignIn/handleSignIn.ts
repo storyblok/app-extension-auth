@@ -1,11 +1,11 @@
 import { generators } from 'openid-client'
-import { callbackCookieName } from '../callback-cookie'
-import { createOpenidClient } from '../openidClient'
-import { redirectUri } from '../redirect-uri'
-import { signData } from '../../../utils/sign-verify/sign-data'
-import { HandleAuthRequest } from '../HandleAuthRequest/HandleAuthRequest'
+import { callbackCookieName } from '../../callback-cookie'
+import { createOpenidClient } from '../../openidClient'
+import { redirectUri } from '../../redirectUri'
+import { signData } from '../../../../utils/sign-verify/sign-data'
+import { HandleAuthRequest } from '../utils/HandleAuthRequest'
 
-export const handleSignin: HandleAuthRequest = async (params) => {
+export const handleSignIn: HandleAuthRequest = async (params) => {
   const code_verifier = generators.codeVerifier()
   const state = generators.state()
   const code_challenge = generators.codeChallenge(code_verifier)

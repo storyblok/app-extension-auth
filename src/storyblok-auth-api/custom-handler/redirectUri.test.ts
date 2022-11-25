@@ -1,6 +1,13 @@
-import { redirectUri } from './redirect-uri'
+import { redirectUri } from './redirectUri'
 
 describe('redirectUri()', () => {
+  it('appends `/callback`', () =>
+    expect(
+      redirectUri({
+        baseUrl: 'https://mydomain.com/base',
+        endpointPrefix: 'api/connect',
+      }),
+    ).toMatch(/\/callback$/))
   it('joins slugs that are trimmed of slashes', () =>
     expect(
       redirectUri({
@@ -28,5 +35,5 @@ describe('redirectUri()', () => {
         baseUrl: 'https://mydomain.com/base',
         endpointPrefix: undefined,
       }),
-    ).toEqual('https://mydomain.com/base/api'))
+    ).toEqual('https://mydomain.com/base/callback'))
 })

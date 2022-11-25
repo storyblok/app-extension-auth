@@ -1,15 +1,15 @@
-import { createOpenidClient } from '../openidClient'
-import { getCallbackCookie } from '../callback-cookie'
-import { AppSession, createSessionCookieStore } from '../../../session'
-import { isUserInfo } from '../../user-info/UserInfo/isUserInfo'
-import { appendQueryParams } from '../../../utils/query-params/append-query-params'
-import { redirectUri } from '../redirect-uri'
-import { isTokenSet } from './is-token-set'
-import { HandleAuthRequest } from '../HandleAuthRequest/HandleAuthRequest'
-import { HandleAuthRequestResultSetCookie } from '../HandleAuthRequest/HandleAuthRequestResult'
-import { signData } from '../../../utils/sign-verify/sign-data'
-import { clearCallbackCookie } from './clear-callback-cookie'
-import { authCookieName } from '../../../session/app-session-cookie-store'
+import { createOpenidClient } from '../../openidClient'
+import { getCallbackCookie } from '../../callback-cookie'
+import { AppSession, createSessionCookieStore } from '../../../../session'
+import { isUserInfo } from '../../../user-info/UserInfo/isUserInfo'
+import { appendQueryParams } from '../../../../utils/query-params/append-query-params'
+import { redirectUri } from '../../redirectUri'
+import { isTokenSet } from './isTokenSet'
+import { HandleAuthRequest } from '../utils/HandleAuthRequest'
+import { signData } from '../../../../utils/sign-verify/sign-data'
+import { clearCallbackCookieResult } from '../utils/clearCallbackCookieResult'
+import { authCookieName } from '../../../../session/app-session-cookie-store'
+import { HandleAuthRequestResultSetCookie } from '../types/HandleAuthRequestResult'
 
 export type AppSessionQueryParams = Record<
   keyof Pick<AppSession, 'spaceId' | 'userId'>,
@@ -26,7 +26,7 @@ export const handleCallback =
       if (!callbackCookie) {
         return {
           type: 'error',
-          setCookies: [clearCallbackCookie],
+          setCookies: [clearCallbackCookieResult],
           redirectTo: params.errorCallback,
         }
       }
@@ -46,7 +46,7 @@ export const handleCallback =
       if (!isTokenSet(tokenSet)) {
         return {
           type: 'error',
-          setCookies: [clearCallbackCookie],
+          setCookies: [clearCallbackCookieResult],
           redirectTo: params.errorCallback,
         }
       }
@@ -58,7 +58,7 @@ export const handleCallback =
       if (!isUserInfo(userInfo)) {
         return {
           type: 'error',
-          setCookies: [clearCallbackCookie],
+          setCookies: [clearCallbackCookieResult],
           redirectTo: params.errorCallback,
         }
       }
@@ -93,12 +93,12 @@ export const handleCallback =
       return {
         type: 'success',
         redirectTo,
-        setCookies: [clearCallbackCookie, setSessions],
+        setCookies: [clearCallbackCookieResult, setSessions],
       }
     } catch (e) {
       return {
         type: 'error',
-        setCookies: [clearCallbackCookie],
+        setCookies: [clearCallbackCookieResult],
         redirectTo: params.errorCallback,
       }
     }

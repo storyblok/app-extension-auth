@@ -1,6 +1,6 @@
 import { BaseClient, Issuer } from 'openid-client'
 import { AuthHandlerParams } from '../AuthHandlerParams'
-import { redirectUri } from './redirect-uri'
+import { redirectUri } from './redirectUri'
 
 export type CreateOpenIdClientParams = Pick<
   AuthHandlerParams,

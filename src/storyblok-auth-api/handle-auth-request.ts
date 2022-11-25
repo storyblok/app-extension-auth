@@ -3,8 +3,8 @@ import {
   HandleAnyAuthRequestParams,
   HandleAuthRequestResult,
   handleCallback,
-  handleSignin,
-  handleUnknownEndpoint,
+  handleSignIn,
+  handleUnknown,
   signinEndpoint,
 } from './index'
 import { validateAppBaseUrl } from './validation/validateAppBaseUrl'
@@ -33,10 +33,10 @@ export const handleAuthRequest =
     const endpoint = slugs && slugs[slugs.length - 1]
     switch (endpoint) {
       case signinEndpoint:
-        return handleSignin(params)
+        return handleSignIn(params)
       case callbackEndpoint:
         return handleCallback(fullUrl)(params)
       default:
-        return handleUnknownEndpoint(params)
+        return handleUnknown(params)
     }
   }

@@ -1,4 +1,4 @@
-import { hasKey } from '../../../utils/hasKey/hasKey'
+import { hasKey } from '../../../../utils/hasKey/hasKey'
 
 export type TokenSet = {
   access_token: string

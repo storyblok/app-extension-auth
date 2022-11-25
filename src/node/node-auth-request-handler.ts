@@ -2,7 +2,7 @@ import http from 'http'
 import { AuthHandlerParams } from '../storyblok-auth-api/AuthHandlerParams'
 import { GetCookie, SetCookie } from '../types/cookie'
 import { expireNodeCookie, setNodeCookie } from './index'
-import { HandleAuthRequestResult } from '../storyblok-auth-api/custom-handler/HandleAuthRequest/HandleAuthRequestResult'
+import { HandleAuthRequestResult } from '../storyblok-auth-api/custom-handler/auth-request-handlers/types/HandleAuthRequestResult'
 import { handleAuthRequest } from '../storyblok-auth-api/handle-auth-request'
 
 export type HandleAnyAuthRequestParams = AuthHandlerParams & {
