@@ -1,10 +1,9 @@
-import http from 'http'
-import { setCookie } from '../cookie/set-cookie'
 import { signData } from '../sign-verify/sign-data'
+import { SetCookie } from '../../types/cookie'
 
 export const setSignedCookie =
   (secret: string) =>
-  <Data>(name: string) =>
-  (data: Data) =>
-  (res: http.ServerResponse): void =>
-    void setCookie(res, name, signData(secret)(data))
+  (setCookie: SetCookie) =>
+  (name: string) =>
+  (data: unknown) =>
+    void setCookie(name, signData(secret)(data))

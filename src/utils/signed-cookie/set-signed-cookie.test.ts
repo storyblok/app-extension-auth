@@ -1,5 +1,5 @@
 import httpMocks from 'node-mocks-http'
-import { setCookie } from '../cookie/set-cookie'
+import { setNodeCookie } from '../../node/cookie/setNodeCookie'
 import { signData } from '../sign-verify/sign-data'
 import { getSetCookies } from '../__tests__/get-set-cookies'
 import { setSignedCookie } from './set-signed-cookie'
@@ -18,26 +18,26 @@ const testCookieValue = {
 
 const jwtToken = signData(testSecret)(testCookieValue)
 
-// const testCookie = `${testCookieName}=${jwtToken}; path=/; samesite=none; secure; httponly`
-
 const mockResponse = () => {
   const res = httpMocks.createResponse()
   res.setHeader('Set-Cookie', 'otherCooke=otherCookieValue; httpOnly')
-  setCookie(res, 'firstCookie', 'firstCookieValue')
-  return res
+  setNodeCookie(res)('firstCookie', 'firstCookieValue')
+  const setCookie = (name: string, value: string) =>
+    setNodeCookie(res)(name, value)
+  return { res, setCookie }
 }
 
 describe('setSignedCookie', () => {
   it('add a Set-Cookie header', () => {
-    const res = mockResponse()
+    const { res, setCookie } = mockResponse()
     const beforeCount = getSetCookies(res).length
-    setSignedCookie(testSecret)(testCookieName)(testCookieValue)(res)
+    setSignedCookie(testSecret)(setCookie)(testCookieName)(testCookieValue)
     const afterCount = getSetCookies(res).length
     expect(afterCount).toBe(beforeCount + 1)
   })
   it('add a Set-Cookie header', () => {
-    const res = mockResponse()
-    setSignedCookie(testSecret)(testCookieName)(testCookieValue)(res)
+    const { res, setCookie } = mockResponse()
+    setSignedCookie(testSecret)(setCookie)(testCookieName)(testCookieValue)
     const match = getSetCookies(res).some((header) =>
       header.startsWith(`${testCookieName}=${jwtToken}`),
     )

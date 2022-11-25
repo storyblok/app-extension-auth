@@ -34,12 +34,13 @@ const withExpiredCookie = (headers: string[], name: string): string[] => [
   expiredCookieHeaderValue(name),
 ]
 
-export const setCookie = (
-  res: http.ServerResponse,
-  name: string,
-  value: string,
-): void =>
-  void res.setHeader('Set-Cookie', withSetCookie(getHeaders(res), name, value))
+export const setNodeCookie =
+  (res: http.ServerResponse) =>
+  (name: string, value: string): void =>
+    void res.setHeader(
+      'Set-Cookie',
+      withSetCookie(getHeaders(res), name, value),
+    )
 
 export const expireCookie = (res: http.ServerResponse, name: string) =>
   void res.setHeader('Set-Cookie', withExpiredCookie(getHeaders(res), name))

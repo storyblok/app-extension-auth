@@ -1,6 +1,6 @@
 import {
   AppSession,
-  AppSessionCookieStoreFactory,
+  CreateSessionCookieStore,
   AppSessionKeys,
   AppSessionQuery,
 } from './types'
@@ -15,48 +15,52 @@ const toKeys = (keys: AppSessionQuery): AppSessionKeys => {
   }
 }
 
-type AppSessionCookiePayload = {
-  sessions: AppSession[]
-}
+type AppSessionCookiePayload =
+  | {
+      sessions: AppSession[]
+    }
+  | undefined
 
 const defaultCookieName = 'sb.auth'
 
-export const simpleSessionCookieStore: AppSessionCookieStoreFactory =
-  (params) => (requestParams) => {
-    const { clientId, clientSecret } = params
-    const cookieName = params.cookieName ?? defaultCookieName
-    const { req, res } = requestParams
-    const getCookie =
-      getSignedCookie(clientSecret)<AppSessionCookiePayload>(cookieName)
-    const setCookie =
-      setSignedCookie(clientSecret)<AppSessionCookiePayload>(cookieName)
-    const getSessions = () => (getCookie(req) ?? { sessions: [] }).sessions
-    return {
-      get: async (params) =>
-        getSessions().find(
-          matches({ ...toKeys(params), appClientId: clientId }),
-        ),
-      getAll: async () =>
-        getSessions().filter((session) => session.appClientId === clientId),
-      put: async (session) => {
-        const filter = matches(session)
-        const otherSessions = getSessions().filter((s) => !filter(s))
-        const allSessions = [...otherSessions, session]
-
-        setCookie({ sessions: allSessions })(res)
-        return session
-      },
-      remove: async (params) => {
-        const sessions = getSessions()
-        const toRemove = sessions.find(
-          matches({ ...toKeys(params), appClientId: clientId }),
-        )
-        const allOther = sessions.filter((s) => s !== toRemove)
-        setCookie({ sessions: allOther })(res)
-        return toRemove
-      },
-    }
+export const simpleSessionCookieStore: CreateSessionCookieStore = (params) => {
+  const { clientId } = params
+  const cookieName = params.cookieName ?? defaultCookieName
+  const getSessions = (): AppSession[] => {
+    const signedCookie = getSignedCookie(params.clientSecret)(params.getCookie)(
+      cookieName,
+    ) as AppSessionCookiePayload
+    return signedCookie?.sessions ?? []
   }
+  const setSessions = (sessions: AppSession[]) => {
+    setSignedCookie(params.clientSecret)(params.setCookie)(cookieName)({
+      sessions,
+    })
+  }
+  return {
+    get: async (params) =>
+      getSessions().find(matches({ ...toKeys(params), appClientId: clientId })),
+    getAll: async () =>
+      getSessions().filter((session) => session.appClientId === clientId),
+    put: async (session) => {
+      const filter = matches(session)
+      const otherSessions = getSessions().filter((s) => !filter(s))
+      const allSessions = [...otherSessions, session]
+
+      setSessions(allSessions)
+      return session
+    },
+    remove: async (params) => {
+      const sessions = getSessions()
+      const toRemove = sessions.find(
+        matches({ ...toKeys(params), appClientId: clientId }),
+      )
+      const allOtherSessions = sessions.filter((s) => s !== toRemove)
+      setSessions(allOtherSessions)
+      return toRemove
+    },
+  }
+}
 
 const matches =
   (a: AppSessionKeys & { appClientId: string }) =>

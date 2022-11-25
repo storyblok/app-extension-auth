@@ -1,11 +1,12 @@
 import http from 'http'
 import { grantCookieName } from './grant-handler'
-import { sessionCookieStore } from '../../session/sessionCookieStore'
-import { expireCookie } from '../../utils/cookie/set-cookie'
+import { createSessionCookieStore } from '../../session/createSessionCookieStore'
+import { expireCookie, setNodeCookie } from '../../node/cookie/setNodeCookie'
 import { getGrantSession } from './get-grant-session'
 import { AppSession } from '../../session'
 import { appendQueryParams } from '../../utils/query-params/append-query-params'
 import { AuthHandlerParams } from '../AuthHandlerParams'
+import { getNodeCookie } from '../../node'
 
 type AppSessionQueryParams = Record<
   keyof Pick<AppSession, 'spaceId' | 'userId'>,
@@ -84,9 +85,10 @@ export const authorizedHandler =
         queryParams,
       )
 
-      const appSessions = sessionCookieStore(params)({
-        req: request,
-        res: response,
+      const appSessions = createSessionCookieStore({
+        ...params,
+        getCookie: getNodeCookie(request),
+        setCookie: setNodeCookie(response),
       })
       await appSessions.put(appSession)
 

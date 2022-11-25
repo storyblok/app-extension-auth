@@ -1,12 +1,9 @@
-import http from 'http'
-import { getCookie } from '../cookie/get-cookie'
 import { verifyData } from '../sign-verify/verify-data'
+import { GetCookie } from '../../types/cookie'
 
 export const getSignedCookie =
-  (secret: string) =>
-  <Data>(name: string) =>
-  (req: http.IncomingMessage): Data | undefined => {
-    const jwtToken = getCookie(req, name)
+  (secret: string) => (getCookie: GetCookie) => (name: string) => {
+    const jwtToken = getCookie(name)
     if (!jwtToken) {
       return undefined
     }
