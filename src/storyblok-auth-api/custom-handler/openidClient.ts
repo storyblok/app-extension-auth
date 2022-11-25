@@ -1,5 +1,4 @@
-import { storyblokIssuer } from './storyblok-issuer'
-import { BaseClient } from 'openid-client'
+import { BaseClient, Issuer } from 'openid-client'
 import { AuthHandlerParams } from '../AuthHandlerParams'
 import { redirectUri } from './redirect-uri'
 
@@ -10,6 +9,18 @@ export type CreateOpenIdClientParams = Pick<
 export type CreateOpenIdClient = (
   params: CreateOpenIdClientParams,
 ) => BaseClient
+
+const oauthUrl = 'https://app.storyblok.com/oauth'
+const userinfo_endpoint = `${oauthUrl}/user_info`
+const authorization_endpoint = `${oauthUrl}/authorize`
+const token_endpoint = `${oauthUrl}/token`
+
+const storyblokIssuer = new Issuer({
+  issuer: 'storyblok',
+  authorization_endpoint,
+  token_endpoint,
+  userinfo_endpoint,
+})
 
 export const createOpenidClient: CreateOpenIdClient = (params) =>
   new storyblokIssuer.Client({
