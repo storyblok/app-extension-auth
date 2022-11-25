@@ -51,7 +51,7 @@ export const refreshToken =
       })
       if (!res.ok) {
         const textMessage = await res.text()
-        console.error(
+        console.debug(
           `Failed to refresh token. Server responded with "${textMessage}". Check your parameters: ${Object.keys(
             formData,
           )}`,

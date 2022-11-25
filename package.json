@@ -27,7 +27,6 @@
     "test": "jest"
   },
   "dependencies": {
-    "grant": "^5.4.21",
     "jsonwebtoken": "^8.5.1",
     "openid-client": "5.3.0"
   },

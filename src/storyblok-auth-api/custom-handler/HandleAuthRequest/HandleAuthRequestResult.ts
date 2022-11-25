@@ -3,7 +3,8 @@ export type HandleAuthRequestResultSetCookie = {
   value: string | undefined
 }
 export type HandleAuthRequestResult = {
-  type: 'success' | 'error'
-  setCookies: HandleAuthRequestResultSetCookie[]
+  type: 'success' | 'error' | 'configuration-error'
+  setCookies?: HandleAuthRequestResultSetCookie[]
   redirectTo?: string
+  message?: string
 }

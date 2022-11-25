@@ -2,7 +2,6 @@ import { createOpenidClient } from '../openidClient'
 import { getCallbackCookie } from '../callback-cookie'
 import { AppSession, createSessionCookieStore } from '../../../session'
 import { isUserInfo } from '../../user-info/UserInfo/isUserInfo'
-import { AppSessionQueryParams } from '../../grant/authorized-handler'
 import { appendQueryParams } from '../../../utils/query-params/append-query-params'
 import { redirectUri } from '../redirect-uri'
 import { isTokenSet } from './is-token-set'
@@ -11,6 +10,11 @@ import { HandleAuthRequestResultSetCookie } from '../HandleAuthRequest/HandleAut
 import { signData } from '../../../utils/sign-verify/sign-data'
 import { clearCallbackCookie } from './clear-callback-cookie'
 import { authCookieName } from '../../../session/app-session-cookie-store'
+
+export type AppSessionQueryParams = Record<
+  keyof Pick<AppSession, 'spaceId' | 'userId'>,
+  string
+>
 
 export const handleCallback =
   (url: string): HandleAuthRequest =>

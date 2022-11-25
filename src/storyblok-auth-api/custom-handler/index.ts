@@ -1,6 +1,6 @@
 export * from './handleSignIn/handle-signin'
 export * from './handleCallback/handle-callback'
-export * from './handle-any-auth-request'
+export * from '../../node/node-auth-request-handler'
 export * from './api-paths'
 export { redirectUri } from './redirect-uri'
 export { isTokenSet } from './handleCallback/is-token-set'
@@ -9,3 +9,4 @@ export { HandleAuthRequestResult } from './HandleAuthRequest/HandleAuthRequestRe
 export { HandleAuthRequest } from './HandleAuthRequest/HandleAuthRequest'
 export { clearCallbackCookie } from './handleCallback/clear-callback-cookie'
 export { handleUnknownEndpoint } from './handleUnknownEndpoint/handle-unknown-endpoint'
+export { handleAuthRequest } from '../handle-auth-request'
