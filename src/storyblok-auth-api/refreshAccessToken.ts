@@ -24,7 +24,7 @@ export type RefreshTokenResponse =
  * Uses a refresh token to request a new accessToken
  * @param fetchRequest
  */
-export const refreshToken =
+export const refreshAccessToken =
   (fetchRequest: typeof fetch) =>
   (params: RefreshTokenWithFetchParams) =>
   async (refreshToken: string): Promise<RefreshTokenResponse> => {

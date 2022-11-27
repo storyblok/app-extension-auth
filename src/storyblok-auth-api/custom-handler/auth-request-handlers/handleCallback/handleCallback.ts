@@ -8,12 +8,10 @@ import { isTokenSet } from './isTokenSet'
 import { HandleAuthRequest } from '../utils/HandleAuthRequest'
 import { signData } from '../../../../utils/sign-verify/sign-data'
 import { clearCallbackCookieResult } from '../utils/clearCallbackCookieResult'
-import {
-  authCookieName,
-  getAllSessions,
-} from '../../../../session/app-session-cookie-store'
 import { HandleAuthRequestResultSetCookie } from '../types/HandleAuthRequestResult'
 import { GetCookie } from '../../../../types/cookie'
+import { getAllSessions } from '../../../../session/crud/getAllSessions'
+import { authCookieName } from '../../../../session/authCookieName'
 
 export type AppSessionQueryParams = Record<
   keyof Pick<AppSession, 'spaceId' | 'userId'>,
@@ -33,10 +31,11 @@ export const handleCallback =
         }
       }
 
-      // TODO use returnTo
       const { codeVerifier, state, returnTo } = callbackCookie
+      // TODO implement without dependency on openid-client
       const callbackParams = createOpenidClient(params).callbackParams(url)
 
+      // TODO implement without dependency on openid-client
       const tokenSet = await createOpenidClient(params).oauthCallback(
         redirectUri(params),
         callbackParams,
@@ -54,6 +53,7 @@ export const handleCallback =
       }
       // Storyblok do not conform to openid, so the userinfo object is not the same as in the openid specification:
       //  https://openid.net/specs/openid-connect-core-1_0.html#UserInfo
+      // TODO implement without dependency on openid-client
       const userInfo = await createOpenidClient(params).userinfo(
         tokenSet.access_token,
       )
@@ -64,7 +64,6 @@ export const handleCallback =
           redirectTo: params.errorCallback,
         }
       }
-      console.log('valid user')
       const appSession: AppSession = {
         refreshToken: tokenSet.refresh_token,
         accessToken: tokenSet.access_token,

@@ -11,7 +11,12 @@ export type RefreshToken = (
  */
 export const refreshAppSession =
   (refreshToken: RefreshToken) =>
-  async (oldSession: AppSession): Promise<AppSession | undefined> => {
+  async (
+    oldSession: AppSession | undefined,
+  ): Promise<AppSession | undefined> => {
+    if (typeof oldSession === 'undefined') {
+      return undefined
+    }
     const refreshedToken = await refreshToken(oldSession.refreshToken)
     if (!refreshedToken) {
       return undefined

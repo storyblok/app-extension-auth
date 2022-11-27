@@ -11,6 +11,7 @@ export const handleSignIn: HandleAuthRequest = async (params) => {
   const code_challenge = generators.codeChallenge(code_verifier)
 
   // TODO can fail? If so, surround with try catch
+  // TODO implement without dependency on openid-client
   const redirectTo = createOpenidClient(params).authorizationUrl({
     scope: params.scope.join(' '),
     code_challenge,
@@ -26,7 +27,7 @@ export const handleSignIn: HandleAuthRequest = async (params) => {
       {
         name: callbackCookieName,
         value: signData(params.clientSecret)({
-          returnTo: params?.successCallback ?? '/', // TODO read from request query params, then use fallbacks
+          returnTo: params?.successCallback ?? '/', // TODO read from request query params, then either use the successCallback as fallback, or remove the entirely
           codeVerifier: code_verifier,
           state,
         }),

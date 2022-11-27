@@ -20,7 +20,6 @@ export const handleNodeRequest = (
 const handleNodeRequestResult =
   (result: HandleAuthRequestResult): http.RequestListener =>
   (_req, res) => {
-    console.log(result)
     if (result.message) {
       // TODO handle better. We want to print an error if the app is misconfigured
       console.error(result.message)

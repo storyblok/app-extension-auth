@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { refreshToken, RefreshTokenWithFetchParams } from './refreshToken'
+import { refreshAccessToken, RefreshTokenWithFetchParams } from './refreshAccessToken'
 
 const access_token = 'abc90fw4ke903kj390j'
 const expires_in = 899
@@ -102,7 +102,7 @@ const params: RefreshTokenWithFetchParams = {
 
 describe('refreshToken', () => {
   it('should refresh the token', async () => {
-    const refreshedToken = await refreshToken(fetchWithApiPrefix)(params)(
+    const refreshedToken = await refreshAccessToken(fetchWithApiPrefix)(params)(
       refresh_token,
     )
     expect(refreshedToken).toEqual({
@@ -111,7 +111,7 @@ describe('refreshToken', () => {
     })
   })
   it('the prefix should be optional', async () => {
-    const refreshedToken = await refreshToken(fetchWithoutApiPrefix)({
+    const refreshedToken = await refreshAccessToken(fetchWithoutApiPrefix)({
       clientId,
       clientSecret,
       endpointPrefix: undefined,
@@ -123,13 +123,13 @@ describe('refreshToken', () => {
     })
   })
   it('should return undefined when the refresh fail', async () => {
-    const refreshedToken = await refreshToken(fetchWithFail)(params)(
+    const refreshedToken = await refreshAccessToken(fetchWithFail)(params)(
       refresh_token,
     )
     expect(refreshedToken).toBeUndefined()
   })
   test('that the result does not contain any additional properties', async () => {
-    const refreshedToken = await refreshToken(fetchWithApiPrefix)(params)(
+    const refreshedToken = await refreshAccessToken(fetchWithApiPrefix)(params)(
       refresh_token,
     )
     expect(refreshedToken).toEqual({

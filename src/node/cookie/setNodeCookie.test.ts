@@ -40,6 +40,7 @@ describe('Setting app cookies', () => {
       new RegExp(`^${testCookieName}=${testCookieValue}`),
     )
   })
+  // TODO move to expiredCookieValue and setCookieValue
   it("Should add a cookie with the attribute 'secure'", () => {
     const res = mockResponse()
     setNodeCookie(res)(testCookieName, testCookieValue)
