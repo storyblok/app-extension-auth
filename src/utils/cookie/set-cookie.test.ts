@@ -64,22 +64,36 @@ describe('Setting app cookies', () => {
 
     expect(getTestCookie(res)).toContain('; httponly')
   })
+  it('has expiration date more than a month in advance', () => {
+    const res = mockResponse()
+    setCookie(res, testCookieName, testCookieValue)
+
+    const cookie = getTestCookie(res)
+    const num = Number(cookie?.match(/Max-Age=(-?\d+)/)?.[1])
+    expect(num).toBeDefined()
+    expect(num).not.toBeNaN()
+
+    const secondsInOneMonth = 60 * 60 * 24 * 31
+    expect(num).toBeGreaterThan(secondsInOneMonth)
+  })
 })
 
 describe('Expiring cookies', () => {
-  it('Should contain the expiration attribute', () => {
+  it('Should contain the Max-Age attribute', () => {
     const res = mockResponse()
     expireCookie(res, testCookieName)
 
-    expect(getTestCookie(res)).toContain('; expires')
+    expect(getTestCookie(res)).toContain('; Max-Age')
   })
-  it('The expiration date should be the start of Unix epoch', () => {
+  it('The Max-Age time should be less or equal to zero', () => {
     const res = mockResponse()
     expireCookie(res, testCookieName)
 
-    expect(getTestCookie(res)).toContain(
-      `; expires=${new Date(0).toUTCString()}`,
-    )
+    const cookie = getTestCookie(res)
+    const num = Number(cookie?.match(/Max-Age=(-?\d+)/)?.[1])
+    expect(num).toBeDefined()
+    expect(num).not.toBeNaN()
+    expect(num).toBeLessThanOrEqual(0)
   })
   it('should have no value', () => {
     const res = mockResponse()

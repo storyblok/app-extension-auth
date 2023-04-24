@@ -14,11 +14,19 @@ const getHeaders = (res: http.ServerResponse): string[] => {
   return header
 }
 
+const secondsInOneMonth = 60 * 60 * 24 * 32
+
 const setCookieHeaderValue = (name: string, value: string) =>
-  `${name}=${value}; path=/; samesite=none; secure; httponly`
+  `${name}=${value}; path=/; samesite=none; secure; httponly; Max-Age=${secondsInOneMonth}`
 
 const expiredCookieHeaderValue = (name: string) =>
-  `${name}=""; path=/; samesite=none; secure; httponly; expires=Thu, 01 Jan 1970 00:00:00 GMT`
+  `${name}=""; path=/; samesite=none; secure; httponly; Max-Age=-1`
+
+// const setCookieHeaderValue = (name: string, value: string) =>
+//   `${name}=${value}; path=/; samesite=none; secure; httponly`
+//
+// const expiredCookieHeaderValue = (name: string) =>
+//   `${name}=""; path=/; samesite=none; secure; httponly; expires=Thu, 01 Jan 1970 00:00:00 GMT`
 
 const withSetCookie = (
   headers: string[],
