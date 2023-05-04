@@ -21,7 +21,7 @@ export const callbackRouteSlug = 'authorized'
 export const grantHandler =
   (params: GrantHandlerParams): RequestHandler =>
   async (req, res) => {
-    const { clientId, clientSecret, endpointPrefix, baseUrl, scope} = params
+    const { clientId, clientSecret, endpointPrefix, baseUrl, scope } = params
     void (await grant.node({
       config: {
         defaults: {
@@ -32,7 +32,7 @@ export const grantHandler =
         storyblok: {
           client_id: clientId,
           client_secret: clientSecret,
-          scope: scope ? scope : ['read_content'],
+          scope,
           callback: `${endpointPrefix}/${callbackRouteSlug}`,
           profile_url: userinfo_endpoint,
           response: ['tokens', 'profile', 'raw'], // raw is needed for the expires_in, token is needed for profile
