@@ -4,8 +4,8 @@ import {
   AppSessionKeys,
   AppSessionQuery,
 } from './types'
-import { getSignedCookie } from '../utils/signed-cookie/get-signed-cookie'
-import { setSignedCookie } from '../utils/signed-cookie/set-signed-cookie'
+import { getSignedCookie } from '../utils'
+import { setSignedCookie } from '../utils'
 
 const toKeys = (keys: AppSessionQuery): AppSessionKeys => {
   const { spaceId, userId } = keys

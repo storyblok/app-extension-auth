@@ -1,6 +1,6 @@
 import http from 'http'
-import { signData } from '../sign-verify/sign-data'
-import { setCookie } from '../cookie'
+import { signData } from '../../signData'
+import { setCookie } from '../setCookie'
 
 export const setSignedCookie =
   (secret: string) =>

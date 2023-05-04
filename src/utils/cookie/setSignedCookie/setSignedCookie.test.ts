@@ -1,8 +1,8 @@
 import httpMocks from 'node-mocks-http'
-import { setCookie } from '../cookie/set-cookie'
-import { signData } from '../sign-verify/sign-data'
-import { getSetCookies } from '../__tests__/get-set-cookies'
-import { setSignedCookie } from './set-signed-cookie'
+import { setSignedCookie } from './setSignedCookie'
+import { signData } from '../../signData'
+import { setCookie } from '../setCookie'
+import { getSetCookies } from '../../__tests__/get-set-cookies'
 
 const testSecret =
   'fkxAHP5whEOjjJh4SFvYvQ9BiqBc8DMqQiX4MMFOcSUx5Qh5xxOI2wqQMRfK53aTOyc5RyEimYQBsA7lWu9kag=='
