@@ -1,5 +1,5 @@
 import httpMocks from 'node-mocks-http'
-import { getCookie } from './get-cookie'
+import { getCookie } from './getCookie'
 
 const cookieName = 'myCookie'
 const cookieValue = 'abc123'

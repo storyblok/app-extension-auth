@@ -1,7 +1,7 @@
 import httpMocks from 'node-mocks-http'
-import { expireCookie, setCookie } from './set-cookie'
+import { expireCookie, setCookie } from './setCookie'
 import http from 'http'
-import { getSetCookies } from '../__tests__/get-set-cookies'
+import { getSetCookies } from '../../__tests__/get-set-cookies'
 
 const testCookieName = 'myCookie'
 const testCookieValue = 'abc123'
@@ -40,6 +40,7 @@ describe('Setting app cookies', () => {
       new RegExp(`^${testCookieName}=${testCookieValue}`),
     )
   })
+  // TODO move to expiredCookieValue and setCookieValue
   it("Should add a cookie with the attribute 'secure'", () => {
     const res = mockResponse()
     setCookie(res, testCookieName, testCookieValue)
@@ -69,13 +70,13 @@ describe('Setting app cookies', () => {
 describe('Expiring cookies', () => {
   it('Should contain the expiration attribute', () => {
     const res = mockResponse()
-    expireCookie(res, testCookieName)
+    expireCookie(res)(testCookieName)
 
     expect(getTestCookie(res)).toContain('; expires')
   })
   it('The expiration date should be the start of Unix epoch', () => {
     const res = mockResponse()
-    expireCookie(res, testCookieName)
+    expireCookie(res)(testCookieName)
 
     expect(getTestCookie(res)).toContain(
       `; expires=${new Date(0).toUTCString()}`,
@@ -83,7 +84,7 @@ describe('Expiring cookies', () => {
   })
   it('should have no value', () => {
     const res = mockResponse()
-    expireCookie(res, testCookieName)
+    expireCookie(res)(testCookieName)
 
     expect(getTestCookie(res)).toContain(`${testCookieName}=""`)
   })

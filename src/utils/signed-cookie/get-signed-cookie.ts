@@ -1,6 +1,6 @@
 import http from 'http'
-import { getCookie } from '../cookie/get-cookie'
 import { verifyData } from '../sign-verify/verify-data'
+import { getCookie } from '../cookie'
 
 export const getSignedCookie =
   (secret: string) =>

@@ -1,7 +1,7 @@
 import http from 'http'
 import { grantCookieName } from './grant-handler'
 import { sessionCookieStore } from '../../session/sessionCookieStore'
-import { expireCookie } from '../../utils/cookie/set-cookie'
+import { expireCookie } from '../../utils'
 import { getGrantSession } from './get-grant-session'
 import { AppSession } from '../../session'
 import { appendQueryParams } from '../../utils/query-params/append-query-params'
