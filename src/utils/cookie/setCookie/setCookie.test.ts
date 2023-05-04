@@ -70,13 +70,13 @@ describe('Setting app cookies', () => {
 describe('Expiring cookies', () => {
   it('Should contain the expiration attribute', () => {
     const res = mockResponse()
-    expireCookie(res)(testCookieName)
+    expireCookie(res, testCookieName)
 
     expect(getTestCookie(res)).toContain('; expires')
   })
   it('The expiration date should be the start of Unix epoch', () => {
     const res = mockResponse()
-    expireCookie(res)(testCookieName)
+    expireCookie(res, testCookieName)
 
     expect(getTestCookie(res)).toContain(
       `; expires=${new Date(0).toUTCString()}`,
@@ -84,7 +84,7 @@ describe('Expiring cookies', () => {
   })
   it('should have no value', () => {
     const res = mockResponse()
-    expireCookie(res)(testCookieName)
+    expireCookie(res, testCookieName)
 
     expect(getTestCookie(res)).toContain(`${testCookieName}=""`)
   })
