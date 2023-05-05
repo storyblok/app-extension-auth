@@ -2,9 +2,9 @@ import { AppSession, AppSessionQuery } from '../types'
 import { AuthHandlerParams } from '../../storyblok-auth-api'
 import { setAllSessions } from './setAllSessions'
 import { getAllSessions } from './getAllSessions'
-import { keysFromQuery } from '../keysFromQuery'
 import { keysEquals } from './utils/keysEquals'
 import { SetCookie, GetCookie } from '../../utils'
+import { keysFromQuery } from './utils/keysFromQuery'
 
 export type RemoveSessionParams = Pick<
   AuthHandlerParams,

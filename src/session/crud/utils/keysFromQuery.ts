@@ -1,4 +1,4 @@
-import { AppSessionKeys, AppSessionQuery } from './types'
+import { AppSessionKeys, AppSessionQuery } from '../../types'
 
 export const keysFromQuery = (keys: AppSessionQuery): AppSessionKeys => {
   const { spaceId, userId } = keys
