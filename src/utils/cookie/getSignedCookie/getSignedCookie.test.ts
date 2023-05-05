@@ -1,4 +1,3 @@
-import httpMocks from 'node-mocks-http'
 import { getSignedCookie } from './getSignedCookie'
 import { signData } from '../../signData'
 
@@ -16,38 +15,24 @@ const testCookieValue = {
 
 const jwtToken = signData(testSecret)(testCookieValue)
 
-const testCookie = `${testCookieName}=${jwtToken}; path=/; samesite=none; secure; httponly`
-
-const mockRequest = () =>
-  httpMocks.createRequest({
-    method: 'POST',
-    url: '/my-fantastic-endpoint',
-    headers: {
-      'content-type': 'application/json',
-      accept: 'application/json',
-      'content-length': '1',
-      'x-forwarded-for': '127.0.0.1',
-      cookie: testCookie,
-    },
-  })
-
 describe('getSignedCookie', () => {
   it('should read the value from the request', () => {
-    const req = mockRequest()
-    expect(getSignedCookie(testSecret)(testCookieName)(req)).toEqual(
+    expect(getSignedCookie(testSecret, () => jwtToken, testCookieName)).toEqual(
       testCookieValue,
     )
   })
   it('should return undefined if the jwtToken is incorrect', () => {
-    const req = mockRequest()
     expect(
-      getSignedCookie('thisIsNotTheRightSecret')(testCookieName)(req),
+      getSignedCookie(
+        'thisIsNotTheRightSecret',
+        () => jwtToken,
+        testCookieName,
+      ),
     ).toBeUndefined()
   })
   it('should return undefined if the cookie is missing', () => {
-    const req = mockRequest()
     expect(
-      getSignedCookie(testSecret)('nonExistingCookie')(req),
+      getSignedCookie(testSecret, () => undefined, testCookieName),
     ).toBeUndefined()
   })
 })
