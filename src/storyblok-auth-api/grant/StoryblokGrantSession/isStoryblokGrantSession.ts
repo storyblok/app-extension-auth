@@ -1,6 +1,6 @@
 // TODO add tests
 
-import { hasKey } from '../../../utils/hasKey/hasKey'
+import { hasKey } from '../../../utils'
 import { StoryblokGrantSession } from './StoryblokGrantSession'
 import { isStoryblokGrantResponse } from '../StoryblokGrantResponse/isStoryblokGrantResponse'
 

@@ -1,4 +1,4 @@
-import { hasKey } from '../../../utils/hasKey/hasKey'
+import { hasKey } from '../../../utils'
 import { User } from './user'
 
 export const isUser = (obj: unknown): obj is User =>
