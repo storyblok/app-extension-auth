@@ -18,7 +18,6 @@ describe('expiredCookieHeaderValue', () => {
     expect(expiredCookieHeaderValue(cookieName)).toContain('; secure')
   })
   it("has the attribute 'samesite=none'", () => {
-    // TODO is this attribute really necessary?
     expect(expiredCookieHeaderValue(cookieName)).toContain('; samesite=none')
   })
   it("is visible on all paths ('path=/')", () => {
