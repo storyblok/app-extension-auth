@@ -1,6 +1,6 @@
 import http from 'http'
-import { setCookieValue } from '../setCookieValue'
-import { expiredCookieValue } from '../expiredCookieValue'
+import { changedCookieHeaderValue } from '../changedCookieHeaderValue'
+import { expiredCookieHeaderValue } from '../expiredCookieHeaderValue'
 
 /**
  * Returns all SetCookie headers as an array from a http.ServerResponse.
@@ -26,12 +26,12 @@ const withCookie = (
   value: string,
 ): string[] => [
   ...headers.filter((header) => !header.startsWith(`${name}=`)),
-  setCookieValue(name, value),
+  changedCookieHeaderValue(name, value),
 ]
 
 const withExpiredCookie = (headers: string[], name: string): string[] => [
   ...headers.filter((header) => !header.startsWith(`${name}=`)),
-  expiredCookieValue(name),
+  expiredCookieHeaderValue(name),
 ]
 
 export const setCookie = (
