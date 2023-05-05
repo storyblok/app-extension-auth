@@ -1,6 +1,12 @@
 import http from 'http'
+import { changedCookieHeaderValue } from '../changedCookieHeaderValue'
+import { expiredCookieHeaderValue } from '../expiredCookieHeaderValue'
 
-const getHeaders = (res: http.ServerResponse): string[] => {
+/**
+ * Returns all SetCookie headers as an array from a http.ServerResponse.
+ * @param res
+ */
+const cookieHeaders = (res: http.ServerResponse): string[] => {
   const header = res.getHeader('Set-Cookie')
   if (typeof header === 'undefined') {
     return []
@@ -14,19 +20,13 @@ const getHeaders = (res: http.ServerResponse): string[] => {
   return header
 }
 
-const setCookieHeaderValue = (name: string, value: string) =>
-  `${name}=${value}; path=/; samesite=none; secure; httponly`
-
-const expiredCookieHeaderValue = (name: string) =>
-  `${name}=""; path=/; samesite=none; secure; httponly; expires=Thu, 01 Jan 1970 00:00:00 GMT`
-
-const withSetCookie = (
+const withCookie = (
   headers: string[],
   name: string,
   value: string,
 ): string[] => [
   ...headers.filter((header) => !header.startsWith(`${name}=`)),
-  setCookieHeaderValue(name, value),
+  changedCookieHeaderValue(name, value),
 ]
 
 const withExpiredCookie = (headers: string[], name: string): string[] => [
@@ -39,7 +39,7 @@ export const setCookie = (
   name: string,
   value: string,
 ): void =>
-  void res.setHeader('Set-Cookie', withSetCookie(getHeaders(res), name, value))
+  void res.setHeader('Set-Cookie', withCookie(cookieHeaders(res), name, value))
 
 export const expireCookie = (res: http.ServerResponse, name: string) =>
-  void res.setHeader('Set-Cookie', withExpiredCookie(getHeaders(res), name))
+  void res.setHeader('Set-Cookie', withExpiredCookie(cookieHeaders(res), name))

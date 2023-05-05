@@ -1,7 +1,7 @@
 import httpMocks from 'node-mocks-http'
-import { expireCookie, setCookie } from './set-cookie'
+import { expireCookie, setCookie } from './setCookie'
 import http from 'http'
-import { getSetCookies } from '../__tests__/get-set-cookies'
+import { getSetCookies } from '../../__tests__/get-set-cookies'
 
 const testCookieName = 'myCookie'
 const testCookieValue = 'abc123'
@@ -40,6 +40,7 @@ describe('Setting app cookies', () => {
       new RegExp(`^${testCookieName}=${testCookieValue}`),
     )
   })
+  // TODO move to expiredCookieValue and setCookieValue
   it("Should add a cookie with the attribute 'secure'", () => {
     const res = mockResponse()
     setCookie(res, testCookieName, testCookieValue)
