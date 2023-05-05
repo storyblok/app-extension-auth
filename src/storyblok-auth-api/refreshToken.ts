@@ -1,5 +1,5 @@
 import { token_endpoint } from './storyblok-oauth-api-endpoints'
-import { hasKey } from '../utils/hasKey/hasKey'
+import { hasKey } from '../utils'
 import { trimSlashes } from '../utils/trimSlashes/trimSlashes'
 import { AuthHandlerParams } from './AuthHandlerParams'
 

@@ -1,4 +1,4 @@
-import { hasKey } from '../../../utils/hasKey/hasKey'
+import { hasKey } from '../../../utils'
 import { isUser } from '../User/isUser'
 import { isSpace } from '../Space/isSpace'
 import { isRoles } from '../Role/isRoles'

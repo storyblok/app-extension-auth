@@ -1,5 +1,5 @@
 import { AppSessionQuery } from '../types'
-import { hasKey } from '../../utils/hasKey/hasKey'
+import { hasKey } from '../../utils'
 
 export const isAppSessionQuery = (obj: unknown): obj is AppSessionQuery => {
   if (!hasKey(obj, 'userId') || !hasKey(obj, 'spaceId')) {
