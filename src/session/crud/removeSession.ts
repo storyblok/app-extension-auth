@@ -3,7 +3,7 @@ import { AuthHandlerParams } from '../../storyblok-auth-api'
 import { setAllSessions } from './setAllSessions'
 import { getAllSessions } from './getAllSessions'
 import { keysFromQuery } from '../keysFromQuery'
-import { keysEquals } from './utils/keys-equals'
+import { keysEquals } from './utils/keysEquals'
 import { SetCookie, GetCookie } from '../../utils'
 
 export type RemoveSessionParams = Pick<
