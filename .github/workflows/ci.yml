@@ -3,11 +3,7 @@
 
 name: Node.js Package
 
-# TODO  create github release when merging to main https://github.com/actions/create-release
-
 on:
-  release:
-    types: [created]
   push:
 
 jobs:
@@ -20,16 +16,16 @@ jobs:
         with:
           node-version: 16
           cache: 'yarn'
-      - run: yarn install --frozen-lockfile
-      - run: yarn test
-      - run: yarn build
-      - uses: actions/upload-artifact@master
-        with:
-          name: dist
-          path: dist/
+      - name: Install
+        run: yarn install --frozen-lockfile
+      - name: Check types
+        run: yarn check:types
+      - name: Test
+        run: yarn test
+      - name: Build
+        run: yarn build
   publish-npm:
-    name: Publish to NPM
-    needs: build
+    name: Dry-run Publish to NPM
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -38,16 +34,11 @@ jobs:
           node-version: 16
           cache: 'yarn'
           registry-url: https://registry.npmjs.org/
-      - uses: actions/download-artifact@master
-        with:
-          name: dist
-          path: dist/
-      - run: yarn install --frozen-lockfile
-      - if: github.ref != 'refs/heads/main'
+      - name: Install
+        run: yarn install --frozen-lockfile
+      - name: Build
+        run: yarn build
+      - name: Dry-run publish to NPM
         run: npm publish --access public --dry-run
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-      - if: github.ref == 'refs/heads/main'
-        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
