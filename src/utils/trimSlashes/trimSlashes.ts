@@ -1,2 +1,6 @@
-export const trimSlashes = (slugs: string): string | undefined =>
-  slugs.match(/^\/*(.*?)\/*$/)?.[1] ?? undefined
+/**
+ * Removes leading and trailing slashes (`/`) from a string.
+ * @param slugs
+ */
+export const trimSlashes = (slugs: string): string =>
+  slugs.match(/^\/*(.*?)\/*$/)?.[1] ?? ''
