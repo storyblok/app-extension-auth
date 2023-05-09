@@ -1,27 +1,30 @@
 import { AppSessionCookieStoreFactory, AppSessionStore } from './types'
 import { getAllSessions, getSession, putSession, removeSession } from './crud'
 import { refreshStoredAppSession } from './refreshStoredAppSession'
-import { GetCookie, getCookie, SetCookie, setCookie } from '../utils'
+import {
+  GetCookie,
+  getCookie as getNodeCookie,
+  SetCookie,
+  setCookie as setNodeCookie,
+} from '../utils'
 
 export const sessionCookieStore: AppSessionCookieStoreFactory =
   (params) =>
   (requestParams): AppSessionStore => {
-    const getNodeCookie: GetCookie = (name) =>
-      getCookie(requestParams.req, name)
-    const setNodeCookie: SetCookie = (name, value) =>
-      setCookie(requestParams.res, name, value)
+    const getCookie: GetCookie = (name) =>
+      getNodeCookie(requestParams.req, name)
+    const setCookie: SetCookie = (name, value) =>
+      setNodeCookie(requestParams.res, name, value)
     return {
       get: async (keys) =>
         refreshStoredAppSession(
           params,
-          getNodeCookie,
-          setNodeCookie,
-          getSession(params, getNodeCookie, keys),
+          getCookie,
+          setCookie,
+          getSession(params, getCookie, keys),
         ),
-      getAll: async () => getAllSessions(params, getNodeCookie),
-      put: async (session) =>
-        putSession(params, getNodeCookie, setNodeCookie, session),
-      remove: async (keys) =>
-        removeSession(params, getNodeCookie, setNodeCookie, keys),
+      getAll: async () => getAllSessions(params, getCookie),
+      put: async (session) => putSession(params, getCookie, setCookie, session),
+      remove: async (keys) => removeSession(params, getCookie, setCookie, keys),
     }
   }

@@ -16,6 +16,7 @@ export type PutSession = (
   setCookie: SetCookie,
   session: AppSession,
 ) => AppSession
+
 export const putSession: PutSession = (
   params,
   getCookie,
