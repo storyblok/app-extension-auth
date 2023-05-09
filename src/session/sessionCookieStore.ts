@@ -1,39 +1,30 @@
-import { simpleSessionCookieStore } from './app-session-cookie-store'
-import { shouldRefresh } from './shouldRefresh/shouldRefresh'
-import { refreshAppSession } from './refreshAppSession/refreshAppSession'
-import { refreshToken } from '../storyblok-auth-api/refreshToken'
-import { AppSessionCookieStoreFactory } from './types'
-import { AppSessionStore } from './types'
+import { AppSessionCookieStoreFactory, AppSessionStore } from './types'
+import { getAllSessions, getSession, putSession, removeSession } from './crud'
+import { refreshStoredAppSession } from './refreshStoredAppSession'
+import {
+  GetCookie,
+  getCookie as getNodeCookie,
+  SetCookie,
+  setCookie as setNodeCookie,
+} from '../utils'
 
 export const sessionCookieStore: AppSessionCookieStoreFactory =
   (params) =>
   (requestParams): AppSessionStore => {
-    const store = simpleSessionCookieStore(params)(requestParams)
+    const getCookie: GetCookie = (name) =>
+      getNodeCookie(requestParams.req, name)
+    const setCookie: SetCookie = (name, value) =>
+      setNodeCookie(requestParams.res, name, value)
     return {
-      ...store,
-      get: async (keys, options) => {
-        const currentSession = await store.get(keys)
-        if (options?.autoRefresh === false) {
-          return currentSession
-        }
-        if (!currentSession) {
-          return undefined
-        }
-        if (shouldRefresh(currentSession)) {
-          const newSession = await refreshAppSession(
-            refreshToken(fetch)(params),
-          )(currentSession)
-
-          if (!newSession) {
-            // Refresh failed -> user becomes unauthenticated
-            await store.remove(currentSession)
-            return undefined
-          }
-
-          await store.put(newSession)
-          return newSession
-        }
-        return currentSession
-      },
+      get: async (keys) =>
+        refreshStoredAppSession(
+          params,
+          getCookie,
+          setCookie,
+          getSession(params, getCookie, keys),
+        ),
+      getAll: async () => getAllSessions(params, getCookie),
+      put: async (session) => putSession(params, getCookie, setCookie, session),
+      remove: async (keys) => removeSession(params, getCookie, setCookie, keys),
     }
   }
