@@ -27,9 +27,9 @@ export const removeSession: RemoveSession = (
     ...keysFromQuery(query),
     appClientId: params.clientId,
   }
-  const isEqual = keysEquals(keys)
-  const toRemove = sessions.find(isEqual)
-  const allOtherSessions = sessions.filter((s) => s !== toRemove)
+  const isNotEqual = (otherSession: AppSession) =>
+    !keysEquals(keys)(otherSession)
+  const allOtherSessions = getAllSessions(params, getCookie).filter(isNotEqual)
   setAllSessions(params, setCookie, allOtherSessions)
   return toRemove
 }
