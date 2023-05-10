@@ -20,15 +20,16 @@
     "dist/"
   ],
   "scripts": {
+    "check:types": "tsc --noemit",
     "lint": "eslint .",
-    "build": "rollup -c",
+    "build": "yarn check:types && rollup -c",
     "start": "rollup -c -w",
     "check:types": "tsc --noEmit",
     "test": "jest"
   },
   "dependencies": {
-    "grant": "^5.4.21",
-    "jsonwebtoken": "^8.5.1"
+    "jsonwebtoken": "^8.5.1",
+    "openid-client": "5.3.0"
   },
   "devDependencies": {
     "@jest-mock/express": "^1.4.5",
@@ -54,8 +55,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "jest": "^27.5.1",
     "jest-express": "^1.12.0",
-    "node-mocks-http": "^1.11.0",
-    "oauth2-mock-server": "^4.3.1",
+    "node-mocks-http": "1.12.1",
     "prettier": "^2.7.1",
     "require": "^2.4.20",
     "rollup": "^2.78.0",
