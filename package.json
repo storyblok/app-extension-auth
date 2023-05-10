@@ -28,6 +28,7 @@
   "engines": {
     "yarn": "^3.2.4"
   },
+  "packageManager": "yarn@3.2.4",
   "dependencies": {
     "grant": "^5.4.21",
     "jsonwebtoken": "^8.5.1"
