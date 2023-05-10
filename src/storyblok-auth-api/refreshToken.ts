@@ -1,6 +1,5 @@
 import { token_endpoint } from './storyblok-oauth-api-endpoints'
-import { hasKey } from '../utils'
-import { trimSlashes } from '../utils/trimSlashes/trimSlashes'
+import { hasKey, trimSlashes } from '../utils'
 import { AuthHandlerParams } from './AuthHandlerParams'
 
 export type RefreshTokenWithFetchParams = Pick<
