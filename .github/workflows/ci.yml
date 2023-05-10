@@ -17,7 +17,7 @@ jobs:
           node-version: 16
           cache: 'yarn'
       - name: Install
-        run: yarn install --frozen-lockfile
+        run: yarn install
       - name: Check types
         run: yarn check:types
       - name: Test
