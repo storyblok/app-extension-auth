@@ -21,6 +21,7 @@ const oldValidSession: AppSession = {
   appClientId: '123',
   userName: 'Johannes',
   accessToken: 'old-token',
+  region: 'eu',
 }
 
 const invalidSession: AppSession = {
@@ -33,6 +34,7 @@ const invalidSession: AppSession = {
   appClientId: '123',
   userName: 'Johannes',
   accessToken: 'old-token',
+  region: 'us',
 }
 
 describe('refreshAppSession', () => {
