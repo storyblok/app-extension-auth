@@ -8,16 +8,23 @@ export type CreateOpenIdClient = (
     AuthHandlerParams,
     'clientId' | 'clientSecret' | 'baseUrl' | 'endpointPrefix'
   >,
-  spaceId: number,
+  spaceId?: number,
 ) => BaseClient
 
 export const openidClient: CreateOpenIdClient = (params, spaceId) => {
   const { clientId, clientSecret } = params
   const { Client } = new Issuer({
     issuer: 'storyblok',
-    authorization_endpoint: `${oauthApiBaseUrl(spaceId)}/authorize`,
-    token_endpoint: `${oauthApiBaseUrl(spaceId)}/token`,
-    userinfo_endpoint: `${oauthApiBaseUrl(spaceId)}/user_info`,
+    // This is always the eu endpoint, even for other regions
+    authorization_endpoint: `${oauthApiBaseUrl(0)}/authorize`,
+    token_endpoint:
+      typeof spaceId !== 'undefined'
+        ? `${oauthApiBaseUrl(spaceId)}/token`
+        : undefined,
+    userinfo_endpoint:
+      typeof spaceId !== 'undefined'
+        ? `${oauthApiBaseUrl(spaceId)}/user_info`
+        : undefined,
   })
   return new Client({
     token_endpoint_auth_method: 'client_secret_post',
