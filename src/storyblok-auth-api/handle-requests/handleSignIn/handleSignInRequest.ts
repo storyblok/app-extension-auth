@@ -14,7 +14,7 @@ export const handleSignInRequest: HandleAuthRequest<{
 
   try {
     // TODO get rid of dummy spaceId
-    const redirectTo = openidClient(params).authorizationUrl({
+    const redirectTo = openidClient(params, 0).authorizationUrl({
       scope: params.scope.join(' '),
       code_challenge,
       state,

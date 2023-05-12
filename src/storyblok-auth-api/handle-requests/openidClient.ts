@@ -8,15 +8,16 @@ export type CreateOpenIdClient = (
     AuthHandlerParams,
     'clientId' | 'clientSecret' | 'baseUrl' | 'endpointPrefix'
   >,
+  spaceId: number,
 ) => BaseClient
 
-export const openidClient: CreateOpenIdClient = (params) => {
+export const openidClient: CreateOpenIdClient = (params, spaceId) => {
   const { clientId, clientSecret } = params
   const { Client } = new Issuer({
     issuer: 'storyblok',
-    authorization_endpoint: `${oauthApiBaseUrl}/authorize`,
-    token_endpoint: `${oauthApiBaseUrl}/token`,
-    userinfo_endpoint: `${oauthApiBaseUrl}/user_info`,
+    authorization_endpoint: `${oauthApiBaseUrl(spaceId)}/authorize`,
+    token_endpoint: `${oauthApiBaseUrl(spaceId)}/token`,
+    userinfo_endpoint: `${oauthApiBaseUrl(spaceId)}/user_info`,
   })
   return new Client({
     token_endpoint_auth_method: 'client_secret_post',
