@@ -14,7 +14,7 @@ export const handleSignInRequest: HandleAuthRequest<{
 
   try {
     const redirectTo = openidClient(params).authorizationUrl({
-      scope: params.scope.join(' '),
+      scope: ['read_content', 'write_content'].join(' '),
       code_challenge,
       state,
       code_challenge_method: 'S256',

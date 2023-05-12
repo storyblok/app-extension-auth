@@ -1,5 +1,3 @@
-import { StoryblokScope } from './StoryblokScope'
-
 export type AuthHandlerParams = {
   /*
    * The client ID is a public identifier for your apps. Find the Client ID in the app settings on Storyblok.
@@ -22,12 +20,6 @@ export type AuthHandlerParams = {
    *  - `https://my-app.my-domain.com/storyblok/callback` as the OAuth2 callback URL
    */
   baseUrl: string
-  /*
-   * The scope determines what the app will request access to. It's a list of strings. The following values are accepted:
-   * - `read_content`
-   * - `write_content`
-   */
-  scope: StoryblokScope[]
   /*
    * The name of the cookie that contains the session data.
    */
