@@ -23,11 +23,8 @@ export const getCallbackCookieData = (
   secret: string,
   getCookie: GetCookie,
 ): CallbackCookieData | undefined =>
-  getSignedCookie(
-    secret,
-    getCookie,
-    callbackCookieName,
-  ) as unknown as CallbackCookieData
+  // TODO add runtime validation
+  getSignedCookie(secret, getCookie, callbackCookieName) as CallbackCookieData
 
 export const callbackCookieElement = (
   secret: string,
