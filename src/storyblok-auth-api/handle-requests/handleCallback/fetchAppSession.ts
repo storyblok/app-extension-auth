@@ -9,13 +9,14 @@ export const fetchAppSession = async (
   params: AuthHandlerParams,
   requestParams: {
     url: string
+    spaceId: number
     codeVerifier: string
     state: string
   },
 ): Promise<AppSession | undefined> => {
-  const { codeVerifier, state, url } = requestParams
+  const { spaceId, codeVerifier, state, url } = requestParams
 
-  const client = openidClient(params)
+  const client = openidClient(params, spaceId)
 
   const callbackParams = client.callbackParams(url)
   const tokenSet = await client.oauthCallback(

@@ -8,6 +8,7 @@ import {
 } from '../callbackCookie'
 import { CookieElement } from '../../ResponseElement'
 import { AuthHandlerParams } from '../../AuthHandlerParams'
+import { spaceIdFromUrl } from './spaceIdFromUrl'
 import { HandleAuthRequest } from '../HandleAuthRequest'
 import { fetchAppSession } from './fetchAppSession'
 
@@ -22,6 +23,15 @@ export const handleCallbackRequest: HandleAuthRequest<{
   getCookie: GetCookie
 }> = async ({ params, url, getCookie }) => {
   try {
+    const spaceId = spaceIdFromUrl(url)
+    if (!spaceId) {
+      return {
+        type: 'error',
+        message:
+          'The callback URL is missing the following parameter: space_id',
+      }
+    }
+
     const callbackCookie = getCallbackCookieData(params.clientSecret, getCookie)
     if (!callbackCookie) {
       return {
@@ -33,6 +43,7 @@ export const handleCallbackRequest: HandleAuthRequest<{
 
     const { codeVerifier, state, returnTo } = callbackCookie
     const appSession = await fetchAppSession(params, {
+      spaceId,
       codeVerifier,
       state,
       url,
