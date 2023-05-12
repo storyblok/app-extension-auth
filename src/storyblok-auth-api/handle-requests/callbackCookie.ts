@@ -23,6 +23,7 @@ export const getCallbackCookieData = (
   secret: string,
   getCookie: GetCookie,
 ): CallbackCookieData | undefined =>
+  // TODO add runtime validation
   getSignedCookie(
     secret,
     getCookie,
