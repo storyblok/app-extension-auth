@@ -14,6 +14,8 @@ export const handleSignInRequest: HandleAuthRequest<{
 
   try {
     const redirectTo = openidClient(params).authorizationUrl({
+      // The scope is actually ignored by Storyblok's OAuth API.
+      //  But we keep it here just in case something changes in the future, it does no harm.
       scope: ['read_content', 'write_content'].join(' '),
       code_challenge,
       state,
