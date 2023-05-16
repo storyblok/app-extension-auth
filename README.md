@@ -72,7 +72,6 @@ export const params: AuthHandlerParams = {
   successCallback: '/',
   errorCallback: '/401',
   endpointPrefix: '/api/connect',  
-  scope: ['read_content', 'write_content'], 
 }
 ```
 
@@ -104,9 +103,6 @@ The other variables can be hard-coded:
     will result in the API endpoints
     - `https://my-app.my-domain.com/api/authenticate/storyblok` for initiating the authentication flow
     - `https://my-app.my-domain.com/api/authenticate/storyblok/callback` as the OAuth2 callback URL
-* `scope` -- The scope is a list of strings that determines what the app will request access to. The following values are accepted in the array:
-  * `read_content`
-  * `write_content`
 
 ### Create an API route
 
