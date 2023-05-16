@@ -3,7 +3,7 @@ import { AppSession } from '../../../session'
 import { openidClient } from '../openidClient'
 import { redirectUri } from '../redirectUri'
 import { isTokenSet } from './isTokenSet'
-import { isUserInfo } from '../../user-info/UserInfo/isUserInfo'
+import { isUserInfo } from '../../user-info'
 
 export const fetchAppSession = async (
   params: AuthHandlerParams,

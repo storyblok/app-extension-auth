@@ -1,4 +1,4 @@
-import { Role } from './role'
+import { Role } from './Role'
 import { isRole } from './isRole'
 
 export const isRoles = (obj: unknown): obj is Role[] =>
