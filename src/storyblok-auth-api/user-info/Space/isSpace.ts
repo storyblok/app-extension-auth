@@ -1,5 +1,5 @@
 import { hasKey } from '../../../utils'
-import { Space } from './space'
+import { Space } from './Space'
 
 export const isSpace = (obj: unknown): obj is Space =>
   hasKey(obj, 'id') &&

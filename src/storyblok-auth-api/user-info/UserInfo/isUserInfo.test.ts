@@ -1,7 +1,7 @@
 import { isUserInfo } from './isUserInfo'
-import { User } from '../User/user'
-import { Space } from '../Space/space'
-import { Role } from '../Role/role'
+import { User } from '../User/User'
+import { Space } from '../Space/Space'
+import { Role } from '../Role/Role'
 
 const user: User = {
   id: 123,
