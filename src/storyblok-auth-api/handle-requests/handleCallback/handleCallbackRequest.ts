@@ -8,7 +8,7 @@ import {
 } from '../callbackCookie'
 import { CookieElement } from '../../ResponseElement'
 import { AuthHandlerParams } from '../../AuthHandlerParams'
-import { spaceIdFromUrl } from './spaceIdFromUrl'
+import { regionFromUrl } from './spaceIdFromUrl'
 import { HandleAuthRequest } from '../HandleAuthRequest'
 import { fetchAppSession } from './fetchAppSession'
 
@@ -23,12 +23,11 @@ export const handleCallbackRequest: HandleAuthRequest<{
   getCookie: GetCookie
 }> = async ({ params, url, getCookie }) => {
   try {
-    const spaceId = spaceIdFromUrl(url)
-    if (!spaceId) {
+    const region = regionFromUrl(url)
+    if (!region) {
       return {
         type: 'error',
-        message:
-          'The callback URL is missing the following parameter: space_id',
+        message: `The space_id in the callback URL cannot be mapped to a region. URL: ${url}`,
       }
     }
 
@@ -43,7 +42,7 @@ export const handleCallbackRequest: HandleAuthRequest<{
 
     const { codeVerifier, state, returnTo } = callbackCookie
     const appSession = await fetchAppSession(params, {
-      spaceId,
+      region,
       codeVerifier,
       state,
       url,
