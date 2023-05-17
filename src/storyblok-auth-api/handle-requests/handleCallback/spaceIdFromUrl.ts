@@ -28,7 +28,6 @@ export const regionFromUrl = (url: string): Region | undefined => {
   }
   if (isUsSpace(spaceId)) {
     return 'us'
-  } else {
-    return undefined
   }
+  return undefined
 }
