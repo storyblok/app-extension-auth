@@ -10,6 +10,7 @@ const session: Omit<AppSession, 'expiresAt'> = {
   roles: [],
   userName: 'admin',
   spaceName: 'MySpace',
+  region: 'eu',
 }
 
 describe('shouldRefresh', () => {
