@@ -40,7 +40,7 @@ export const refreshStoredAppSession: Refresh = async (
   }
 
   // should refresh
-  const newAppSession = await refreshAppSession(refreshToken(fetch)(params))(
+  const newAppSession = await refreshAppSession(refreshToken(params))(
     currentAppSession,
   )
 

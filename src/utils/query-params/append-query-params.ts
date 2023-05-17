@@ -1,3 +1,5 @@
+import { URL } from 'url'
+
 const dummyOrigin = 'https://dummy.com'
 
 /**

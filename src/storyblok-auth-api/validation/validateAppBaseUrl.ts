@@ -1,3 +1,5 @@
+import { URL } from 'url'
+
 export const validateAppBaseUrl = (appBaseUrl: string): boolean => {
   if (appBaseUrl.includes('?')) {
     return false

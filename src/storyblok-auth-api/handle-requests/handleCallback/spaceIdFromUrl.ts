@@ -1,4 +1,5 @@
 import { numberFromString } from '../../../utils'
+import { URL } from 'url'
 
 export const spaceIdFromUrl = (url: string): number | undefined => {
   const isRelativeUrl = !url.startsWith('http')

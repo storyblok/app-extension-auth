@@ -1,8 +1,5 @@
 import { AppSession } from '../types'
-
-export type RefreshToken = (
-  refreshToken: string,
-) => Promise<{ access_token: string; expires_in: number } | undefined>
+import { RefreshToken } from '../../storyblok-auth-api/refreshToken'
 
 /**
  * Returns a new session that is refreshed
@@ -13,7 +10,8 @@ export const refreshAppSession =
   (refreshToken: RefreshToken) =>
   async (oldSession: AppSession): Promise<AppSession | undefined> => {
     const refreshedToken = await refreshToken(oldSession.refreshToken)
-    if (!refreshedToken) {
+    if (refreshedToken instanceof Error) {
+      console.error('Failed to refresh token:', refreshedToken)
       return undefined
     }
     return {
