@@ -2,28 +2,29 @@ import { BaseClient, Issuer } from 'openid-client'
 import { redirectUri } from './redirectUri'
 import { AuthHandlerParams } from '../AuthHandlerParams'
 import { oauthApiBaseUrl } from './oauthApiBaseUrl'
+import { Region } from '../../session'
 
 export type CreateOpenIdClient = (
   params: Pick<
     AuthHandlerParams,
     'clientId' | 'clientSecret' | 'baseUrl' | 'endpointPrefix'
   >,
-  spaceId?: number,
+  region?: Region,
 ) => BaseClient
 
-export const openidClient: CreateOpenIdClient = (params, spaceId) => {
+export const openidClient: CreateOpenIdClient = (params, region) => {
   const { clientId, clientSecret } = params
   const { Client } = new Issuer({
     issuer: 'storyblok',
     // This is always the eu endpoint, even for other regions
-    authorization_endpoint: `${oauthApiBaseUrl(0)}/authorize`,
+    authorization_endpoint: `${oauthApiBaseUrl('eu')}/authorize`,
     token_endpoint:
-      typeof spaceId !== 'undefined'
-        ? `${oauthApiBaseUrl(spaceId)}/token`
+      typeof region !== 'undefined'
+        ? `${oauthApiBaseUrl(region)}/token`
         : undefined,
     userinfo_endpoint:
-      typeof spaceId !== 'undefined'
-        ? `${oauthApiBaseUrl(spaceId)}/user_info`
+      typeof region !== 'undefined'
+        ? `${oauthApiBaseUrl(region)}/user_info`
         : undefined,
   })
   return new Client({

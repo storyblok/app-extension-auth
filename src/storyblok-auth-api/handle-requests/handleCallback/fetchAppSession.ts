@@ -1,5 +1,5 @@
 import { AuthHandlerParams } from '../../AuthHandlerParams'
-import { AppSession } from '../../../session'
+import { AppSession, Region } from '../../../session'
 import { openidClient } from '../openidClient'
 import { redirectUri } from '../redirectUri'
 import { isTokenSet } from './isTokenSet'
@@ -9,14 +9,14 @@ export const fetchAppSession = async (
   params: AuthHandlerParams,
   requestParams: {
     url: string
-    spaceId: number
+    region: Region
     codeVerifier: string
     state: string
   },
 ): Promise<AppSession | undefined> => {
-  const { spaceId, codeVerifier, state, url } = requestParams
+  const { region, codeVerifier, state, url } = requestParams
 
-  const client = openidClient(params, spaceId)
+  const client = openidClient(params, region)
 
   const callbackParams = client.callbackParams(url)
   const tokenSet = await client.oauthCallback(
@@ -46,5 +46,6 @@ export const fetchAppSession = async (
     spaceName: userInfo.space.name,
     userId: userInfo.user.id,
     userName: userInfo.user.friendly_name,
+    region,
   }
 }
