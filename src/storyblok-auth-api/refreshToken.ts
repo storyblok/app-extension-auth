@@ -28,7 +28,7 @@ export const refreshToken =
   async (refreshToken: string) => {
     try {
       // TODO dynamic region
-      const tokenSet = await openidClient(params, 0).refresh(refreshToken)
+      const tokenSet = await openidClient(params, 'eu').refresh(refreshToken)
       if (!isRefreshTokenResponse(tokenSet)) {
         return new Error(
           'Unexpected format: the server returned an object with an unexpected format',
