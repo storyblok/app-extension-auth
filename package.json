@@ -27,7 +27,8 @@
     "test": "jest"
   },
   "engines": {
-    "yarn": "^3.2.4"
+    "yarn": "^3.2.4",
+    "node": ">=14.21.3"
   },
   "packageManager": "yarn@3.2.4",
   "dependencies": {
@@ -70,8 +71,5 @@
     "ts-jest": "^27.1.4",
     "tsutils": "^3.21.0",
     "typescript": "^4.8.3"
-  },
-  "peerDependencies": {
-    "node": ">=14.21.3"
   }
 }
