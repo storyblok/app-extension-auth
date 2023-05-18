@@ -1,8 +1,8 @@
 import { hasKey } from '../../../utils'
-import { isUser } from '../User/isUser'
-import { isSpace } from '../Space/isSpace'
-import { isRoles } from '../Role/isRoles'
-import { UserInfo } from './user-info'
+import { isUser } from '../User'
+import { isSpace } from '../Space'
+import { isRoles } from '../Role'
+import { UserInfo } from './UserInfo'
 
 export const isUserInfo = (obj: unknown): obj is UserInfo =>
   hasKey(obj, 'user') &&
