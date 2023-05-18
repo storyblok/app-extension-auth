@@ -1,8 +1,6 @@
 <div style="text-align:center">
 	<h1 style="text-align:center">
-        <code>
-            @storyblok/app-extension-auth
-        </code>
+        @storyblok/app-extension-auth
     </h1>
   <p style="text-align:center">
     A typed JavaScript library for handling authentication with <a href="https://www.storyblok.com" target="_blank">Storyblok</a> apps.
