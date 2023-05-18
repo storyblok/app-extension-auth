@@ -40,9 +40,9 @@ export const refreshStoredAppSession: Refresh = async (
   }
 
   // should refresh
-  const newAppSession = await refreshAppSession(refreshToken(params))(
-    currentAppSession,
-  )
+  const newAppSession = await refreshAppSession(
+    refreshToken(params, currentAppSession.region),
+  )(currentAppSession)
 
   if (!newAppSession) {
     // Refresh failed -> user becomes unauthenticated

@@ -1,6 +1,7 @@
 import { hasKey } from '../utils'
 import { AuthHandlerParams } from './AuthHandlerParams'
 import { openidClient } from './handle-requests/openidClient'
+import { Region } from '../session'
 
 export type RefreshTokenWithFetchParams = Pick<
   AuthHandlerParams,
@@ -22,13 +23,14 @@ const isRefreshTokenResponse = (data: unknown): data is RefreshTokenResponse =>
 /**
  * Uses a refresh token to request a new accessToken
  * @param params
+ * @param region
  */
 export const refreshToken =
-  (params: RefreshTokenWithFetchParams): RefreshToken =>
+  (params: RefreshTokenWithFetchParams, region: Region): RefreshToken =>
   async (refreshToken: string) => {
     try {
       // TODO dynamic region
-      const tokenSet = await openidClient(params, 'eu').refresh(refreshToken)
+      const tokenSet = await openidClient(params, region).refresh(refreshToken)
       if (!isRefreshTokenResponse(tokenSet)) {
         return new Error(
           'Unexpected format: the server returned an object with an unexpected format',
