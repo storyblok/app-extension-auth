@@ -1,5 +1,6 @@
 import { numberFromString } from '../../../utils'
 import { Region } from '../../../session'
+import { URL } from 'url'
 
 const spaceIdFromUrl = (url: string): number | undefined => {
   const isRelativeUrl = !url.startsWith('http')
@@ -13,6 +14,7 @@ const spaceIdFromUrl = (url: string): number | undefined => {
   }
   return numberFromString(spaceStr)
 }
+
 const isEuSpace = (spaceId: number) => spaceId >= 0 && spaceId < 1000000
 const isUsSpace = (spaceId: number) => spaceId >= 1000000 && spaceId < 2000000
 
@@ -26,7 +28,6 @@ export const regionFromUrl = (url: string): Region | undefined => {
   }
   if (isUsSpace(spaceId)) {
     return 'us'
-  } else {
-    return undefined
   }
+  return undefined
 }

@@ -1,5 +1,6 @@
-import { refreshAppSession, RefreshToken } from './refreshAppSession'
 import { AppSession } from '../types'
+import { RefreshToken } from '../../storyblok-auth-api/refreshToken'
+import { refreshAppSession } from './refreshAppSession'
 
 const validRefreshToken = 'abc123abc123'
 const invalidRefreshToken = 'oo0o0o0o0o0o0o0o0oo'
@@ -9,7 +10,7 @@ const refresh: RefreshToken = async (refreshToken) =>
         access_token: 'new-access-token',
         expires_in: 899, // seconds
       }
-    : undefined
+    : new Error('Invalid refresh token')
 
 const oldValidSession: AppSession = {
   refreshToken: validRefreshToken,
