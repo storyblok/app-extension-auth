@@ -1,6 +1,6 @@
 import { hasKey } from '../utils'
 import { AuthHandlerParams } from './AuthHandlerParams'
-import { openidClient } from '@src/storyblok-auth-api/handle-requests/openidClient'
+import { openidClient } from './handle-requests/openidClient'
 
 export type RefreshTokenWithFetchParams = Pick<
   AuthHandlerParams,
@@ -13,7 +13,7 @@ export type RefreshToken = (
 
 export type RefreshTokenResponse = { access_token: string; expires_in: number }
 
-const isTokenResponse = (data: unknown): data is RefreshTokenResponse =>
+const isRefreshTokenResponse = (data: unknown): data is RefreshTokenResponse =>
   hasKey(data, 'access_token') &&
   typeof data.access_token === 'string' &&
   hasKey(data, 'expires_in') &&
@@ -28,16 +28,13 @@ export const refreshToken =
   async (refreshToken: string) => {
     try {
       // TODO dynamic region
-      const tokenSet = await openidClient(params, 0).refresh(refreshToken)
-      if (!isTokenResponse(tokenSet)) {
+      const tokenSet = await openidClient(params, 'eu').refresh(refreshToken)
+      if (!isRefreshTokenResponse(tokenSet)) {
         return new Error(
           'Unexpected format: the server returned an object with an unexpected format',
         )
       }
-      return {
-        access_token: tokenSet.access_token,
-        expires_in: tokenSet.expires_in,
-      }
+      return tokenSet
     } catch (e) {
       return new Error('Refresh token failed unexpectedly with an exception')
     }
