@@ -1,14 +1,6 @@
-<div style="text-align:center">
-	<h1 style="text-align:center">
-        @storyblok/app-extension-auth
-    </h1>
-  <p style="text-align:center">
-    A typed JavaScript library for handling authentication with <a href="https://www.storyblok.com" target="_blank">Storyblok</a> apps.
-  </p>
-  <br />
-</div>
+# @storyblok/app-extension-auth
 
-[![Node.js Package](https://github.com/storyblok/app-extension-auth/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/storyblok/app-extension-auth/actions/workflows/npm-publish.yml)
+A JavaScript library for handling authentication with [Storyblok](https://www.storyblok.com) apps.
 
 ## Usage
 
