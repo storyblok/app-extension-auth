@@ -6,7 +6,6 @@
     "name": "Johannes Lindgren",
     "email": "johannes.lindgren@storyblok.com"
   },
-  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/storyblok/app-extension-auth.git"
