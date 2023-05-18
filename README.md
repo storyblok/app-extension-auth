@@ -1,10 +1,8 @@
 # @storyblok/app-extension-auth
 
-A JavaScript library for handling authentication with [Storyblok](https://www.storyblok.com) apps.
+A JavaScript library for managing authentication for [Storyblok](https://www.storyblok.com) apps.
 
-## Usage
-
-`@storyblok/app-extension-auth` helps you manage authentication for Storyblok apps. For your project, you will need both a frontend and a backend (which can be serverless).
+## Getting Started
 
 See our starters:
 
@@ -137,8 +135,9 @@ The `AppSession` object contain user information for personalized content, and a
 
 ```typescript
 const {
-  userId, userName,
-  spaceId, spaceName,
+  userId,
+  spaceId,
+  region,
   roles,
   accessToken
 } = appSession
@@ -148,8 +147,8 @@ const {
 
 Storyblok apps are embedded within Storyblok via iframes. When a page is requested, the server must get to know
 
-a) `spaceId`: the space the page is being embedded within
-b) `userId`: the user who loaded the page
+1. `spaceId`: the space the page is being embedded within
+2. `userId`: the user who loaded the page
 
 These two values needs to be encoded within the page request.
 
