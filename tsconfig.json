@@ -23,14 +23,7 @@
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
     // ensure that nobody can accidentally use this config for a build
-    "noEmit": true,
-    "allowSyntheticDefaultImports": true,
-    "resolveJsonModule": true,
-    "paths": {
-      "@src/*": [
-        "./src/*"
-      ]
-    }
+    "noEmit": true
   },
   "include": [
     "src"
