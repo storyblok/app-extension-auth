@@ -29,7 +29,6 @@ export const refreshToken =
   (params: RefreshTokenWithFetchParams, region: Region): RefreshToken =>
   async (refreshToken: string) => {
     try {
-      // TODO dynamic region
       const tokenSet = await openidClient(params, region).refresh(refreshToken)
       if (!isRefreshTokenResponse(tokenSet)) {
         return new Error(
