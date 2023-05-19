@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
     "outDir": "dist",
-    "target": "es5",
-    "module": "esnext",
+    "target": "ESNext",
+    "module": "ESNext",
     "lib": [
-      "es2017",
+      "ESNext"
     ],
     "sourceMap": true,
     "strict": true,
@@ -22,8 +22,8 @@
     "removeComments": false,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
-    "jsx": "react-jsx",
-    "baseUrl": ".",
+    // ensure that nobody can accidentally use this config for a build
+    "noEmit": true
   },
   "include": [
     "src"
