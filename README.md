@@ -1,20 +1,8 @@
-<div style="text-align:center">
-	<h1 style="text-align:center">
-        <code>
-            @storyblok/app-extension-auth
-        </code>
-    </h1>
-  <p style="text-align:center">
-    A typed JavaScript library for handling authentication with <a href="https://www.storyblok.com" target="_blank">Storyblok</a> apps.
-  </p>
-  <br />
-</div>
+# @storyblok/app-extension-auth
 
-[![Node.js Package](https://github.com/storyblok/app-extension-auth/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/storyblok/app-extension-auth/actions/workflows/npm-publish.yml)
+A JavaScript library for managing authentication for [Storyblok](https://www.storyblok.com) apps.
 
-## Usage
-
-`@storyblok/app-extension-auth` helps you manage authentication for Storyblok apps. For your project, you will need both a frontend and a backend (which can be serverless).
+## Getting Started
 
 See our starters:
 
@@ -147,8 +135,9 @@ The `AppSession` object contain user information for personalized content, and a
 
 ```typescript
 const {
-  userId, userName,
-  spaceId, spaceName,
+  userId,
+  spaceId,
+  region,
   roles,
   accessToken
 } = appSession
@@ -158,8 +147,8 @@ const {
 
 Storyblok apps are embedded within Storyblok via iframes. When a page is requested, the server must get to know
 
-a) `spaceId`: the space the page is being embedded within
-b) `userId`: the user who loaded the page
+1. `spaceId`: the space the page is being embedded within
+2. `userId`: the user who loaded the page
 
 These two values needs to be encoded within the page request.
 
