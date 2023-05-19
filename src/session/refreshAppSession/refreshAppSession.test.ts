@@ -1,5 +1,5 @@
 import { AppSession } from '../types'
-import { RefreshToken } from '../../storyblok-auth-api/refreshToken'
+import { RefreshToken } from '../../storyblok-auth-api'
 import { refreshAppSession } from './refreshAppSession'
 
 const validRefreshToken = 'abc123abc123'
