@@ -26,7 +26,6 @@
     "test": "jest"
   },
   "engines": {
-    "yarn": "^3.2.4",
     "node": ">=14.21.3"
   },
   "packageManager": "yarn@3.2.4",
