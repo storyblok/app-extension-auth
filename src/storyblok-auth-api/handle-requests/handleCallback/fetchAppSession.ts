@@ -3,7 +3,7 @@ import { AppSession, Region } from '../../../session'
 import { openidClient } from '../openidClient'
 import { redirectUri } from '../redirectUri'
 import { isTokenSet } from './isTokenSet'
-import { isUserInfo } from '../../user-info'
+import { isStoryblokRole, isUserInfo, Role } from '../../user-info'
 
 export const fetchAppSession = async (
   params: AuthHandlerParams,
@@ -41,11 +41,19 @@ export const fetchAppSession = async (
     accessToken: tokenSet.access_token,
     expiresAt: Date.now() + tokenSet.expires_in * 1000,
     appClientId: params.clientId,
-    roles: userInfo.roles.map((role) => role.name),
+    roles: userInfo.roles.map((role) => getRoleName(role)),
     spaceId: userInfo.space.id,
     spaceName: userInfo.space.name,
     userId: userInfo.user.id,
     userName: userInfo.user.friendly_name,
     region,
   }
+}
+
+const getRoleName = (role: Role): string => {
+  if (isStoryblokRole(role)) {
+    return role.name
+  }
+
+  return role.role
 }
