@@ -1,9 +1,10 @@
 import { AuthHandlerParams } from '../../AuthHandlerParams'
-import { AppSession, Region } from '../../../session'
+import { AppSession } from '../../../session'
 import { openidClient } from '../openidClient'
 import { redirectUri } from '../redirectUri'
 import { isTokenSet } from './isTokenSet'
 import { isStoryblokRole, isUserInfo, Role } from '../../user-info'
+import { Region } from '@storyblok/region-helper'
 
 export const fetchAppSession = async (
   params: AuthHandlerParams,
