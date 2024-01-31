@@ -1,8 +1,7 @@
 import { BaseClient, Issuer } from 'openid-client'
 import { redirectUri } from './redirectUri'
 import { AuthHandlerParams } from '../AuthHandlerParams'
-import { oauthApiBaseUrl } from './oauthApiBaseUrl'
-import { Region } from '../../session'
+import { getRegionUrl, Region } from '@storyblok/region-helper'
 
 export type CreateOpenIdClient = (
   params: Pick<
@@ -16,15 +15,15 @@ export const openidClient: CreateOpenIdClient = (params, region) => {
   const { clientId, clientSecret } = params
   const { Client } = new Issuer({
     issuer: 'storyblok',
-    // This is always the eu endpoint, even for other regions
-    authorization_endpoint: `${oauthApiBaseUrl('eu')}/authorize`,
+    // TODO: at this point there is no region && the subdomains do not have the /oauth/authorize endpoint working at the moment that is why this endpoint is initially requested
+    authorization_endpoint: `https://app.storyblok.com/oauth/authorize`,
     token_endpoint:
       typeof region !== 'undefined'
-        ? `${oauthApiBaseUrl(region)}/token`
+        ? `${getRegionUrl(region)}/oauth/token`
         : undefined,
     userinfo_endpoint:
       typeof region !== 'undefined'
-        ? `${oauthApiBaseUrl(region)}/user_info`
+        ? `${getRegionUrl(region)}/oauth/user_info`
         : undefined,
   })
   return new Client({

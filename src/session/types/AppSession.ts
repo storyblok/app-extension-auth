@@ -1,5 +1,5 @@
-import { isRegion, Region } from './Region'
 import { hasKey } from '../../utils'
+import { isRegion, Region } from '@storyblok/region-helper'
 
 export type AppSession = {
   spaceId: number // primary key

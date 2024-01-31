@@ -1,7 +1,7 @@
 import { hasKey } from '../utils'
 import { AuthHandlerParams } from './AuthHandlerParams'
 import { openidClient } from './handle-requests/openidClient'
-import { Region } from '../session'
+import { Region } from '@storyblok/region-helper'
 
 export type RefreshTokenWithFetchParams = Pick<
   AuthHandlerParams,
