@@ -85,7 +85,7 @@ The other variables can be hard-coded:
   authentication API endpoints.
 
     For example, the following two properties
-    - `baseUrl: "https://app.com"`
+    - `baseUrl: "https://my-app.my-domain.com/"`
     - `endpointPrefix: "api/authenticate"`
 
     will result in the API endpoints
@@ -94,7 +94,7 @@ The other variables can be hard-coded:
 
 ### Create an API route
 
-In NodeJS, create a dynamic route that handles the incoming requests with `authHandler()`. See [Framework examples](#Routing for various frameworks).
+In NodeJS, create a dynamic route that handles the incoming requests with `authHandler()`. See [Framework examples](#routing-for-various-frameworks).
 
 For example, in Next.js, create a file `pages/api/connect/[...slugs].ts`:
 
