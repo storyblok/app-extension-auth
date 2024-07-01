@@ -1,3 +1,5 @@
+import { IncomingMessage, ServerResponse } from 'node:http'
+
 export type AuthHandlerParams = {
   /*
    * The client ID is a public identifier for your apps. Find the Client ID in the app settings on Storyblok.
@@ -50,4 +52,43 @@ export type AuthHandlerParams = {
    *  - `https://my-app.my-domain.com/api/authenticate/storyblok/callback` as the OAuth2 callback URL
    */
   endpointPrefix: string | undefined // To make explicit, do not make this optional.
+}
+
+export type MaybePromise<T> = T | Promise<T>
+
+export type Adapter = {
+  getItem: (params: {
+    req: IncomingMessage
+    res: ServerResponse
+    key: string
+  }) => MaybePromise<string | object | undefined>
+
+  setItem: (params: {
+    req: IncomingMessage
+    res: ServerResponse
+    key: string
+    value: string | object
+  }) => MaybePromise<void>
+
+  removeItem: (params: {
+    req: IncomingMessage
+    res: ServerResponse
+    key: string
+  }) => MaybePromise<void>
+
+  hasItem: (params: {
+    req: IncomingMessage
+    res: ServerResponse
+    key: string
+  }) => MaybePromise<boolean>
+}
+
+export type InternalAdapter = {
+  getItem: (key: string) => MaybePromise<string | object | undefined>
+  setItem: (params: {
+    key: string
+    value: string | object
+  }) => MaybePromise<void>
+  removeItem: (key: string) => MaybePromise<void>
+  hasItem: (key: string) => MaybePromise<boolean>
 }

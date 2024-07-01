@@ -2,7 +2,7 @@ import { generators } from 'openid-client'
 import { openidClient } from '../openidClient'
 import { redirectUri } from '../redirectUri'
 import { AuthHandlerParams } from '../../AuthHandlerParams'
-import { callbackCookieElement } from '../callbackCookie'
+import { createCallbackData } from '../callbackCookie'
 import { HandleAuthRequest } from '../HandleAuthRequest'
 
 export const handleSignInRequest: HandleAuthRequest<{
@@ -26,8 +26,8 @@ export const handleSignInRequest: HandleAuthRequest<{
     return {
       type: 'success',
       redirectTo,
-      setCookies: [
-        callbackCookieElement(params.clientSecret, {
+      sessions: [
+        createCallbackData(params.clientSecret, {
           returnTo: params?.successCallback ?? '/', // TODO read from request query params, then either use the successCallback as fallback, or remove the entirely
           codeVerifier: code_verifier,
           state,

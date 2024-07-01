@@ -1,5 +1,5 @@
 import { GetCookie, getSignedCookie, signData } from '../../utils'
-import { CookieElement } from '../ResponseElement'
+import { SessionElement } from '../ResponseElement'
 
 /**
  * The payload of the cookie that preserves the state between the calls to `/signin` and `/callback`
@@ -26,7 +26,7 @@ export const getCallbackCookieData = (
   // TODO add runtime validation
   getSignedCookie(secret, getCookie, callbackCookieName) as CallbackCookieData
 
-export const callbackCookieElement = (
+export const createCallbackData = (
   secret: string,
   data: CallbackCookieData,
 ) => ({
@@ -34,7 +34,7 @@ export const callbackCookieElement = (
   value: signData(secret)(data),
 })
 
-export const clearCallbackCookieElement: CookieElement = {
+export const clearCallbackData: SessionElement = {
   name: callbackCookieName,
   value: undefined,
 }

@@ -1,8 +1,9 @@
 import http from 'http'
 import { AuthHandlerParams } from './AuthHandlerParams'
-import { getCookie } from '../utils'
 import { handleAnyRequest } from './handle-requests'
 import { reconcileNodeResponse } from './reconcileNodeResponse'
+import { createInternalAdapter } from './session-adapters/createInternalAdapter'
+import { cookieAdapter } from './session-adapters/cookieAdapter'
 
 /**
  * Auth handler for Node.js
@@ -17,11 +18,23 @@ export const authHandler = (
       res.writeHead(400).end()
       return
     }
+
+    const internalAdapter = createInternalAdapter({
+      req,
+      res,
+      adapter: cookieAdapter,
+    })
+
     const responseElement = await handleAnyRequest({
       params,
       url,
-      getCookie: (name) => getCookie(req, name),
+      adapter: internalAdapter,
     })
-    reconcileNodeResponse(res, responseElement)
+
+    await reconcileNodeResponse({
+      res,
+      responseElement,
+      adapter: internalAdapter,
+    })
   }
 }

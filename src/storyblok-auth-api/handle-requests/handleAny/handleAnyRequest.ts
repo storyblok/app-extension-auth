@@ -1,5 +1,4 @@
-import { GetCookie } from '../../../utils'
-import { AuthHandlerParams } from '../../AuthHandlerParams'
+import { AuthHandlerParams, InternalAdapter } from '../../AuthHandlerParams'
 import { validateAppBaseUrl } from '../../validation/validateAppBaseUrl'
 import { validateEndpointPrefix } from '../../validation/validateEndpointPrefix'
 import { signinEndpoint } from '../signinEndpoint'
@@ -13,8 +12,8 @@ import { HandleAuthRequest } from '../HandleAuthRequest'
 export const handleAnyRequest: HandleAuthRequest<{
   params: AuthHandlerParams
   url: string
-  getCookie: GetCookie
-}> = async ({ params, url, getCookie }) => {
+  adapter: InternalAdapter
+}> = async ({ params, url, adapter }) => {
   if (!validateAppBaseUrl(params.baseUrl)) {
     return {
       type: 'configuration-error',
@@ -34,7 +33,7 @@ export const handleAnyRequest: HandleAuthRequest<{
     case signinEndpoint:
       return handleSignInRequest({ params })
     case callbackEndpoint:
-      return handleCallbackRequest({ url, getCookie, params })
+      return handleCallbackRequest({ url, params, adapter })
     default:
       return handleUnknownRequest({ params })
   }

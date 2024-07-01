@@ -5,7 +5,7 @@
  */
 export type ResponseElement = {
   type: 'success' | 'error' | 'configuration-error'
-  setCookies?: CookieElement[]
+  sessions?: SessionElement[]
   redirectTo?: string
   message?: string
 }
@@ -15,7 +15,7 @@ export type ResponseElement = {
  * @param name the name of the cookie to be set
  * @param value the value of the cookie to be set. When `undefined`, the cookie should be expired.
  */
-export type CookieElement = {
+export type SessionElement = {
   name: string
-  value: string | undefined
+  value: string | object | undefined
 }
