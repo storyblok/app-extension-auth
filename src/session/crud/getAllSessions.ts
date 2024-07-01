@@ -11,11 +11,11 @@ export type GetAllSessionsParams = Pick<
 
 export type GetAllSessions = (
   params: GetAllSessionsParams,
-  getCookie: GetCookie,
+  getSessions: GetCookie,
 ) => Promise<AppSession[]>
 
-export const getAllSessions: GetAllSessions = async (params, getCookie) => {
-  const cookie = await getCookie(sessionIdentifier(params))
+export const getAllSessions: GetAllSessions = async (params, getSessions) => {
+  const cookie = await getSessions(sessionIdentifier(params))
   if (!isAppSessionCookiePayload(cookie)) {
     return []
   }

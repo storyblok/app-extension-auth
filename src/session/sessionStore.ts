@@ -5,7 +5,7 @@ import { GetCookie, SetCookie } from '../utils'
 import { createInternalAdapter } from '../session-adapters/createInternalAdapter'
 import { cookieAdapter } from '../session-adapters/cookieAdapter'
 
-export const sessionCookieStore: AppSessionCookieStoreFactory =
+export const sessionStore: AppSessionCookieStoreFactory =
   (params) =>
   (requestParams): AppSessionStore => {
     const internalAdapter = createInternalAdapter({
@@ -14,9 +14,10 @@ export const sessionCookieStore: AppSessionCookieStoreFactory =
       adapter: cookieAdapter,
     })
 
-    const getCookie: GetCookie = async (name) => internalAdapter.getItem(name)
+    //TODO: Make this more agnostic
+    const getSessions: GetCookie = async (name) => internalAdapter.getItem(name)
 
-    const setCookie: SetCookie = async (name, value) =>
+    const setSessions: SetCookie = async (name, value) =>
       internalAdapter.setItem({
         key: name,
         value,
@@ -26,12 +27,14 @@ export const sessionCookieStore: AppSessionCookieStoreFactory =
       get: async (keys) =>
         refreshStoredAppSession(
           params,
-          getCookie,
-          setCookie,
-          await getSession(params, getCookie, keys),
+          getSessions,
+          setSessions,
+          await getSession(params, getSessions, keys),
         ),
-      getAll: async () => getAllSessions(params, getCookie),
-      put: async (session) => putSession(params, getCookie, setCookie, session),
-      remove: async (keys) => removeSession(params, getCookie, setCookie, keys),
+      getAll: async () => getAllSessions(params, getSessions),
+      put: async (session) =>
+        putSession(params, getSessions, setSessions, session),
+      remove: async (keys) =>
+        removeSession(params, getSessions, setSessions, keys),
     }
   }
