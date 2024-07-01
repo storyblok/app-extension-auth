@@ -1,4 +1,4 @@
-import { GetCookie, getSignedCookie, signData } from '../../utils'
+import { signData } from '../../utils'
 import { SessionElement } from '../ResponseElement'
 
 /**
@@ -17,14 +17,6 @@ export type CallbackCookieData = {
  * A cookie with this name is set before signing in, and consumed by the callback function
  */
 const callbackCookieName = 'auth.sb.callback'
-
-// TODO validation
-export const getCallbackCookieData = (
-  secret: string,
-  getCookie: GetCookie,
-): CallbackCookieData | undefined =>
-  // TODO add runtime validation
-  getSignedCookie(secret, getCookie, callbackCookieName) as CallbackCookieData
 
 export const createCallbackData = (
   secret: string,
