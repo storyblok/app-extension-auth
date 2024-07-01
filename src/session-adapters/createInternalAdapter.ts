@@ -1,5 +1,8 @@
 import http from 'http'
-import { Adapter, InternalAdapter } from '../AuthHandlerParams'
+import {
+  Adapter,
+  InternalAdapter,
+} from '../storyblok-auth-api/AuthHandlerParams'
 
 export const createInternalAdapter = ({
   req,

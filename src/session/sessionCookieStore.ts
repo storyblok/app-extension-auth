@@ -2,8 +2,8 @@ import { AppSessionCookieStoreFactory, AppSessionStore } from './types'
 import { getAllSessions, getSession, putSession, removeSession } from './crud'
 import { refreshStoredAppSession } from './refreshStoredAppSession'
 import { GetCookie, SetCookie } from '../utils'
-import { createInternalAdapter } from '../storyblok-auth-api/session-adapters/createInternalAdapter'
-import { cookieAdapter } from '../storyblok-auth-api/session-adapters/cookieAdapter'
+import { createInternalAdapter } from '../session-adapters/createInternalAdapter'
+import { cookieAdapter } from '../session-adapters/cookieAdapter'
 
 export const sessionCookieStore: AppSessionCookieStoreFactory =
   (params) =>
