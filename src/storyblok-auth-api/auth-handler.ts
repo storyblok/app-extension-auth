@@ -2,8 +2,8 @@ import http from 'http'
 import { AuthHandlerParams } from './AuthHandlerParams'
 import { handleAnyRequest } from './handle-requests'
 import { reconcileNodeResponse } from './reconcileNodeResponse'
-import { createInternalAdapter } from '../session-adapters/createInternalAdapter'
 import { cookieAdapter } from '../session-adapters/cookieAdapter'
+import { createInternalAdapter } from '../session-adapters/internalAdapter'
 
 /**
  * Auth handler for Node.js

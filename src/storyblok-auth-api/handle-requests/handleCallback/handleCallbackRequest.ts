@@ -3,10 +3,11 @@ import { appendQueryParams } from '../../../utils/query-params/append-query-para
 import { sessionIdentifier } from '../../../session/sessionIdentifier'
 import { CallbackCookieData, clearCallbackData } from '../callbackCookie'
 import { SessionElement } from '../../ResponseElement'
-import { AuthHandlerParams, InternalAdapter } from '../../AuthHandlerParams'
+import { AuthHandlerParams } from '../../AuthHandlerParams'
 import { regionFromUrl } from './spaceIdFromUrl'
 import { HandleAuthRequest } from '../HandleAuthRequest'
 import { fetchAppSession } from './fetchAppSession'
+import { InternalAdapter } from '../../../session-adapters/internalAdapter'
 
 export type AppSessionQueryParams = Record<
   keyof Pick<AppSession, 'spaceId' | 'userId'>,

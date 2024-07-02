@@ -1,6 +1,6 @@
 import { expireCookie, getCookie, setCookie, verifyData } from '../utils'
 import jwt from 'jsonwebtoken'
-import { type Adapter } from '../storyblok-auth-api/AuthHandlerParams'
+import { Adapter } from './generalAdapter'
 
 const clientSecret = process.env['CLIENT_SECRET'] || ''
 

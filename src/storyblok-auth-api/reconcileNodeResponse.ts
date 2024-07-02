@@ -1,6 +1,6 @@
 import http from 'http'
 import { ResponseElement } from './ResponseElement'
-import { InternalAdapter } from './AuthHandlerParams'
+import { InternalAdapter } from '../session-adapters/internalAdapter'
 
 /**
  * Writes the changes described by a `ResponseElement` into a Node `http.ServerResponse`.

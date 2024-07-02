@@ -1,4 +1,4 @@
-import { AuthHandlerParams, InternalAdapter } from '../../AuthHandlerParams'
+import { AuthHandlerParams } from '../../AuthHandlerParams'
 import { validateAppBaseUrl } from '../../validation/validateAppBaseUrl'
 import { validateEndpointPrefix } from '../../validation/validateEndpointPrefix'
 import { signinEndpoint } from '../signinEndpoint'
@@ -8,6 +8,7 @@ import { handleCallbackRequest } from '../handleCallback'
 import { handleUnknownRequest } from '../handleUnknown'
 import { getLastSlug } from './getLastSlug'
 import { HandleAuthRequest } from '../HandleAuthRequest'
+import { InternalAdapter } from '../../../session-adapters/internalAdapter'
 
 export const handleAnyRequest: HandleAuthRequest<{
   params: AuthHandlerParams
