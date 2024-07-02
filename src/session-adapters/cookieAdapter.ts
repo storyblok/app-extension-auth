@@ -16,16 +16,14 @@ export const cookieAdapter: Adapter = {
     return verifyData(clientSecret)(cookie) as object
   },
   setItem: ({ req, res, key, value }) => {
-    const currentSession = cookieAdapter.getItem({ req, res, key })
+    const cookieValue = cookieAdapter.getItem({ req, res, key })
 
-    // TODO: Improve readability
-    // TODO: improve checking as user might select their own key and not sb.auth
-    const isSession = key === 'sb.auth'
-    const data = isSession
-      ? {
-          sessions: currentSession ? [currentSession, value] : [value],
-        }
-      : value
+    const isCallbackCookie = key === 'auth.sb.callback'
+    const cookieWithAllSessions = {
+      sessions: cookieValue ? [cookieValue, value] : [value],
+    }
+
+    const data = isCallbackCookie ? value : cookieWithAllSessions
 
     const signedData = jwt.sign({ data }, clientSecret)
     setCookie(res, key, signedData)
