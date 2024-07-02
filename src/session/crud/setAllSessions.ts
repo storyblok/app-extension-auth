@@ -1,6 +1,6 @@
 import { AppSession } from '../types'
-import { setSignedCookie, SetCookie } from '../../utils'
-import { authCookieName } from '../authCookieName'
+import { SetCookie } from '../../utils'
+import { sessionIdentifier } from '../sessionIdentifier'
 import { AuthHandlerParams } from '../../storyblok-auth-api'
 
 export type SetAllSessionsParams = Pick<
@@ -11,9 +11,9 @@ export type SetAllSessions = (
   params: SetAllSessionsParams,
   setCookie: SetCookie,
   sessions: AppSession[],
-) => void
-export const setAllSessions: SetAllSessions = (params, setCookie, sessions) => {
-  setSignedCookie(params.clientSecret, setCookie, authCookieName(params), {
-    sessions,
-  })
-}
+) => Promise<void>
+export const setAllSessions: SetAllSessions = async (
+  params,
+  setCookie,
+  sessions,
+) => setCookie(sessionIdentifier(params), { sessions })

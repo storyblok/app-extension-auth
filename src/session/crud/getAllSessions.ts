@@ -1,7 +1,7 @@
 import { AuthHandlerParams } from '../../storyblok-auth-api'
 import { AppSession } from '../types'
-import { GetCookie, getSignedCookie } from '../../utils'
-import { authCookieName } from '../authCookieName'
+import { GetCookie } from '../../utils'
+import { sessionIdentifier } from '../sessionIdentifier'
 import { isAppSessionCookiePayload } from './AppSessionCookiePayload'
 
 export type GetAllSessionsParams = Pick<
@@ -11,17 +11,13 @@ export type GetAllSessionsParams = Pick<
 
 export type GetAllSessions = (
   params: GetAllSessionsParams,
-  getCookie: GetCookie,
-) => AppSession[]
+  getSessions: GetCookie,
+) => Promise<AppSession[]>
 
-export const getAllSessions: GetAllSessions = (params, getCookie) => {
-  const signedCookie = getSignedCookie(
-    params.clientSecret,
-    getCookie,
-    authCookieName(params),
-  )
-  if (!isAppSessionCookiePayload(signedCookie)) {
+export const getAllSessions: GetAllSessions = async (params, getSessions) => {
+  const cookie = await getSessions(sessionIdentifier(params))
+  if (!isAppSessionCookiePayload(cookie)) {
     return []
   }
-  return signedCookie.sessions
+  return cookie.sessions
 }
