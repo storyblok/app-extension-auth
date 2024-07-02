@@ -1,4 +1,3 @@
-import { signData } from '../../utils'
 import { SessionElement } from '../ResponseElement'
 
 /**
@@ -16,14 +15,11 @@ export type CallbackCookieData = {
 /**
  * A cookie with this name is set before signing in, and consumed by the callback function
  */
-const callbackCookieName = 'auth.sb.callback'
+export const callbackCookieName = 'auth.sb.callback'
 
-export const createCallbackData = (
-  secret: string,
-  data: CallbackCookieData,
-) => ({
+export const createCallbackData = (data: CallbackCookieData) => ({
   name: callbackCookieName,
-  value: signData(secret)(data),
+  value: data,
 })
 
 export const clearCallbackData: SessionElement = {

@@ -1,7 +1,11 @@
 import { AppSession } from '../../../session'
 import { appendQueryParams } from '../../../utils/query-params/append-query-params'
 import { sessionIdentifier } from '../../../session/sessionIdentifier'
-import { CallbackCookieData, clearCallbackData } from '../callbackCookie'
+import {
+  CallbackCookieData,
+  callbackCookieName,
+  clearCallbackData,
+} from '../callbackCookie'
 import { SessionElement } from '../../ResponseElement'
 import { AuthHandlerParams } from '../../AuthHandlerParams'
 import { regionFromUrl } from './spaceIdFromUrl'
@@ -30,7 +34,7 @@ export const handleCallbackRequest: HandleAuthRequest<{
 
     // //TODO: fix typing
     const callbackData = (await adapter.getItem(
-      sessionIdentifier(params),
+      callbackCookieName,
     )) as CallbackCookieData
 
     if (!callbackData) {
