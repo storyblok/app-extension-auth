@@ -14,7 +14,6 @@ export const sessionStore: AppSessionCookieStoreFactory =
       adapter: cookieAdapter,
     })
 
-    //TODO: Make this more agnostic
     const getSessions: GetCookie = async (name) => internalAdapter.getItem(name)
 
     const setSessions: SetCookie = async (name, value) =>

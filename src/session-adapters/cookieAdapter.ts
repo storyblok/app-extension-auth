@@ -34,3 +34,5 @@ export const cookieAdapter: Adapter = {
     expireCookie(res, key)
   },
 }
+
+// { res, key } are not enough to retrieve data from database
