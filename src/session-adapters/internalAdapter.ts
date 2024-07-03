@@ -51,7 +51,7 @@ type CreateInternalAdapter = ({
   res,
   adapter,
 }: {
-  params: AuthHandlerParams
+  params: Pick<AuthHandlerParams, 'clientId' | 'clientSecret' | 'cookieName'>
   req: http.IncomingMessage
   res: http.ServerResponse
   adapter: Adapter

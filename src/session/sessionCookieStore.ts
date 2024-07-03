@@ -7,6 +7,7 @@ export const getSessionStore: AppSessionCookieStoreFactory =
   (params) =>
   (requestParams): AppSessionStore => {
     const adapter = createInternalAdapter({
+      params,
       req: requestParams.req,
       res: requestParams.res,
       adapter: cookieAdapter,
