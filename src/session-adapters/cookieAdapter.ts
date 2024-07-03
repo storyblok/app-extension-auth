@@ -4,9 +4,21 @@ import { Adapter } from './generalAdapter'
 
 const clientSecret = process.env['CLIENT_SECRET'] || ''
 
+const createScopedKey = ({
+  spaceId,
+  userId,
+  key,
+}: {
+  spaceId: string
+  userId: string
+  key: string
+}) => {
+  return `${spaceId}:${userId}:${key}`
+}
+
 export const cookieAdapter: Adapter = {
-  getItem: ({ req, key }) => {
-    const cookie = getCookie(req, key)
+  getItem: ({ req, spaceId, userId, key }) => {
+    const cookie = getCookie(req, createScopedKey({ spaceId, userId, key }))
 
     if (!cookie) {
       return undefined
@@ -20,17 +32,17 @@ export const cookieAdapter: Adapter = {
     }
   },
 
-  setItem: ({ res, key, value }) => {
+  setItem: ({ res, spaceId, userId, key, value }) => {
     const signedData = jwt.sign({ data: value }, clientSecret)
-    setCookie(res, key, signedData)
+    setCookie(res, createScopedKey({ spaceId, userId, key }), signedData)
     return true
   },
 
   hasItem: async (params) =>
     (await cookieAdapter.getItem(params)) !== undefined,
 
-  removeItem: ({ res, key }) => {
-    expireCookie(res, key)
+  removeItem: ({ res, spaceId, userId, key }) => {
+    expireCookie(res, createScopedKey({ spaceId, userId, key }))
     return true
   },
 }
