@@ -5,7 +5,7 @@ import { GetCookie, SetCookie } from '../utils'
 import { cookieAdapter } from '../session-adapters/cookieAdapter'
 import { createInternalAdapter } from '../session-adapters/internalAdapter'
 
-export const sessionStore: AppSessionCookieStoreFactory =
+export const cookieSessionStore: AppSessionCookieStoreFactory =
   (params) =>
   (requestParams): AppSessionStore => {
     const internalAdapter = createInternalAdapter({
