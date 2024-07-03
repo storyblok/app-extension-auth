@@ -34,7 +34,6 @@ export const authHandler = (
     await reconcileNodeResponse({
       res,
       responseElement,
-      adapter: internalAdapter,
     })
   }
 }

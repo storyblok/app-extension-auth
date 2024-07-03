@@ -21,14 +21,14 @@
   "scripts": {
     "check:types": "tsc --noemit",
     "lint": "eslint .",
-    "build": "yarn check:types && rollup -c",
+    "build": "rollup -c",
     "start": "rollup -c -w",
     "test": "jest"
   },
   "engines": {
     "node": ">=14.21.3"
   },
-  "packageManager": "yarn@3.2.4",
+  "packageManager": "pnpm@9.1.1",
   "dependencies": {
     "@storyblok/region-helper": "0.1.0",
     "jsonwebtoken": "^9.0.0",

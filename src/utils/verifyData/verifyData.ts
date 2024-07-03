@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 
 export const verifyData =
   (secret: string) =>
-  (jwtToken: string): unknown => {
+  (jwtToken: string): unknown | undefined => {
     try {
       const payload = jwt.verify(jwtToken, secret)
       if (typeof payload === 'string') {

@@ -1,39 +1,40 @@
 import { AppSessionCookieStoreFactory, AppSessionStore } from './types'
-import { getAllSessions, getSession, putSession, removeSession } from './crud'
 import { refreshStoredAppSession } from './refreshStoredAppSession'
-import { GetCookie, SetCookie } from '../utils'
 import { cookieAdapter } from '../session-adapters/cookieAdapter'
 import { createInternalAdapter } from '../session-adapters/internalAdapter'
 
-export const sessionStore: AppSessionCookieStoreFactory =
+export const getSessionStore: AppSessionCookieStoreFactory =
   (params) =>
   (requestParams): AppSessionStore => {
-    const internalAdapter = createInternalAdapter({
+    const adapter = createInternalAdapter({
       req: requestParams.req,
       res: requestParams.res,
       adapter: cookieAdapter,
     })
 
-    const getSessions: GetCookie = async (name) => internalAdapter.getItem(name)
-
-    const setSessions: SetCookie = async (name, value) =>
-      internalAdapter.setItem({
-        key: name,
-        value,
-      })
-
     return {
-      get: async (keys) =>
-        refreshStoredAppSession(
-          params,
-          getSessions,
-          setSessions,
-          await getSession(params, getSessions, keys),
-        ),
-      getAll: async () => getAllSessions(params, getSessions),
+      get: async ({ spaceId, userId }) => {
+        const session = await adapter.getSession({
+          spaceId: String(spaceId),
+          userId: String(userId),
+        })
+        return await refreshStoredAppSession(params, adapter, session)
+      },
       put: async (session) =>
-        putSession(params, getSessions, setSessions, session),
-      remove: async (keys) =>
-        removeSession(params, getSessions, setSessions, keys),
+        await adapter.setSession({
+          spaceId: String(session.spaceId),
+          userId: String(session.userId),
+          session,
+        }),
+      remove: async ({ spaceId, userId }) =>
+        await adapter.removeSession({
+          spaceId: String(spaceId),
+          userId: String(userId),
+        }),
     }
   }
+
+/**
+ * @deprecated `sessionCookieStore` is deprecated. Use `getSessionStore` instead.
+ */
+export const sessionCookieStore = getSessionStore

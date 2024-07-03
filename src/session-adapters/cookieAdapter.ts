@@ -12,27 +12,25 @@ export const cookieAdapter: Adapter = {
       return undefined
     }
 
-    //TODO: fix typing
-    return verifyData(clientSecret)(cookie) as object
-  },
-  setItem: ({ req, res, key, value }) => {
-    const cookieValue = cookieAdapter.getItem({ req, res, key })
-
-    const isCallbackCookie = key === 'auth.sb.callback'
-    const cookieWithAllSessions = {
-      sessions: cookieValue ? [cookieValue, value] : [value],
+    const verifiedData = verifyData(clientSecret)(cookie)
+    if (!verifiedData) {
+      return undefined
+    } else {
+      return verifiedData as string
     }
-
-    const data = isCallbackCookie ? value : cookieWithAllSessions
-
-    const signedData = jwt.sign({ data }, clientSecret)
-    setCookie(res, key, signedData)
   },
-  hasItem: ({ req, res, key }) =>
-    cookieAdapter.getItem({ req, res, key }) !== undefined,
+
+  setItem: ({ res, key, value }) => {
+    const signedData = jwt.sign({ data: value }, clientSecret)
+    setCookie(res, key, signedData)
+    return true
+  },
+
+  hasItem: async (params) =>
+    (await cookieAdapter.getItem(params)) !== undefined,
+
   removeItem: ({ res, key }) => {
     expireCookie(res, key)
+    return true
   },
 }
-
-// { res, key } are not enough to retrieve data from database
