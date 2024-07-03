@@ -19,6 +19,8 @@ export const cookieAdapter: Adapter = {
     const cookieValue = cookieAdapter.getItem({ req, res, key })
 
     const isCallbackCookie = key === 'auth.sb.callback'
+
+    //todo: not fully working yet need a better way to add the sessions
     const cookieWithAllSessions = {
       sessions: cookieValue ? [cookieValue, value] : [value],
     }
