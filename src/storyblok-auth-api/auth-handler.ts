@@ -20,6 +20,7 @@ export const authHandler = (
     }
 
     const adapter = createInternalAdapter({
+      params,
       req,
       res,
       adapter: cookieAdapter,

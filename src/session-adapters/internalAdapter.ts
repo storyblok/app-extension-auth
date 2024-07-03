@@ -12,7 +12,7 @@ import {
   verifyData,
 } from '../utils'
 import { AppSession } from '../session/types'
-import { DEFAULT_SESSION_IDENTIFIER } from '../session/sessionIdentifier'
+import { AuthHandlerParams } from '../storyblok-auth-api'
 
 export type InternalAdapter = {
   // session
@@ -46,94 +46,103 @@ export type InternalAdapter = {
 }
 
 type CreateInternalAdapter = ({
+  params,
   req,
   res,
   adapter,
 }: {
+  params: AuthHandlerParams
   req: http.IncomingMessage
   res: http.ServerResponse
   adapter: Adapter
 }) => InternalAdapter
 
-const clientSecret = process.env['CLIENT_SECRET'] || ''
-
 export const createInternalAdapter: CreateInternalAdapter = ({
+  params,
   req,
   res,
   adapter,
-}) => ({
-  getSession: async ({ spaceId, userId }) => {
-    const session = await adapter.getItem({
-      req,
-      res,
-      spaceId,
-      userId,
-      key: DEFAULT_SESSION_IDENTIFIER,
-    })
-    if (!session) {
-      return undefined
-    }
-    try {
-      return JSON.parse(session) as AppSession
-    } catch (err) {
-      return undefined
-    }
-  },
+}) => {
+  const sessionKey = params.cookieName || 'sb.auth'
 
-  setSession: async ({ spaceId, userId, session }) => {
-    try {
-      return await adapter.setItem({
+  return {
+    getSession: async ({ spaceId, userId }) => {
+      const session = await adapter.getItem({
         req,
         res,
+        clientId: params.clientId,
         spaceId,
         userId,
-        key: DEFAULT_SESSION_IDENTIFIER,
-        value: JSON.stringify(session),
+        key: sessionKey,
       })
-    } catch (err) {
-      return false
-    }
-  },
+      if (!session) {
+        return undefined
+      }
+      try {
+        return JSON.parse(session) as AppSession
+      } catch (err) {
+        return undefined
+      }
+    },
 
-  hasSession: ({ spaceId, userId }) =>
-    adapter.hasItem({
-      req,
-      res,
-      spaceId,
-      userId,
-      key: DEFAULT_SESSION_IDENTIFIER,
-    }),
+    setSession: async ({ spaceId, userId, session }) => {
+      try {
+        return await adapter.setItem({
+          req,
+          res,
+          clientId: params.clientId,
+          spaceId,
+          userId,
+          key: sessionKey,
+          value: JSON.stringify(session),
+        })
+      } catch (err) {
+        return false
+      }
+    },
 
-  removeSession: async ({ spaceId, userId }) => {
-    try {
-      return await adapter.removeItem({
+    hasSession: ({ spaceId, userId }) =>
+      adapter.hasItem({
         req,
         res,
+        clientId: params.clientId,
         spaceId,
         userId,
-        key: DEFAULT_SESSION_IDENTIFIER,
-      })
-    } catch (err) {
-      return false
-    }
-  },
+        key: sessionKey,
+      }),
 
-  setCallbackData: (data) => {
-    const signedData = signData(clientSecret)(data)
-    setCookie(res, callbackCookieName, signedData)
-    return true
-  },
+    removeSession: async ({ spaceId, userId }) => {
+      try {
+        return await adapter.removeItem({
+          req,
+          res,
+          clientId: params.clientId,
+          spaceId,
+          userId,
+          key: sessionKey,
+        })
+      } catch (err) {
+        return false
+      }
+    },
 
-  getCallbackData() {
-    const cookie = getCookie(req, callbackCookieName)
-    const data = verifyData(clientSecret)(cookie || '') as
-      | CallbackCookieData
-      | undefined
-    return data
-  },
+    setCallbackData: (data) => {
+      const signedData = signData(params.clientSecret)(data)
+      setCookie(res, callbackCookieName, signedData)
+      return true
+    },
 
-  removeCallbackData() {
-    expireCookie(res, callbackCookieName)
-    return true
-  },
-})
+    getCallbackData() {
+      const cookie = getCookie(req, callbackCookieName)
+      const data = verifyData(params.clientSecret)(cookie || '') as
+        | CallbackCookieData
+        | undefined
+      return data
+    },
+
+    removeCallbackData() {
+      expireCookie(res, callbackCookieName)
+      return true
+    },
+  }
+}

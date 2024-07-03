@@ -16,6 +16,9 @@ const createScopedKey = ({
   return `${spaceId}:${userId}:${key}`
 }
 
+// We do not use `clientId` in cookie adapter,
+// because different plugins will have different domain names,
+// and it's enough to differentiate these cookie values.
 export const cookieAdapter: Adapter = {
   getItem: ({ req, spaceId, userId, key }) => {
     const cookie = getCookie(req, createScopedKey({ spaceId, userId, key }))

@@ -6,6 +6,7 @@ export type Adapter = {
   getItem: (params: {
     req: IncomingMessage
     res: ServerResponse
+    clientId: string
     spaceId: string
     userId: string
     key: string
@@ -14,6 +15,7 @@ export type Adapter = {
   setItem: (params: {
     req: IncomingMessage
     res: ServerResponse
+    clientId: string
     spaceId: string
     userId: string
     key: string
@@ -23,6 +25,7 @@ export type Adapter = {
   removeItem: (params: {
     req: IncomingMessage
     res: ServerResponse
+    clientId: string
     spaceId: string
     userId: string
     key: string
@@ -31,6 +34,7 @@ export type Adapter = {
   hasItem: (params: {
     req: IncomingMessage
     res: ServerResponse
+    clientId: string
     spaceId: string
     userId: string
     key: string
