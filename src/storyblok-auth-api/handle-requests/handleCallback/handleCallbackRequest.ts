@@ -1,12 +1,5 @@
 import { AppSession } from '../../../session'
 import { appendQueryParams } from '../../../utils/query-params/append-query-params'
-import { sessionIdentifier } from '../../../session/sessionIdentifier'
-import {
-  CallbackCookieData,
-  callbackCookieName,
-  clearCallbackData,
-} from '../callbackCookie'
-import { SessionElement } from '../../ResponseElement'
 import { AuthHandlerParams } from '../../AuthHandlerParams'
 import { regionFromUrl } from './spaceIdFromUrl'
 import { HandleAuthRequest } from '../HandleAuthRequest'
@@ -32,15 +25,11 @@ export const handleCallbackRequest: HandleAuthRequest<{
       }
     }
 
-    // //TODO: fix typing
-    const callbackData = (await adapter.getItem(
-      callbackCookieName,
-    )) as CallbackCookieData
-
+    const callbackData = await adapter.getCallbackData()
     if (!callbackData) {
+      await adapter.removeCallbackData()
       return {
         type: 'error',
-        sessions: [clearCallbackData],
         redirectTo: params.errorCallback,
       }
     }
@@ -54,34 +43,33 @@ export const handleCallbackRequest: HandleAuthRequest<{
     })
 
     if (!appSession) {
+      await adapter.removeCallbackData()
       return {
         type: 'error',
-        sessions: [clearCallbackData],
         redirectTo: params.errorCallback,
       }
     }
 
+    const spaceId = appSession.spaceId.toString()
+    const userId = appSession.userId.toString()
     const queryParams: AppSessionQueryParams = {
-      spaceId: appSession.spaceId.toString(),
-      userId: appSession.userId.toString(),
+      spaceId,
+      userId,
     }
     const redirectTo = appendQueryParams(returnTo, queryParams)
 
-    const setSession: SessionElement = {
-      name: sessionIdentifier(params),
-      value: appSession,
-    }
+    await adapter.removeCallbackData()
+    await adapter.setSession({ spaceId, userId, session: appSession })
 
     return {
       type: 'success',
       redirectTo,
-      sessions: [clearCallbackData, setSession],
     }
   } catch (e) {
+    await adapter.removeCallbackData()
     return {
       type: 'error',
       message: e instanceof Error ? e.message : 'An unknown error occurred',
-      sessions: [clearCallbackData],
       redirectTo: params.errorCallback,
     }
   }

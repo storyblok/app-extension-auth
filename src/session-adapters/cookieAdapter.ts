@@ -1,40 +1,51 @@
 import { expireCookie, getCookie, setCookie, verifyData } from '../utils'
 import jwt from 'jsonwebtoken'
-import { Adapter } from './generalAdapter'
+import { Adapter } from './publicAdapter'
 
 const clientSecret = process.env['CLIENT_SECRET'] || ''
 
+const createScopedKey = ({
+  spaceId,
+  userId,
+  key,
+}: {
+  spaceId: string
+  userId: string
+  key: string
+}) => {
+  return `${spaceId}:${userId}:${key}`
+}
+
+// We do not use `clientId` in cookie adapter,
+// because different plugins will have different domain names,
+// and it's enough to differentiate these cookie values.
 export const cookieAdapter: Adapter = {
-  getItem: ({ req, key }) => {
-    const cookie = getCookie(req, key)
+  getItem: ({ req, spaceId, userId, key }) => {
+    const cookie = getCookie(req, createScopedKey({ spaceId, userId, key }))
 
     if (!cookie) {
       return undefined
     }
 
-    //TODO: fix typing
-    return verifyData(clientSecret)(cookie) as object
-  },
-  setItem: ({ req, res, key, value }) => {
-    const cookieValue = cookieAdapter.getItem({ req, res, key })
-
-    const isCallbackCookie = key === 'auth.sb.callback'
-
-    //todo: not fully working yet need a better way to add the sessions
-    const cookieWithAllSessions = {
-      sessions: cookieValue ? [cookieValue, value] : [value],
+    const verifiedData = verifyData(clientSecret, cookie)
+    if (!verifiedData) {
+      return undefined
+    } else {
+      return verifiedData as string
     }
-
-    const data = isCallbackCookie ? value : cookieWithAllSessions
-
-    const signedData = jwt.sign({ data }, clientSecret)
-    setCookie(res, key, signedData)
   },
-  hasItem: ({ req, res, key }) =>
-    cookieAdapter.getItem({ req, res, key }) !== undefined,
-  removeItem: ({ res, key }) => {
-    expireCookie(res, key)
+
+  setItem: ({ res, spaceId, userId, key, value }) => {
+    const signedData = jwt.sign({ data: value }, clientSecret)
+    setCookie(res, createScopedKey({ spaceId, userId, key }), signedData)
+    return true
+  },
+
+  hasItem: async (params) =>
+    (await cookieAdapter.getItem(params)) !== undefined,
+
+  removeItem: ({ res, spaceId, userId, key }) => {
+    expireCookie(res, createScopedKey({ spaceId, userId, key }))
+    return true
   },
 }
-
-// { res, key } are not enough to retrieve data from database

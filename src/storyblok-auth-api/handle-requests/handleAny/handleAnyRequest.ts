@@ -29,13 +29,12 @@ export const handleAnyRequest: HandleAuthRequest<{
   }
 
   const lastSlug = getLastSlug(url)
-
   switch (lastSlug) {
     case signinEndpoint:
-      return handleSignInRequest({ params })
+      return handleSignInRequest({ url, params, adapter })
     case callbackEndpoint:
       return handleCallbackRequest({ url, params, adapter })
     default:
-      return handleUnknownRequest({ params })
+      return handleUnknownRequest({ params, adapter })
   }
 }

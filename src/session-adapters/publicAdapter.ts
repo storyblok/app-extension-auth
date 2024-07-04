@@ -6,25 +6,37 @@ export type Adapter = {
   getItem: (params: {
     req: IncomingMessage
     res: ServerResponse
+    clientId: string
+    spaceId: string
+    userId: string
     key: string
-  }) => MaybePromise<string | object | undefined>
+  }) => MaybePromise<string | undefined>
 
   setItem: (params: {
     req: IncomingMessage
     res: ServerResponse
+    clientId: string
+    spaceId: string
+    userId: string
     key: string
-    value: string | object
-  }) => MaybePromise<void>
+    value: string
+  }) => MaybePromise<boolean>
 
   removeItem: (params: {
     req: IncomingMessage
     res: ServerResponse
+    clientId: string
+    spaceId: string
+    userId: string
     key: string
-  }) => MaybePromise<void>
+  }) => MaybePromise<boolean>
 
   hasItem: (params: {
     req: IncomingMessage
     res: ServerResponse
+    clientId: string
+    spaceId: string
+    userId: string
     key: string
   }) => MaybePromise<boolean>
 }

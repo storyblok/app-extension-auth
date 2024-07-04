@@ -1,12 +1,14 @@
+import { InternalAdapter } from '../../../session-adapters/internalAdapter'
 import { AuthHandlerParams } from '../../AuthHandlerParams'
 import { HandleAuthRequest } from '../HandleAuthRequest'
 
-import { clearCallbackData } from '../callbackCookie'
-
 export const handleUnknownRequest: HandleAuthRequest<{
   params: AuthHandlerParams
-}> = async ({ params }) => ({
-  type: 'error',
-  redirectTo: params.errorCallback,
-  sessions: [clearCallbackData],
-})
+  adapter: InternalAdapter
+}> = async ({ params, adapter }) => {
+  await adapter.removeCallbackData()
+  return {
+    type: 'error',
+    redirectTo: params.errorCallback,
+  }
+}
