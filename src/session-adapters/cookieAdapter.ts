@@ -1,6 +1,6 @@
 import { expireCookie, getCookie, setCookie, verifyData } from '../utils'
 import jwt from 'jsonwebtoken'
-import { Adapter } from './generalAdapter'
+import { Adapter } from './publicAdapter'
 
 const clientSecret = process.env['CLIENT_SECRET'] || ''
 

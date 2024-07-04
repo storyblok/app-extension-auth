@@ -1,5 +1,5 @@
 import http from 'http'
-import { Adapter, MaybePromise } from './generalAdapter'
+import { Adapter, MaybePromise } from './publicAdapter'
 import {
   CallbackCookieData,
   callbackCookieName,
