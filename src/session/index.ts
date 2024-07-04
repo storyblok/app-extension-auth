@@ -1,5 +1,5 @@
 export * from './isAppSessionQuery'
 export * from './types'
 export * from './refreshStoredAppSession'
-export * from './sessionCookieStore'
+export * from './sessionStore'
 export * from './shouldRefresh'

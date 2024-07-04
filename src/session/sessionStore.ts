@@ -34,8 +34,3 @@ export const getSessionStore: AppSessionCookieStoreFactory =
         }),
     }
   }
-
-/**
- * @deprecated `sessionCookieStore` is deprecated. Use `getSessionStore` instead.
- */
-export const sessionCookieStore = getSessionStore
