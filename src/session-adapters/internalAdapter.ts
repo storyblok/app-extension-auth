@@ -13,6 +13,7 @@ import {
 } from '../utils'
 import { AppSession } from '../session/types'
 import { AuthHandlerParams } from '../storyblok-auth-api'
+import { sessionIdentifier } from '../session/sessionIdentifier'
 
 export type InternalAdapter = {
   // session
@@ -51,7 +52,7 @@ type CreateInternalAdapter = ({
   res,
   adapter,
 }: {
-  params: Pick<AuthHandlerParams, 'clientId' | 'clientSecret' | 'cookieName'>
+  params: Pick<AuthHandlerParams, 'clientId' | 'clientSecret' | 'sessionKey'>
   req: http.IncomingMessage
   res: http.ServerResponse
   adapter: Adapter
@@ -63,7 +64,7 @@ export const createInternalAdapter: CreateInternalAdapter = ({
   res,
   adapter,
 }) => {
-  const sessionKey = params.cookieName || 'sb.auth'
+  const sessionKey = sessionIdentifier(params.sessionKey)
 
   return {
     getSession: async ({ spaceId, userId }) => {
