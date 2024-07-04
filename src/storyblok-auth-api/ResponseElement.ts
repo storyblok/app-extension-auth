@@ -5,17 +5,6 @@
  */
 export type ResponseElement = {
   type: 'success' | 'error' | 'configuration-error'
-  setCookies?: CookieElement[]
   redirectTo?: string
   message?: string
-}
-
-/**
- * Descibes the cookies to be set or removed.
- * @param name the name of the cookie to be set
- * @param value the value of the cookie to be set. When `undefined`, the cookie should be expired.
- */
-export type CookieElement = {
-  name: string
-  value: string | undefined
 }

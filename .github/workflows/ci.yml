@@ -11,16 +11,16 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - run: corepack enable
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
-          cache: 'yarn'
-      - name: Install
-        run: yarn install
+          cache: 'pnpm'
+      - run: pnpm install
       - name: Check types
-        run: yarn check:types
+        run: pnpm run check:types
       - name: Test
-        run: yarn test
+        run: pnpm run test
       - name: Build
-        run: yarn build
+        run: pnpm run build

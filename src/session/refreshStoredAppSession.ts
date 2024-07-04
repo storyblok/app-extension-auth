@@ -2,9 +2,8 @@ import { AppSession } from './types'
 import { shouldRefresh } from './shouldRefresh'
 import { refreshAppSession } from './refreshAppSession/refreshAppSession'
 import { refreshToken } from '../storyblok-auth-api'
-import { putSession, removeSession } from './crud'
 import { AuthHandlerParams } from '../storyblok-auth-api'
-import { GetCookie, SetCookie } from '../utils'
+import { InternalAdapter } from '../session-adapters/internalAdapter'
 
 export type RefreshParams = Pick<
   AuthHandlerParams,
@@ -12,8 +11,7 @@ export type RefreshParams = Pick<
 >
 export type Refresh = (
   params: RefreshParams,
-  getCookie: GetCookie,
-  setCookie: SetCookie,
+  adapter: InternalAdapter,
   appSession: AppSession | undefined,
 ) => Promise<AppSession | undefined>
 
@@ -26,8 +24,7 @@ export type Refresh = (
  */
 export const refreshStoredAppSession: Refresh = async (
   params,
-  getCookie,
-  setCookie,
+  adapter,
   currentAppSession,
 ) => {
   if (!currentAppSession) {
@@ -44,11 +41,22 @@ export const refreshStoredAppSession: Refresh = async (
     refreshToken(params, currentAppSession.region),
   )(currentAppSession)
 
+  const spaceId = String(currentAppSession.spaceId)
+  const userId = String(currentAppSession.userId)
+
   if (!newAppSession) {
     // Refresh failed -> user becomes unauthenticated
-    removeSession(params, getCookie, setCookie, currentAppSession)
+    await adapter.removeSession({
+      spaceId,
+      userId,
+    })
     return undefined
   }
 
-  return putSession(params, getCookie, setCookie, newAppSession)
+  const result = await adapter.setSession({
+    spaceId,
+    userId,
+    session: newAppSession,
+  })
+  return result ? newAppSession : undefined
 }
