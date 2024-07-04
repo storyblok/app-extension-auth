@@ -1,7 +1,6 @@
 import http from 'http'
 import { AuthHandlerParams } from './AuthHandlerParams'
 import { handleAnyRequest } from './handle-requests'
-import { reconcileNodeResponse } from './reconcileNodeResponse'
 import { cookieAdapter } from '../session-adapters/cookieAdapter'
 import { createInternalAdapter } from '../session-adapters/internalAdapter'
 
@@ -32,9 +31,22 @@ export const authHandler = (
       adapter,
     })
 
-    await reconcileNodeResponse({
-      res,
-      responseElement,
-    })
+    if (responseElement.type === 'configuration-error') {
+      console.error(
+        `@stoyblok/app-extension-auth is misconfigured: ${
+          responseElement.message ?? ''
+        }`,
+      )
+    }
+
+    if (responseElement.type === 'error' && responseElement.message) {
+      console.error(responseElement.message)
+    }
+
+    res
+      .writeHead(302, {
+        Location: responseElement.redirectTo,
+      })
+      .end()
   }
 }
