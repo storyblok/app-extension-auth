@@ -4,13 +4,12 @@ import { redirectUri } from '../redirectUri'
 import { AuthHandlerParams } from '../../AuthHandlerParams'
 import { HandleAuthRequest } from '../HandleAuthRequest'
 import { InternalAdapter } from '../../../session-adapters/internalAdapter'
-import { getQueryParams } from '../../../utils/query-params/get-query-params'
 
 export const handleSignInRequest: HandleAuthRequest<{
   url: string
   params: AuthHandlerParams
   adapter: InternalAdapter
-}> = async ({ url, params, adapter }) => {
+}> = async ({ params, adapter }) => {
   const code_verifier = generators.codeVerifier()
   const state = generators.state()
   const code_challenge = generators.codeChallenge(code_verifier)
@@ -25,15 +24,6 @@ export const handleSignInRequest: HandleAuthRequest<{
       code_challenge_method: 'S256',
       redirect_uri: redirectUri(params),
     })
-
-    const query = getQueryParams(url)
-    const isInitRequest = query.get('init_oauth')
-
-    // NOTE: This is a workaround to remove a stale cookie in case the user has reinstalled the plugin.
-    if (isInitRequest === 'true') {
-      // FIX: spaceId and userId don't exist here.
-      // await adapter.removeSession({ spaceId, userId })
-    }
 
     await adapter.setCallbackData({
       returnTo: params?.successCallback ?? '/', // TODO read from request query params, then either use the successCallback as fallback, or remove the entirely

@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 
-export const verifyData = (
+export const verifyData = <Data>(
   secret: string,
   jwtToken: string,
 ): unknown | undefined => {
@@ -12,7 +12,7 @@ export const verifyData = (
     if (!('data' in payload)) {
       return undefined
     }
-    return payload.data as unknown
+    return payload.data as Data
   } catch (e) {
     return undefined
   }
