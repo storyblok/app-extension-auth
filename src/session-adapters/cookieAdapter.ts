@@ -27,7 +27,7 @@ export const cookieAdapter: Adapter = {
       return undefined
     }
 
-    const verifiedData = verifyData(clientSecret)(cookie)
+    const verifiedData = verifyData(clientSecret, cookie)
     if (!verifiedData) {
       return undefined
     } else {

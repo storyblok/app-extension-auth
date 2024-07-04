@@ -1,6 +1,4 @@
 import jwt from 'jsonwebtoken'
 
-export const signData =
-  (secret: string) =>
-  <Data>(data: Data) =>
-    jwt.sign({ data }, secret)
+export const signData = <Data>(secret: string, data: Data) =>
+  jwt.sign({ data }, secret)

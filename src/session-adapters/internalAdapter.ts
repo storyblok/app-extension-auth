@@ -128,14 +128,14 @@ export const createInternalAdapter: CreateInternalAdapter = ({
     },
 
     setCallbackData: (data) => {
-      const signedData = signData(params.clientSecret)(data)
+      const signedData = signData(params.clientSecret, data)
       setCookie(res, callbackCookieName, signedData)
       return true
     },
 
     getCallbackData() {
       const cookie = getCookie(req, callbackCookieName)
-      const data = verifyData(params.clientSecret)(cookie || '') as
+      const data = verifyData(params.clientSecret, cookie || '') as
         | CallbackCookieData
         | undefined
       return data

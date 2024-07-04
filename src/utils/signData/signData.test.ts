@@ -12,11 +12,10 @@ const testCookieValue = {
   },
 }
 
-const sign = signData(testSecret)
-const verify = verifyData(testSecret)
-
 describe('signData', () => {
   it('should be the inverse of verifyData', () => {
-    expect(testCookieValue).toEqual(verify(sign(testCookieValue)))
+    expect(testCookieValue).toEqual(
+      verifyData(testSecret, signData(testSecret, testCookieValue)),
+    )
   })
 })
