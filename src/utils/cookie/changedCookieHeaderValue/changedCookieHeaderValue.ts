@@ -4,5 +4,20 @@
  * @param name
  * @param value
  */
-export const changedCookieHeaderValue = (name: string, value: string) =>
-  `${name}=${value}; path=/; samesite=none; secure; httponly; partitioned;`
+export const changedCookieHeaderValue = (
+  name: string,
+  value: string,
+  expires?: Date,
+) => {
+  return [
+    `${name}=${value}`,
+    'path=/',
+    expires ? `Expires=${expires.toISOString()}; ` : undefined,
+    'samesite=none',
+    'secure',
+    'httponly',
+    'partitioned',
+  ]
+    .filter(Boolean)
+    .join('; ')
+}
