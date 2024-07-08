@@ -52,7 +52,7 @@ type CreateInternalAdapter = ({
   res,
   adapter,
 }: {
-  params: Pick<AuthHandlerParams, 'clientId' | 'clientSecret' | 'sessionKey'>
+  params: Pick<AuthHandlerParams, 'clientId' | 'clientSecret'>
   req: http.IncomingMessage
   res: http.ServerResponse
   adapter: Adapter
@@ -64,8 +64,6 @@ export const createInternalAdapter: CreateInternalAdapter = ({
   res,
   adapter,
 }) => {
-  const sessionKey = sessionIdentifier(params.sessionKey)
-
   return {
     getSession: async ({ spaceId, userId }) => {
       const session = await adapter.getItem({
@@ -74,7 +72,6 @@ export const createInternalAdapter: CreateInternalAdapter = ({
         clientId: params.clientId,
         spaceId,
         userId,
-        key: sessionKey,
       })
       if (!session) {
         return undefined
@@ -94,7 +91,6 @@ export const createInternalAdapter: CreateInternalAdapter = ({
           clientId: params.clientId,
           spaceId,
           userId,
-          key: sessionKey,
           value: JSON.stringify(session),
         })
       } catch (err) {
@@ -109,7 +105,6 @@ export const createInternalAdapter: CreateInternalAdapter = ({
         clientId: params.clientId,
         spaceId,
         userId,
-        key: sessionKey,
       }),
 
     removeSession: async ({ spaceId, userId }) => {
@@ -120,7 +115,6 @@ export const createInternalAdapter: CreateInternalAdapter = ({
           clientId: params.clientId,
           spaceId,
           userId,
-          key: sessionKey,
         })
       } catch (err) {
         return false
@@ -133,7 +127,7 @@ export const createInternalAdapter: CreateInternalAdapter = ({
       return true
     },
 
-    getCallbackData() {
+    getCallbackData: () => {
       const cookie = getCookie(req, callbackCookieName)
       const data = verifyData(params.clientSecret, cookie || '') as
         | CallbackCookieData
@@ -141,7 +135,7 @@ export const createInternalAdapter: CreateInternalAdapter = ({
       return data
     },
 
-    removeCallbackData() {
+    removeCallbackData: () => {
       expireCookie(res, callbackCookieName)
       return true
     },

@@ -9,7 +9,6 @@ export type Adapter = {
     clientId: string
     spaceId: string
     userId: string
-    key: string
   }) => MaybePromise<string | undefined>
 
   setItem: (params: {
@@ -18,7 +17,6 @@ export type Adapter = {
     clientId: string
     spaceId: string
     userId: string
-    key: string
     value: string
   }) => MaybePromise<boolean>
 
@@ -28,7 +26,6 @@ export type Adapter = {
     clientId: string
     spaceId: string
     userId: string
-    key: string
   }) => MaybePromise<boolean>
 
   hasItem: (params: {
@@ -37,6 +34,5 @@ export type Adapter = {
     clientId: string
     spaceId: string
     userId: string
-    key: string
   }) => MaybePromise<boolean>
 }

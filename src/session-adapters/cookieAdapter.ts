@@ -19,9 +19,15 @@ const createScopedKey = ({
 // We do not use `clientId` in cookie adapter,
 // because different plugins will have different domain names,
 // and it's enough to differentiate these cookie values.
+
+const sessionKey = 'sb.auth'
+//NOTE: possibly cookieAdapter can become createCookieAdapter(key: string)
 export const cookieAdapter: Adapter = {
-  getItem: ({ req, spaceId, userId, key }) => {
-    const cookie = getCookie(req, createScopedKey({ spaceId, userId, key }))
+  getItem: ({ req, spaceId, userId }) => {
+    const cookie = getCookie(
+      req,
+      createScopedKey({ spaceId, userId, key: sessionKey }),
+    )
 
     if (!cookie) {
       return undefined
@@ -35,14 +41,14 @@ export const cookieAdapter: Adapter = {
     }
   },
 
-  setItem: ({ res, spaceId, userId, key, value }) => {
+  setItem: ({ res, spaceId, userId,  value }) => {
     const expires = new Date()
     expires.setDate(expires.getDate() + 7)
 
     const signedData = jwt.sign({ data: value }, clientSecret)
     setCookie(
       res,
-      createScopedKey({ spaceId, userId, key }),
+      createScopedKey({ spaceId, userId, key: sessionKey }),
       signedData,
       expires,
     )
@@ -52,8 +58,8 @@ export const cookieAdapter: Adapter = {
   hasItem: async (params) =>
     (await cookieAdapter.getItem(params)) !== undefined,
 
-  removeItem: ({ res, spaceId, userId, key }) => {
-    expireCookie(res, createScopedKey({ spaceId, userId, key }))
+  removeItem: ({ res, spaceId, userId }) => {
+    expireCookie(res, createScopedKey({ spaceId, userId, key: sessionKey }))
     return true
   },
 }
