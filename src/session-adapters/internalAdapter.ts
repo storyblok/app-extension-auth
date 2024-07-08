@@ -65,26 +65,29 @@ export const createInternalAdapter: CreateInternalAdapter = ({
 }) => {
   return {
     getSession: async ({ spaceId, userId }) => {
-      const session = await adapter.getItem({
-        req,
-        res,
-        clientId: params.clientId,
-        spaceId,
-        userId,
-      })
-      if (!session) {
-        return undefined
-      }
       try {
+        const session = await adapter.getItem({
+          req,
+          res,
+          clientId: params.clientId,
+          spaceId,
+          userId,
+        })
+
+        if (!session) {
+          return undefined
+        }
+
         return session
-      } catch (err) {
+      } catch (e) {
+        console.log('Retrieving the session failed: ', e)
         return undefined
       }
     },
 
     setSession: async ({ spaceId, userId, session }) => {
       try {
-        return await adapter.setItem({
+        await adapter.setItem({
           req,
           res,
           clientId: params.clientId,
@@ -92,30 +95,39 @@ export const createInternalAdapter: CreateInternalAdapter = ({
           userId,
           value: session,
         })
-      } catch (err) {
+      } catch (e) {
+        console.log('Setting a session failed: ', e)
         return false
       }
     },
 
-    hasSession: ({ spaceId, userId }) =>
-      adapter.hasItem({
-        req,
-        res,
-        clientId: params.clientId,
-        spaceId,
-        userId,
-      }),
-
-    removeSession: async ({ spaceId, userId }) => {
+    hasSession: ({ spaceId, userId }) => {
       try {
-        return await adapter.removeItem({
+        adapter.hasItem({
           req,
           res,
           clientId: params.clientId,
           spaceId,
           userId,
         })
-      } catch (err) {
+      } catch (e) {
+        console.log('Session could not be found: ', e)
+
+        return false
+      }
+    },
+
+    removeSession: async ({ spaceId, userId }) => {
+      try {
+        await adapter.removeItem({
+          req,
+          res,
+          clientId: params.clientId,
+          spaceId,
+          userId,
+        })
+      } catch (e) {
+        console.log('Removing session failed', e)
         return false
       }
     },
