@@ -96,7 +96,7 @@ export const createInternalAdapter: CreateInternalAdapter = ({
           value: session,
         })
       } catch (e) {
-        console.log('Setting a session failed: ', e)
+        console.log('Setting the session failed: ', e)
         return false
       }
     },
@@ -127,7 +127,7 @@ export const createInternalAdapter: CreateInternalAdapter = ({
           userId,
         })
       } catch (e) {
-        console.log('Removing session failed', e)
+        console.log('Removing the session failed: ', e)
         return false
       }
     },
