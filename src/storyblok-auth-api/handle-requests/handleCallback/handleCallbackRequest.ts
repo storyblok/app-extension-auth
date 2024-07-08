@@ -1,4 +1,3 @@
-import { AppSession } from '../../../session'
 import { appendQueryParams } from '../../../utils/query-params/append-query-params'
 import { AuthHandlerParams } from '../../AuthHandlerParams'
 import { regionFromUrl } from './spaceIdFromUrl'
@@ -6,10 +5,10 @@ import { HandleAuthRequest } from '../HandleAuthRequest'
 import { fetchAppSession } from './fetchAppSession'
 import { InternalAdapter } from '../../../session-adapters/internalAdapter'
 
-export type AppSessionQueryParams = Record<
-  keyof Pick<AppSession, 'spaceId' | 'userId'>,
-  string
->
+export type AppSessionQueryParams = {
+  space_id: string
+  user_id: string
+}
 
 export const handleCallbackRequest: HandleAuthRequest<{
   params: AuthHandlerParams
@@ -53,8 +52,8 @@ export const handleCallbackRequest: HandleAuthRequest<{
     const spaceId = appSession.spaceId.toString()
     const userId = appSession.userId.toString()
     const queryParams: AppSessionQueryParams = {
-      spaceId,
-      userId,
+      space_id: spaceId,
+      user_id: userId,
     }
     const redirectTo = appendQueryParams(returnTo, queryParams)
 
