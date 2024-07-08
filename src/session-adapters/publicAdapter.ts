@@ -1,4 +1,5 @@
 import { IncomingMessage, ServerResponse } from 'node:http'
+import { AppSession } from '../session'
 
 export type MaybePromise<T> = T | Promise<T>
 
@@ -9,7 +10,7 @@ export type Adapter = {
     clientId: string
     spaceId: string
     userId: string
-  }) => MaybePromise<string | undefined>
+  }) => MaybePromise<AppSession | undefined>
 
   setItem: (params: {
     req: IncomingMessage
@@ -17,7 +18,7 @@ export type Adapter = {
     clientId: string
     spaceId: string
     userId: string
-    value: string
+    value: AppSession
   }) => MaybePromise<boolean>
 
   removeItem: (params: {

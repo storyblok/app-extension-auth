@@ -1,6 +1,7 @@
 import { expireCookie, getCookie, setCookie, verifyData } from '../utils'
 import jwt from 'jsonwebtoken'
 import { Adapter } from './publicAdapter'
+import { isAppSession } from '../session'
 
 const clientSecret = process.env['CLIENT_SECRET'] || ''
 
@@ -34,11 +35,12 @@ export const cookieAdapter: Adapter = {
     }
 
     const verifiedData = verifyData(clientSecret, cookie)
-    if (!verifiedData) {
+
+    if (!isAppSession(verifiedData)) {
       return undefined
-    } else {
-      return verifiedData as string
     }
+
+    return verifiedData
   },
 
   setItem: ({ res, spaceId, userId,  value }) => {

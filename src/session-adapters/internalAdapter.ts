@@ -13,7 +13,6 @@ import {
 } from '../utils'
 import { AppSession } from '../session/types'
 import { AuthHandlerParams } from '../storyblok-auth-api'
-import { sessionIdentifier } from '../session/sessionIdentifier'
 
 export type InternalAdapter = {
   // session
@@ -77,7 +76,7 @@ export const createInternalAdapter: CreateInternalAdapter = ({
         return undefined
       }
       try {
-        return JSON.parse(session) as AppSession
+        return session
       } catch (err) {
         return undefined
       }
@@ -91,7 +90,7 @@ export const createInternalAdapter: CreateInternalAdapter = ({
           clientId: params.clientId,
           spaceId,
           userId,
-          value: JSON.stringify(session),
+          value: session,
         })
       } catch (err) {
         return false
