@@ -36,8 +36,16 @@ export const cookieAdapter: Adapter = {
   },
 
   setItem: ({ res, spaceId, userId, key, value }) => {
+    const expires = new Date()
+    expires.setDate(expires.getDate() + 7)
+
     const signedData = jwt.sign({ data: value }, clientSecret)
-    setCookie(res, createScopedKey({ spaceId, userId, key }), signedData)
+    setCookie(
+      res,
+      createScopedKey({ spaceId, userId, key }),
+      signedData,
+      expires,
+    )
     return true
   },
 

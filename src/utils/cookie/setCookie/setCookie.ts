@@ -24,9 +24,10 @@ const withCookie = (
   headers: string[],
   name: string,
   value: string,
+  expires?: Date,
 ): string[] => [
   ...headers.filter((header) => !header.startsWith(`${name}=`)),
-  changedCookieHeaderValue(name, value),
+  changedCookieHeaderValue(name, value, expires),
 ]
 
 const withExpiredCookie = (headers: string[], name: string): string[] => [
@@ -38,8 +39,12 @@ export const setCookie = (
   res: http.ServerResponse,
   name: string,
   value: string,
+  expires?: Date,
 ): void =>
-  void res.setHeader('Set-Cookie', withCookie(cookieHeaders(res), name, value))
+  void res.setHeader(
+    'Set-Cookie',
+    withCookie(cookieHeaders(res), name, value, expires),
+  )
 
 export const expireCookie = (res: http.ServerResponse, name: string) =>
   void res.setHeader('Set-Cookie', withExpiredCookie(cookieHeaders(res), name))
