@@ -4,7 +4,7 @@ A JavaScript library for managing authentication for [Storyblok](https://www.sto
 
 ## Migrating v1 to v2
 
-The `@storyblok/app-extension-auth` v1 stored the access token in a cookie. However, in a future version of v2, the library will offer an adapter pattern, allowing you to store the access token elsewhere, such as in a dedicated database. And here are the breaking changes:
+The `@storyblok/app-extension-auth` v1 stored the access token in a cookie. However, in a future version of v2, the library will offer an adapter pattern, allowing you to store the access token elsewhere, such as in a dedicated database. The following breaking changes abstract the code to make this transition easier in the near future:
 
 ### `sessionCookieStore` → `getSessionStore`
 
