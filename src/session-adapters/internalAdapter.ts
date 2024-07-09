@@ -66,7 +66,7 @@ export const createInternalAdapter: CreateInternalAdapter = ({
   return {
     getSession: async ({ spaceId, userId }) => {
       try {
-        const session = await adapter.getItem({
+        const session = await adapter.getSession({
           req,
           res,
           clientId: params.clientId,
@@ -87,45 +87,50 @@ export const createInternalAdapter: CreateInternalAdapter = ({
 
     setSession: async ({ spaceId, userId, session }) => {
       try {
-        await adapter.setItem({
+        const isSessionSet = await adapter.setSession({
           req,
           res,
           clientId: params.clientId,
           spaceId,
           userId,
-          value: session,
+          session,
         })
+
+        return isSessionSet
       } catch (e) {
         console.log('Setting the session failed: ', e)
         return false
       }
     },
 
-    hasSession: ({ spaceId, userId }) => {
+    hasSession: async ({ spaceId, userId }) => {
       try {
-        adapter.hasItem({
+        const hasSession = await adapter.hasSession({
           req,
           res,
           clientId: params.clientId,
           spaceId,
           userId,
         })
+
+        return hasSession
       } catch (e) {
         console.log('Session could not be found: ', e)
-
         return false
       }
     },
 
     removeSession: async ({ spaceId, userId }) => {
       try {
-        await adapter.removeItem({
+        const sessionRemoved = await adapter.removeSession({
           req,
           res,
           clientId: params.clientId,
           spaceId,
           userId,
         })
+
+        return sessionRemoved
       } catch (e) {
         console.log('Removing the session failed: ', e)
         return false

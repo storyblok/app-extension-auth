@@ -4,7 +4,7 @@ import { AppSession } from '../session'
 export type MaybePromise<T> = T | Promise<T>
 
 export type Adapter = {
-  getItem: (params: {
+  getSession: (params: {
     req: IncomingMessage
     res: ServerResponse
     clientId: string
@@ -12,16 +12,16 @@ export type Adapter = {
     userId: string
   }) => MaybePromise<AppSession | undefined>
 
-  setItem: (params: {
+  setSession: (params: {
     req: IncomingMessage
     res: ServerResponse
     clientId: string
     spaceId: string
     userId: string
-    value: AppSession
+    session: AppSession
   }) => MaybePromise<boolean>
 
-  removeItem: (params: {
+  removeSession: (params: {
     req: IncomingMessage
     res: ServerResponse
     clientId: string
@@ -29,7 +29,7 @@ export type Adapter = {
     userId: string
   }) => MaybePromise<boolean>
 
-  hasItem: (params: {
+  hasSession: (params: {
     req: IncomingMessage
     res: ServerResponse
     clientId: string

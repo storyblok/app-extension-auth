@@ -23,8 +23,9 @@ const createScopedKey = ({
 
 const sessionKey = 'sb.auth'
 //NOTE: possibly cookieAdapter can become createCookieAdapter(key: string)
+
 export const cookieAdapter: Adapter = {
-  getItem: ({ req, spaceId, userId }) => {
+  getSession: ({ req, spaceId, userId }) => {
     const cookie = getCookie(
       req,
       createScopedKey({ spaceId, userId, key: sessionKey }),
@@ -43,11 +44,11 @@ export const cookieAdapter: Adapter = {
     return verifiedData
   },
 
-  setItem: ({ res, spaceId, userId,  value }) => {
+  setSession: ({ res, spaceId, userId, session }) => {
     const expires = new Date()
     expires.setDate(expires.getDate() + 7)
 
-    const signedData = jwt.sign({ data: value }, clientSecret)
+    const signedData = jwt.sign({ data: session }, clientSecret)
     setCookie(
       res,
       createScopedKey({ spaceId, userId, key: sessionKey }),
@@ -57,10 +58,10 @@ export const cookieAdapter: Adapter = {
     return true
   },
 
-  hasItem: async (params) =>
-    (await cookieAdapter.getItem(params)) !== undefined,
+  hasSession: async (params) =>
+    (await cookieAdapter.getSession(params)) !== undefined,
 
-  removeItem: ({ res, spaceId, userId }) => {
+  removeSession: ({ res, spaceId, userId }) => {
     expireCookie(res, createScopedKey({ spaceId, userId, key: sessionKey }))
     return true
   },
