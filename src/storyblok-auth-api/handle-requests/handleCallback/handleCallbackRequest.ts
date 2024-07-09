@@ -35,7 +35,6 @@ export const handleCallbackRequest: HandleAuthRequest<{
 
     const { codeVerifier, state, returnTo } = callbackData
 
-    //NOTE: this is why appSession needs to be force to have the specific type
     const appSession = await fetchAppSession(params, {
       region,
       codeVerifier,
