@@ -1,7 +1,12 @@
-import { AppSessionCookieStoreFactory, AppSessionStore } from './types'
+import {
+  AppSessionCookieStoreFactory,
+  AppSessionQuery,
+  AppSessionStore,
+} from './types'
 import { refreshStoredAppSession } from './refreshStoredAppSession'
 import { cookieAdapter } from '../session-adapters/cookieAdapter'
 import { createInternalAdapter } from '../session-adapters/internalAdapter'
+import { IncomingMessage } from 'http'
 
 export const getSessionStore: AppSessionCookieStoreFactory =
   (params) =>
@@ -34,3 +39,34 @@ export const getSessionStore: AppSessionCookieStoreFactory =
         }),
     }
   }
+
+export const inferSessionQuery = (
+  req: IncomingMessage,
+): AppSessionQuery | undefined => {
+  if (!req.url) {
+    return
+  }
+  const url = new URL(req.url)
+  const spaceId = url.searchParams.get('space_id')
+  const userId = url.searchParams.get('user_id')
+  if (spaceId && userId) {
+    return {
+      spaceId,
+      userId,
+    }
+  }
+
+  if (req.headers.referer) {
+    const refererUrl = new URL(req.url)
+    const spaceId = refererUrl.searchParams.get('space_id')
+    const userId = refererUrl.searchParams.get('user_id')
+    if (spaceId && userId) {
+      return {
+        spaceId,
+        userId,
+      }
+    }
+  }
+
+  return undefined
+}
