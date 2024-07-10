@@ -34,7 +34,6 @@ export const handleCallbackRequest: HandleAuthRequest<{
     }
 
     const { codeVerifier, state, returnTo } = callbackData
-
     const appSession = await fetchAppSession(params, {
       region,
       codeVerifier,
