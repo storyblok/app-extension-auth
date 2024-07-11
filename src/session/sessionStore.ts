@@ -4,7 +4,7 @@ import {
   AppSessionStore,
 } from './types'
 import { refreshStoredAppSession } from './refreshStoredAppSession'
-import { cookieAdapter } from '../session-adapters/cookieAdapter'
+import { createCookieAdapter } from '../session-adapters/createCookieAdapter'
 import { createInternalAdapter } from '../session-adapters/internalAdapter'
 import { IncomingMessage } from 'http'
 import { getQueryFromUrl } from '../utils/query-params/get-query-string'
@@ -16,7 +16,7 @@ export const getSessionStore: AppSessionCookieStoreFactory =
       params,
       req: requestParams.req,
       res: requestParams.res,
-      adapter: cookieAdapter,
+      adapter: createCookieAdapter({ sessionKey: params.sessionKey }),
     })
 
     return {
