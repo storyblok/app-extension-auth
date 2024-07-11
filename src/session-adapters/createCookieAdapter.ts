@@ -6,22 +6,6 @@ import { isAppSession } from '../session'
 const clientSecret = process.env['CLIENT_SECRET'] || ''
 const defaultSessionKey = 'sb.auth'
 
-const createScopedKey = ({
-  spaceId,
-  userId,
-  key,
-}: {
-  spaceId: string
-  userId: string
-  key: string
-}) => {
-  return `${spaceId}:${userId}:${key}`
-}
-
-// We do not use `clientId` in cookie adapter,
-// because different plugins will have different domain names,
-// and it's enough to differentiate these cookie values.
-
 type CreateCookieAdapter = (params?: {
   sessionKey?: string | undefined
 }) => Adapter
@@ -72,6 +56,21 @@ export const createCookieAdapter: CreateCookieAdapter = (params) => {
   }
 
   return adapter
+}
+
+// We do not use `clientId` in cookie adapter,
+// because different plugins will have different domain names,
+// and it's enough to differentiate these cookie values.
+const createScopedKey = ({
+  spaceId,
+  userId,
+  key,
+}: {
+  spaceId: string
+  userId: string
+  key: string
+}) => {
+  return `${spaceId}:${userId}:${key}`
 }
 
 //TODO: extract to util
