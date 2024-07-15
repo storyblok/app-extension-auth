@@ -13,7 +13,6 @@ import {
 } from '../utils'
 import { AppSession } from '../session/types'
 import { AuthHandlerParams } from '../storyblok-auth-api'
-import { sessionIdentifier } from '../session/sessionIdentifier'
 
 export type InternalAdapter = {
   // session
@@ -52,7 +51,7 @@ type CreateInternalAdapter = ({
   res,
   adapter,
 }: {
-  params: Pick<AuthHandlerParams, 'clientId' | 'clientSecret' | 'sessionKey'>
+  params: Pick<AuthHandlerParams, 'clientId' | 'clientSecret'>
   req: http.IncomingMessage
   res: http.ServerResponse
   adapter: Adapter
@@ -64,65 +63,76 @@ export const createInternalAdapter: CreateInternalAdapter = ({
   res,
   adapter,
 }) => {
-  const sessionKey = sessionIdentifier(params.sessionKey)
-
   return {
     getSession: async ({ spaceId, userId }) => {
-      const session = await adapter.getItem({
-        req,
-        res,
-        clientId: params.clientId,
-        spaceId,
-        userId,
-        key: sessionKey,
-      })
-      if (!session) {
-        return undefined
-      }
       try {
-        return JSON.parse(session) as AppSession
-      } catch (err) {
+        const session = await adapter.getSession({
+          req,
+          res,
+          clientId: params.clientId,
+          spaceId,
+          userId,
+        })
+
+        if (!session) {
+          return undefined
+        }
+
+        return session
+      } catch (e) {
+        console.log('Retrieving the session failed: ', e)
         return undefined
       }
     },
 
     setSession: async ({ spaceId, userId, session }) => {
       try {
-        return await adapter.setItem({
+        const isSessionSet = await adapter.setSession({
           req,
           res,
           clientId: params.clientId,
           spaceId,
           userId,
-          key: sessionKey,
-          value: JSON.stringify(session),
+          session,
         })
-      } catch (err) {
+
+        return isSessionSet
+      } catch (e) {
+        console.log('Setting the session failed: ', e)
         return false
       }
     },
 
-    hasSession: ({ spaceId, userId }) =>
-      adapter.hasItem({
-        req,
-        res,
-        clientId: params.clientId,
-        spaceId,
-        userId,
-        key: sessionKey,
-      }),
-
-    removeSession: async ({ spaceId, userId }) => {
+    hasSession: async ({ spaceId, userId }) => {
       try {
-        return await adapter.removeItem({
+        const hasSession = await adapter.hasSession({
           req,
           res,
           clientId: params.clientId,
           spaceId,
           userId,
-          key: sessionKey,
         })
-      } catch (err) {
+
+        return hasSession
+      } catch (e) {
+        console.log('Session could not be found: ', e)
+        return false
+      }
+    },
+
+    removeSession: async ({ spaceId, userId }) => {
+      try {
+        const sessionRemoved = await adapter.removeSession({
+          req,
+          res,
+          clientId: params.clientId,
+          spaceId,
+          userId,
+        })
+
+        return sessionRemoved
+      } catch (e) {
+        console.log('Removing the session failed: ', e)
         return false
       }
     },
@@ -133,7 +143,7 @@ export const createInternalAdapter: CreateInternalAdapter = ({
       return true
     },
 
-    getCallbackData() {
+    getCallbackData: () => {
       const cookie = getCookie(req, callbackCookieName)
       const data = verifyData(params.clientSecret, cookie || '') as
         | CallbackCookieData
@@ -141,7 +151,7 @@ export const createInternalAdapter: CreateInternalAdapter = ({
       return data
     },
 
-    removeCallbackData() {
+    removeCallbackData: () => {
       expireCookie(res, callbackCookieName)
       return true
     },

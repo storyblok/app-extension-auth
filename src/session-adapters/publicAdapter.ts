@@ -1,42 +1,33 @@
 import { IncomingMessage, ServerResponse } from 'node:http'
+import { AppSession } from '../session'
 
 export type MaybePromise<T> = T | Promise<T>
 
 export type Adapter = {
-  getItem: (params: {
-    req: IncomingMessage
-    res: ServerResponse
-    clientId: string
-    spaceId: string
-    userId: string
-    key: string
-  }) => MaybePromise<string | undefined>
-
-  setItem: (params: {
-    req: IncomingMessage
-    res: ServerResponse
-    clientId: string
-    spaceId: string
-    userId: string
-    key: string
-    value: string
-  }) => MaybePromise<boolean>
-
-  removeItem: (params: {
-    req: IncomingMessage
-    res: ServerResponse
-    clientId: string
-    spaceId: string
-    userId: string
-    key: string
-  }) => MaybePromise<boolean>
-
-  hasItem: (params: {
-    req: IncomingMessage
-    res: ServerResponse
-    clientId: string
-    spaceId: string
-    userId: string
-    key: string
-  }) => MaybePromise<boolean>
+  getSession: GetSession
+  setSession: SetSession
+  removeSession: RemoveSession
+  hasSession: HasSession
 }
+
+type BaseSessionParams = {
+  req: IncomingMessage
+  res: ServerResponse
+  clientId: string
+  spaceId: string
+  userId: string
+}
+
+type GetSession = (
+  params: BaseSessionParams,
+) => MaybePromise<AppSession | undefined>
+
+type SetSession = (
+  params: BaseSessionParams & {
+    session: AppSession
+  },
+) => MaybePromise<boolean>
+
+type RemoveSession = (params: BaseSessionParams) => MaybePromise<boolean>
+
+type HasSession = (params: BaseSessionParams) => MaybePromise<boolean>

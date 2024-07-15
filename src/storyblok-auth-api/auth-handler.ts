@@ -1,7 +1,7 @@
 import http from 'http'
 import { AuthHandlerParams } from './AuthHandlerParams'
 import { handleAnyRequest } from './handle-requests'
-import { cookieAdapter } from '../session-adapters/cookieAdapter'
+import { createCookieAdapter } from '../session-adapters/createCookieAdapter'
 import { createInternalAdapter } from '../session-adapters/internalAdapter'
 
 /**
@@ -22,7 +22,7 @@ export const authHandler = (
       params,
       req,
       res,
-      adapter: cookieAdapter,
+      adapter: createCookieAdapter({ sessionKey: params.sessionKey }),
     })
 
     const responseElement = await handleAnyRequest({

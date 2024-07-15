@@ -4,9 +4,10 @@ import {
   AppSessionStore,
 } from './types'
 import { refreshStoredAppSession } from './refreshStoredAppSession'
-import { cookieAdapter } from '../session-adapters/cookieAdapter'
+import { createCookieAdapter } from '../session-adapters/createCookieAdapter'
 import { createInternalAdapter } from '../session-adapters/internalAdapter'
 import { IncomingMessage } from 'http'
+import { getQueryFromUrl } from '../utils/query-params/get-query-string'
 
 export const getSessionStore: AppSessionCookieStoreFactory =
   (params) =>
@@ -15,7 +16,7 @@ export const getSessionStore: AppSessionCookieStoreFactory =
       params,
       req: requestParams.req,
       res: requestParams.res,
-      adapter: cookieAdapter,
+      adapter: createCookieAdapter({ sessionKey: params.sessionKey }),
     })
 
     return {
@@ -46,27 +47,36 @@ export const inferSessionQuery = (
   if (!req.url) {
     return
   }
-  const url = new URL(req.url)
-  const spaceId = url.searchParams.get('space_id')
-  const userId = url.searchParams.get('user_id')
-  if (spaceId && userId) {
-    return {
-      spaceId,
-      userId,
-    }
+
+  const sessionFromUrl = getSessionFromUrl(req.url)
+
+  if (sessionFromUrl) {
+    return sessionFromUrl
   }
 
   if (req.headers.referer) {
-    const refererUrl = new URL(req.url)
-    const spaceId = refererUrl.searchParams.get('space_id')
-    const userId = refererUrl.searchParams.get('user_id')
-    if (spaceId && userId) {
-      return {
-        spaceId,
-        userId,
-      }
-    }
+    return getSessionFromUrl(req.headers.referer)
   }
 
   return undefined
+}
+
+const getSessionFromUrl = (url: string): AppSessionQuery | undefined => {
+  const query = getQueryFromUrl(url)
+
+  if (!query) {
+    return undefined
+  }
+
+  const spaceId = query.get('space_id')
+  const userId = query.get('user_id')
+
+  if (!spaceId || !userId) {
+    return undefined
+  }
+
+  return {
+    spaceId,
+    userId,
+  }
 }
