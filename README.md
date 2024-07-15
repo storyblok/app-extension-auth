@@ -2,27 +2,64 @@
 
 A JavaScript library for managing authentication for [Storyblok](https://www.storyblok.com) apps.
 
+## Migrating v1 to v2
+
+The `@storyblok/app-extension-auth` v1 stored the access token in a cookie. However, in a future version of v2, the library will offer an adapter pattern, allowing you to store the access token elsewhere, such as in a dedicated database. The following breaking changes abstract the code to make this transition easier in the near future:
+
+### `sessionCookieStore` → `getSessionStore`
+
+```js
+// from
+import { sessionCookieStore } from '@storyblok/app-extension-auth'
+
+// to
+import { getSessionStore } from '@storyblok/app-extension-auth'
+```
+
+### `getSessionStore`
+
+```js
+const sessionStore = getSessionStore(authHandlerParams)({
+  req: event.node.req,
+  res: event.node.res,
+})
+```
+
+The `sessionStore` created by `sessionCookieStore` now has three methods: `get`, `put`, and `remove`. The `getAll` method is no longer provided. If you believe the `getAll` method is still useful for your use case, please let us know by opening a GitHub issue.
+
+The `put` and `remove` methods now return a `Promise<boolean>` instead of a `Promise<void>`.
+
+### `AuthHandlerParams`
+
+```js
+import { authHandler } from '@storyblok/app-extension-auth'
+const params: AuthHandlerParams = {
+  // ...
+}
+authHandler(params)
+```
+
+The parameter `AuthHandlerParams['cookieName']` has been renamed to `AuthHandlerParams['sessionKey']`.
+
 ## Getting Started
 
 See our starters:
 
-* [Next.js](https://github.com/storyblok/custom-app-examples/tree/main/app-nextjs-starter)
+- [Next.js](https://github.com/storyblok/custom-app-examples/tree/main/app-nextjs-starter)
 
 ### Install the app
 
 Install with npm:
 
 ```shell
-npm install --save-exact @storyblok/app-extension-auth
+npm install @storyblok/app-extension-auth
 ```
 
 or with Yarn:
 
 ```shell
-yarn add --exact @storyblok/app-extension-auth
+yarn add @storyblok/app-extension-auth
 ```
-
-Note: the `@storyblok/app-extension-auth` is currently in alpha, and is prone to changes. Therefore, save the [exact version](https://docs.npmjs.com/cli/v8/configuring-npm/package-json#dependencies) to your `package.json` with the commands above. 
 
 ### Set a URL
 
@@ -38,11 +75,11 @@ ngrok http 3000
 
 Create an App in Storyblok's Partner Portal. Then open app's settings, navigate to _Oauth 2_, and configure the following values:
 
-* **URL to your app**: the index page of your app. For example, `https://my-app.com/`.
+- **URL to your app**: the index page of your app. For example, `https://my-app.com/`.
 
-* **OAuth2 callback URL**: the api endpoint that will initiate the OAuth flow.
-  * Calculated as: `{baseUrl}/{endpointPrefix}/storyblok/callback`
-  * Example value: `https://my-app.com/api/connect/storyblok/callback`
+- **OAuth2 callback URL**: the api endpoint that will initiate the OAuth flow.
+  - Calculated as: `{baseUrl}/{endpointPrefix}/storyblok/callback`
+  - Example value: `https://my-app.com/api/connect/storyblok/callback`
 
 Substitute `{baseUrl}` and `{endpointPrefix}` for your own values. These parameters will be referenced again in your code; see the next section.
 
@@ -54,43 +91,45 @@ In your source code, create the following object (you will need it later):
 import { AuthHandlerParams } from '@storyblok/app-extension-auth'
 
 export const params: AuthHandlerParams = {
-  clientId: process.env.APP_CLIENT_ID,      
+  clientId: process.env.APP_CLIENT_ID,
   clientSecret: process.env.APP_CLIENT_SECRET,
-  baseUrl: process.env.APP_URL,  
+  baseUrl: process.env.APP_URL,
   successCallback: '/',
   errorCallback: '/401',
-  endpointPrefix: '/api/connect',  
+  endpointPrefix: '/api/connect',
 }
 ```
 
 Some variables should be loaded via environmental variables (`.env.local`):
 
-* `clientId` -- The client ID is a public identifier for your apps. Find the Client ID in the app settings on Storyblok.
-* `clientSecret` -- The client secret is a secret known only to the application and the authorization server. Find the client secret in the app settings on Storyblok.
-    
-    Load it into the application as an environmental variable.
-    It must be kept confidential.
-* `baseUrl` -- The base URL specifies the base URL to use for all relative authentication API endpoints created by authHandler().
+- `clientId` -- The client ID is a public identifier for your apps. Find the Client ID in the app settings on Storyblok.
+- `clientSecret` -- The client secret is a secret known only to the application and the authorization server. Find the client secret in the app settings on Storyblok.
+  Load it into the application as an environmental variable.
+  It must be kept confidential.
+- `baseUrl` -- The base URL specifies the base URL to use for all relative authentication API endpoints created by authHandler().
   The base URL must be absolute and secure with https.
-  
+
   For example, the base URL `https://my-app.my-domain.com/` will create the following api endpoints:
+
   - `https://my-app.my-domain.com/storyblok` for initiating the authentication flow
   - `https://my-app.my-domain.com/storyblok/callback` as the OAuth2 callback URL
 
 The other variables can be hard-coded:
 
-* `successCallback` -- Specifies the URL that the user agent will be redirected to after a _successful_ authentication flow. Defaults to `"/"`.
-* `errorCallback` -- Specifies the URL that the user agent will be redirected to after an _unsuccessful_ authentication flow. If omitted, the user agent will receive a 401 response without redirect.
-* `endpointPrefix` -- Specifies the partial URL that is located between the baseUrl and the
+- `successCallback` -- Specifies the URL that the user agent will be redirected to after a _successful_ authentication flow. Defaults to `"/"`.
+- `errorCallback` -- Specifies the URL that the user agent will be redirected to after an _unsuccessful_ authentication flow. If omitted, the user agent will receive a 401 response without redirect.
+- `endpointPrefix` -- Specifies the partial URL that is located between the baseUrl and the
   authentication API endpoints.
 
-    For example, the following two properties
-    - `baseUrl: "https://my-app.my-domain.com/"`
-    - `endpointPrefix: "api/authenticate"`
+  For example, the following two properties
 
-    will result in the API endpoints
-    - `https://my-app.my-domain.com/api/authenticate/storyblok` for initiating the authentication flow
-    - `https://my-app.my-domain.com/api/authenticate/storyblok/callback` as the OAuth2 callback URL
+  - `baseUrl: "https://my-app.my-domain.com/"`
+  - `endpointPrefix: "api/authenticate"`
+
+  will result in the API endpoints
+
+  - `https://my-app.my-domain.com/api/authenticate/storyblok` for initiating the authentication flow
+  - `https://my-app.my-domain.com/api/authenticate/storyblok/callback` as the OAuth2 callback URL
 
 ### Create an API route
 
@@ -110,8 +149,8 @@ Sign in a user by redirecting to the api route: `/api/connect/storyblok`
 
 This will initiate the oauth flow and redirect the user to the url specified in the `successCallback` URL. The following query parameters will be appended to the `successCallback` URL:
 
-* `userId`
-* `spaceId`
+- `userId`
+- `spaceId`
 
 ### Retrieve the session
 
@@ -123,24 +162,18 @@ import { sessionCookieStore } from '@storyblok/app-extension-auth'
 const sessionStore = sessionCookieStore(params)(context)
 const appSession = await sessionStore.get(query)
 
-if(appSession === undefined){
-    // The user is not authenticated
-    //  redirect to /api/connect/storyblok
+if (appSession === undefined) {
+  // The user is not authenticated
+  //  redirect to /api/connect/storyblok
 }
 ```
 
 ### Use the session
 
-The `AppSession` object contain user information for personalized content, and an access token to the Storyblok management API.   
+The `AppSession` object contain user information for personalized content, and an access token to the Storyblok management API.
 
 ```typescript
-const {
-  userId,
-  spaceId,
-  region,
-  roles,
-  accessToken
-} = appSession
+const { userId, spaceId, region, roles, accessToken } = appSession
 ```
 
 ### Routing
@@ -164,7 +197,7 @@ const appSession = await sessionStore.get(query)
 When you redirect the user agent to a new page within your application, you need to _append the `spaceId` and `userId` query parameters_. Only if you do this can you retrieve the session from the `sessionCookieStore` from the other route.
 
 ```typescript
-const href =  `/my/other/page?spaceId=${spaceId}&userId=${userId}`
+const href = `/my/other/page?spaceId=${spaceId}&userId=${userId}`
 ```
 
 ## Routing for various frameworks
@@ -181,18 +214,15 @@ export default authHandler(params)
 
 ### Express
 
-In ExpressJs, create a route 
+In ExpressJs, create a route
 
 ```typescript
 import { authHandler } from '@storyblok/app-extension-auth'
 
-app.all(
-    '/api/connect/*', 
-    authHandler(params)
-)
+app.all('/api/connect/*', authHandler(params))
 ```
 
 ## Useful Resources
 
-* [Authentication Oauth2 flow](https://www.storyblok.com/docs/plugins/authentication-apps)
-* [Custom Applications](https://www.storyblok.com/docs/plugins/custom-application)
+- [Authentication Oauth2 flow](https://www.storyblok.com/docs/plugins/authentication-apps)
+- [Custom Applications](https://www.storyblok.com/docs/plugins/custom-application)
