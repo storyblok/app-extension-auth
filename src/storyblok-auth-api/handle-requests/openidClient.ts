@@ -1,4 +1,4 @@
-import { BaseClient, Issuer } from 'openid-client'
+import { BaseClient, Issuer, custom } from 'openid-client'
 import { redirectUri } from './redirectUri'
 import { AuthHandlerParams } from '../AuthHandlerParams'
 import { getRegionUrl, Region } from '@storyblok/region-helper'
@@ -26,11 +26,19 @@ export const openidClient: CreateOpenIdClient = (params, region) => {
         ? `${getRegionUrl(region)}/oauth/user_info`
         : undefined,
   })
-  return new Client({
+
+  const client = new Client({
     token_endpoint_auth_method: 'client_secret_post',
     client_id: clientId,
     client_secret: clientSecret,
     redirect_uris: [redirectUri(params)],
     response_types: ['code'],
   })
+
+  // eslint-disable-next-line functional/immutable-data
+  client[custom.http_options] = () => {
+    return { timeout: 10000 }
+  }
+
+  return client
 }

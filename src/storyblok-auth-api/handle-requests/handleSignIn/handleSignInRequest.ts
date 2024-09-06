@@ -2,12 +2,14 @@ import { generators } from 'openid-client'
 import { openidClient } from '../openidClient'
 import { redirectUri } from '../redirectUri'
 import { AuthHandlerParams } from '../../AuthHandlerParams'
-import { callbackCookieElement } from '../callbackCookie'
 import { HandleAuthRequest } from '../HandleAuthRequest'
+import { InternalAdapter } from '../../../session-adapters/internalAdapter'
 
 export const handleSignInRequest: HandleAuthRequest<{
+  url: string
   params: AuthHandlerParams
-}> = async ({ params }) => {
+  adapter: InternalAdapter
+}> = async ({ params, adapter }) => {
   const code_verifier = generators.codeVerifier()
   const state = generators.state()
   const code_challenge = generators.codeChallenge(code_verifier)
@@ -23,16 +25,15 @@ export const handleSignInRequest: HandleAuthRequest<{
       redirect_uri: redirectUri(params),
     })
 
+    await adapter.setCallbackData({
+      returnTo: params?.successCallback ?? '/', // TODO read from request query params, then either use the successCallback as fallback, or remove the entirely
+      codeVerifier: code_verifier,
+      state,
+    })
+
     return {
       type: 'success',
       redirectTo,
-      setCookies: [
-        callbackCookieElement(params.clientSecret, {
-          returnTo: params?.successCallback ?? '/', // TODO read from request query params, then either use the successCallback as fallback, or remove the entirely
-          codeVerifier: code_verifier,
-          state,
-        }),
-      ],
     }
   } catch (e) {
     return {

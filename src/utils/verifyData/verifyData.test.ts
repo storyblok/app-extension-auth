@@ -13,22 +13,23 @@ const testCookieValue = {
   },
 }
 
-const sign = signData(testSecret)
-const verify = verifyData(testSecret)
-
 describe('verifyData', () => {
   it('should be the inverse of signData', () => {
-    expect(testCookieValue).toEqual(verify(sign(testCookieValue)))
+    expect(testCookieValue).toEqual(
+      verifyData(testSecret, signData(testSecret, testCookieValue)),
+    )
   })
   it('should return undefined if the secret is invalid', () => {
     expect(
-      verifyData('incorrectJwtSecret')(sign(testCookieValue)),
+      verifyData('incorrectJwtSecret', signData(testSecret, testCookieValue)),
     ).toBeUndefined()
   })
   it('should return undefined if the secret is invalid', () => {
-    expect(verify('ey.thisis.gibberish==')).toBeUndefined()
+    expect(verifyData(testSecret, 'ey.thisis.gibberish==')).toBeUndefined()
   })
   it('should return undefined if the secret is signed without signSession', () => {
-    expect(verify(jwt.sign({ hello: 'world' }, testSecret))).toBeUndefined()
+    expect(
+      verifyData(testSecret, jwt.sign({ hello: 'world' }, testSecret)),
+    ).toBeUndefined()
   })
 })

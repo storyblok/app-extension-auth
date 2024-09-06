@@ -1,11 +1,7 @@
 {
   "name": "@storyblok/app-extension-auth",
   "description": "A typed JavaScript library for handling authentication with Storyblok apps.",
-  "version": "1.0.2",
-  "author": {
-    "name": "Johannes Lindgren",
-    "email": "johannes.lindgren@storyblok.com"
-  },
+  "version": "2.0.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/storyblok/app-extension-auth.git"
@@ -21,14 +17,14 @@
   "scripts": {
     "check:types": "tsc --noemit",
     "lint": "eslint .",
-    "build": "yarn check:types && rollup -c",
+    "build": "pnpm run check:types && rollup -c",
     "start": "rollup -c -w",
     "test": "jest"
   },
   "engines": {
     "node": ">=14.21.3"
   },
-  "packageManager": "yarn@3.2.4",
+  "packageManager": "pnpm@9.1.1",
   "dependencies": {
     "@storyblok/region-helper": "0.1.0",
     "jsonwebtoken": "^9.0.0",
