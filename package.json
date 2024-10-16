@@ -2,6 +2,7 @@
   "name": "@storyblok/app-extension-auth",
   "description": "A typed JavaScript library for handling authentication with Storyblok apps.",
   "version": "2.0.0",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/storyblok/app-extension-auth.git"
