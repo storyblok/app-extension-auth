@@ -22,7 +22,10 @@ export const authHandler = (
       params,
       req,
       res,
-      adapter: createCookieAdapter({ sessionKey: params.sessionKey }),
+      adapter: createCookieAdapter({
+        sessionKey: params.sessionKey,
+        clientSecret: params.clientSecret,
+      }),
     })
 
     const responseElement = await handleAnyRequest({
