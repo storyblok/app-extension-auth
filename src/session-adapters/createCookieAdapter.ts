@@ -3,7 +3,6 @@ import jwt from 'jsonwebtoken'
 import { Adapter } from './publicAdapter'
 import { isAppSession } from '../session'
 
-const clientSecret = process.env['CLIENT_SECRET'] || ''
 const defaultSessionKey = 'sb.auth'
 
 type CreateCookieAdapter = (params?: {
@@ -21,7 +20,7 @@ export const createCookieAdapter: CreateCookieAdapter = (params) => {
         return undefined
       }
 
-      const verifiedData = verifyData(clientSecret, cookie)
+      const verifiedData = verifyData(params.clientSecret, cookie)
 
       if (!isAppSession(verifiedData)) {
         return undefined
@@ -33,7 +32,7 @@ export const createCookieAdapter: CreateCookieAdapter = (params) => {
     setSession: ({ res, spaceId, userId, session }) => {
       const expires = createExpirationDate(7)
 
-      const signedData = jwt.sign({ data: session }, clientSecret)
+      const signedData = jwt.sign({ data: session }, params.clientSecret)
 
       setCookie(
         res,
