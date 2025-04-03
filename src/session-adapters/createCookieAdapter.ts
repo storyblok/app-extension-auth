@@ -3,15 +3,17 @@ import jwt from 'jsonwebtoken'
 import { Adapter } from './publicAdapter'
 import { isAppSession } from '../session'
 
-const clientSecret = process.env['CLIENT_SECRET'] || ''
 const defaultSessionKey = 'sb.auth'
+const defaultClientSecret = process.env['CLIENT_SECRET'] || ''
 
 type CreateCookieAdapter = (params?: {
   sessionKey?: string | undefined
+  clientSecret?: string | undefined
 }) => Adapter
 
 export const createCookieAdapter: CreateCookieAdapter = (params) => {
   const key = params?.sessionKey ?? defaultSessionKey
+  const clientSecret = params?.clientSecret ?? defaultClientSecret
 
   const adapter: Adapter = {
     getSession: ({ req, spaceId, userId }) => {

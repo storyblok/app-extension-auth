@@ -16,7 +16,10 @@ export const getSessionStore: AppSessionCookieStoreFactory =
       params,
       req: requestParams.req,
       res: requestParams.res,
-      adapter: createCookieAdapter({ sessionKey: params.sessionKey }),
+      adapter: createCookieAdapter({
+        sessionKey: params.sessionKey,
+        clientSecret: params.clientSecret,
+      }),
     })
 
     return {
