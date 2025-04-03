@@ -4,17 +4,8 @@ import external from 'rollup-plugin-peer-deps-external'
 import commonjs from '@rollup/plugin-commonjs'
 import { visualizer } from 'rollup-plugin-visualizer'
 import json from '@rollup/plugin-json'
+import packageJson from './package.json' with { type: 'json' }
 import filesize from 'rollup-plugin-filesize'
-
-import fs from 'node:fs'
-import { dirname, join } from 'node:path'
-import { fileURLToPath } from 'node:url'
-
-const packageJsonPath = join(
-  dirname(fileURLToPath(import.meta.url)),
-  './package.json',
-)
-const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'))
 
 /** @type {import('rollup').RollupOptions} */
 export default {
