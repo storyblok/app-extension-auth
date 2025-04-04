@@ -200,6 +200,14 @@ When you redirect the user agent to a new page within your application, you need
 const href = `/my/other/page?spaceId=${spaceId}&userId=${userId}`
 ```
 
+## How to setup the application to run in localhost
+
+First rename the file `.env.example` to `.env` and add your local instance of the backend url into the variable. With this change the package will route the oauth flow to your backend instance.
+
+```shell
+APP_CUSTOM_OAUTH_ENDPOINT="http://YOUR_INSTANCE_OF_BACKEND"
+```
+
 ## Routing for various frameworks
 
 ### Next.js

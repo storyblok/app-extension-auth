@@ -11,27 +11,20 @@ export type CreateOpenIdClient = (
   region?: Region,
 ) => BaseClient
 
-export const openidClient: CreateOpenIdClient = (params, region) => {
+export const openidClient: CreateOpenIdClient = (params, region = 'eu') => {
   const { clientId, clientSecret } = params
   const userinfoEndpoint =
-    typeof region !== 'undefined'
-      ? process.env.APP_CUSTOM_USERINFO_ENDPOINT ??
-        `${getRegionBaseUrl(region)}/oauth/user_info`
-      : undefined
+    process.env.APP_CUSTOM_OAUTH_ENDPOINT ?? `${getRegionBaseUrl(region)}`
   const tokenEndpoint =
-    typeof region !== 'undefined'
-      ? process.env.APP_CUSTOM_TOKEN_ENDPOINT ??
-        `${getRegionBaseUrl(region)}/oauth/token`
-      : undefined
+    process.env.APP_CUSTOM_OAUTH_ENDPOINT ?? `${getRegionBaseUrl(region)}`
   const authorizationEndpoint =
-    process.env.APP_CUSTOM_OAUTH_URL ??
-    `https://app.storyblok.com/oauth/authorize`
+    process.env.APP_CUSTOM_OAUTH_ENDPOINT ?? `https://app.storyblok.com`
 
   const { Client } = new Issuer({
     issuer: 'storyblok',
-    authorization_endpoint: authorizationEndpoint,
-    token_endpoint: tokenEndpoint,
-    userinfo_endpoint: userinfoEndpoint,
+    authorization_endpoint: `${authorizationEndpoint}/oauth/authorize`,
+    token_endpoint: `${tokenEndpoint}/oauth/token`,
+    userinfo_endpoint: `${userinfoEndpoint}/oauth/user_info`,
   })
 
   const client = new Client({
