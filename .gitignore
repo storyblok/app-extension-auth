@@ -23,7 +23,7 @@ yarn-error.log*
 .idea
 
 # Environment
-.env.*
+.env
 
 # This project uses yarn. We must not have conflicting lock files.
 package-lock.json
