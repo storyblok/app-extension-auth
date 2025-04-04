@@ -1,41 +1,32 @@
-import { defineConfig, globalIgnores } from 'eslint/config'
-import typescriptEslint from '@typescript-eslint/eslint-plugin'
-import prettier from 'eslint-plugin-prettier'
+import { defineConfig } from 'eslint/config'
+import eslint from '@eslint/js'
+import tseslint from 'typescript-eslint'
+import prettierConfig from 'eslint-config-prettier'
+import prettierPlugin from 'eslint-plugin-prettier'
 import preferArrow from 'eslint-plugin-prefer-arrow'
 import functional from 'eslint-plugin-functional'
 import globals from 'globals'
-import tsParser from '@typescript-eslint/parser'
+
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import js from '@eslint/js'
-import { FlatCompat } from '@eslint/eslintrc'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-})
 
 export default defineConfig([
-  globalIgnores([
-    '**/node_modules/',
-    '**/storybook-static/',
-    '**/dist/',
-    '**/scripts/',
-  ]),
-
+  {
+    ignores: [
+      '**/node_modules/',
+      '**/storybook-static/',
+      '**/dist/',
+      '**/scripts/',
+    ],
+  },
+  eslint.configs.recommended,
   {
     files: ['**/*.{ts,tsx}'],
-    ...compat.extends(
-      'eslint:recommended',
-      'plugin:@typescript-eslint/recommended',
-    )[0],
-
+    extends: [tseslint.configs.recommendedTypeChecked],
     plugins: {
-      '@typescript-eslint': typescriptEslint,
-      prettier,
       'prefer-arrow': preferArrow,
       functional,
     },
@@ -45,15 +36,11 @@ export default defineConfig([
         ...globals.browser,
         ...globals.node,
       },
-      parser: tsParser,
-      ecmaVersion: 'latest',
-      sourceType: 'module',
       parserOptions: {
         project: ['./tsconfig.eslint.json'],
         tsconfigRootDir: __dirname,
       },
     },
-
     rules: {
       'prefer-arrow/prefer-arrow-functions': 'error',
       'functional/immutable-data': 'error',
@@ -63,7 +50,6 @@ export default defineConfig([
       'functional/no-this-expressions': 'error',
       'functional/no-loop-statements': 'error',
       'functional/no-promise-reject': 'error',
-
       '@typescript-eslint/no-unused-vars': [
         'warn',
         {
@@ -73,18 +59,11 @@ export default defineConfig([
           caughtErrorsIgnorePattern: '^_',
         },
       ],
-      '@typescript-eslint/await-thenable': 'error',
-      '@typescript-eslint/no-floating-promises': 'error',
-      '@typescript-eslint/no-misused-promises': 'error',
     },
   },
-
   {
     files: ['**/*.{js,mjs,cjs}'],
-    ...compat.extends('eslint:recommended')[0],
-
     plugins: {},
-
     languageOptions: {
       globals: {
         ...globals.node,
@@ -96,14 +75,18 @@ export default defineConfig([
 
     rules: {
       'no-var': 'error',
+      '@typescript-eslint/await-thenable': 'off',
+      '@typescript-eslint/no-floating-promises': 'off',
+      '@typescript-eslint/no-misused-promises': 'off',
+      'functional/no-mixed-types': 'off',
     },
   },
-
   {
     plugins: {
-      prettier,
+      prettier: prettierPlugin,
     },
     rules: {
+      ...prettierConfig.rules,
       'prettier/prettier': ['warn'],
     },
   },

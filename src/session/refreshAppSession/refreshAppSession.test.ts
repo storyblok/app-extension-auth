@@ -4,6 +4,7 @@ import { refreshAppSession } from './refreshAppSession'
 
 const validRefreshToken = 'abc123abc123'
 const invalidRefreshToken = 'oo0o0o0o0o0o0o0o0oo'
+// eslint-disable-next-line @typescript-eslint/require-await
 const refresh: RefreshToken = async (refreshToken) =>
   refreshToken === validRefreshToken
     ? {
