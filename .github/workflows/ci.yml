@@ -15,9 +15,11 @@ jobs:
       - run: corepack enable
       - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
           cache: 'pnpm'
       - run: pnpm install
+      - name: Lint
+        run: pnpm run lint
       - name: Check types
         run: pnpm run check:types
       - name: Test

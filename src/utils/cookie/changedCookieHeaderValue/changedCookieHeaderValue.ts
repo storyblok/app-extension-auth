@@ -12,7 +12,7 @@ export const changedCookieHeaderValue = (
   return [
     `${name}=${value}`,
     'path=/',
-    expires ? `Expires=${expires}; ` : undefined,
+    expires ? `Expires=${expires.toUTCString()}; ` : undefined,
     'samesite=none',
     'secure',
     'httponly',
