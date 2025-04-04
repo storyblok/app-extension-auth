@@ -9,13 +9,13 @@ importers:
   .:
     dependencies:
       '@storyblok/region-helper':
-        specifier: 0.1.0
-        version: 0.1.0
+        specifier: 1.1.0
+        version: 1.1.0
       jsonwebtoken:
         specifier: ^9.0.0
         version: 9.0.2
       openid-client:
-        specifier: ^5.6.5
+        specifier: ^5.7.1
         version: 5.7.1
     devDependencies:
       '@eslint/eslintrc':
@@ -36,9 +36,6 @@ importers:
       '@rollup/plugin-node-resolve':
         specifier: 16.0.1
         version: 16.0.1(rollup@4.39.0)
-      '@types/cookie':
-        specifier: ^0.5.4
-        version: 0.5.4
       '@types/cookies':
         specifier: ^0.9.0
         version: 0.9.0
@@ -681,8 +678,8 @@ packages:
   '@sinonjs/fake-timers@10.3.0':
     resolution: {integrity: sha512-V4BG07kuYSUkTCSBHG8G8TNhM+F19jXFWnQtzj+we8DrkpSBCee9Z3Ms8yiGer/dlmhe35/Xdgyo3/0rQKg7YA==}
 
-  '@storyblok/region-helper@0.1.0':
-    resolution: {integrity: sha512-psDn8OrU9y1Y7qWXbUCeNQ1U+8XyumerE5MBTfN+06L/lRlR9DJ4BRWOlx/cjKF6RXd5CnUBjcg1BNM3IupIkA==}
+  '@storyblok/region-helper@1.1.0':
+    resolution: {integrity: sha512-2NU/GHeaS9vFtkZJk/mNH6E5HvrV3vT3AN/Wrl44L3lwLIfcK4E0orjgCi7gvl0N3Ul5E+y6vJAVjD3bmjSZVg==}
 
   '@tootallnate/once@2.0.0':
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
@@ -713,9 +710,6 @@ packages:
 
   '@types/connect@3.4.38':
     resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==}
-
-  '@types/cookie@0.5.4':
-    resolution: {integrity: sha512-7z/eR6O859gyWIAjuvBWFzNURmf2oPBmJlfVWkwehU5nzIyjwBsTh7WMmEEV4JFnHuQ3ex4oyTvfKzcyJVDBNA==}
 
   '@types/cookies@0.9.0':
     resolution: {integrity: sha512-40Zk8qR147RABiQ7NQnBzWzDcjKzNrntB5BAmeGCb2p/MIyOE+4BVvc17wumsUqUw00bJYqoXFHYygQnEFh4/Q==}
@@ -3474,7 +3468,7 @@ snapshots:
     dependencies:
       '@sinonjs/commons': 3.0.1
 
-  '@storyblok/region-helper@0.1.0': {}
+  '@storyblok/region-helper@1.1.0': {}
 
   '@tootallnate/once@2.0.0': {}
 
@@ -3514,8 +3508,6 @@ snapshots:
   '@types/connect@3.4.38':
     dependencies:
       '@types/node': 22.14.0
-
-  '@types/cookie@0.5.4': {}
 
   '@types/cookies@0.9.0':
     dependencies:
