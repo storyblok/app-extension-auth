@@ -4,7 +4,7 @@ import external from 'rollup-plugin-peer-deps-external'
 import commonjs from '@rollup/plugin-commonjs'
 import { visualizer } from 'rollup-plugin-visualizer'
 import json from '@rollup/plugin-json'
-import packageJson from './package.json' assert { type: 'json' }
+import packageJson from './package.json' with { type: 'json' }
 import filesize from 'rollup-plugin-filesize'
 
 /** @type {import('rollup').RollupOptions} */

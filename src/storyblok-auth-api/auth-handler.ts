@@ -11,6 +11,7 @@ import { createInternalAdapter } from '../session-adapters/internalAdapter'
 export const authHandler = (
   params: AuthHandlerParams,
 ): http.RequestListener => {
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
   return async (req, res) => {
     const { url } = req
     if (typeof url !== 'string') {
@@ -22,7 +23,10 @@ export const authHandler = (
       params,
       req,
       res,
-      adapter: createCookieAdapter({ sessionKey: params.sessionKey }),
+      adapter: createCookieAdapter({
+        sessionKey: params.sessionKey,
+        clientSecret: params.clientSecret,
+      }),
     })
 
     const responseElement = await handleAnyRequest({
@@ -33,9 +37,7 @@ export const authHandler = (
 
     if (responseElement.type === 'configuration-error') {
       console.error(
-        `@stoyblok/app-extension-auth is misconfigured: ${
-          responseElement.message ?? ''
-        }`,
+        `@stoyblok/app-extension-auth is misconfigured: ${responseElement.message ?? ''}`,
       )
     }
 
