@@ -1,7 +1,7 @@
 import { BaseClient, Issuer, custom } from 'openid-client'
 import { redirectUri } from './redirectUri'
 import { AuthHandlerParams } from '../AuthHandlerParams'
-import { getRegionUrl, Region } from '@storyblok/region-helper'
+import { getRegionBaseUrl, Region } from '@storyblok/region-helper'
 
 export type CreateOpenIdClient = (
   params: Pick<
@@ -19,11 +19,11 @@ export const openidClient: CreateOpenIdClient = (params, region) => {
     authorization_endpoint: `https://app.storyblok.com/oauth/authorize`,
     token_endpoint:
       typeof region !== 'undefined'
-        ? `${getRegionUrl(region)}/oauth/token`
+        ? `${getRegionBaseUrl(region)}/oauth/token`
         : undefined,
     userinfo_endpoint:
       typeof region !== 'undefined'
-        ? `${getRegionUrl(region)}/oauth/user_info`
+        ? `${getRegionBaseUrl(region)}/oauth/user_info`
         : undefined,
   })
 
