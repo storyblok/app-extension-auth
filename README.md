@@ -45,19 +45,17 @@ The parameter `AuthHandlerParams['cookieName']` has been renamed to `AuthHandler
 
 See our starters:
 
-- [Next.js](https://github.com/storyblok/custom-app-examples/tree/main/app-nextjs-starter)
+- [Next.js](https://github.com/storyblok/space-tool-plugins/tree/main/space-plugins/nextjs-starter)
 
 ### Install the app
 
-Install with npm:
+Install with:
 
 ```shell
+# npm
 npm install @storyblok/app-extension-auth
-```
 
-or with Yarn:
-
-```shell
+#yarn
 yarn add @storyblok/app-extension-auth
 ```
 
