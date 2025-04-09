@@ -47,7 +47,7 @@ See our starters:
 
 - [Next.js](https://github.com/storyblok/space-tool-plugins/tree/main/space-plugins/nextjs-starter)
 
-### Install the app
+### Install the library
 
 Install with:
 
