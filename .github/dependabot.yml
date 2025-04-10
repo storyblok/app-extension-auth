@@ -22,15 +22,6 @@ updates:
         update-types:
           - 'minor'
           - 'patch'
-      # Group 2: Core Packages (adjust patterns/names as needed)
-      core-packages:
-        patterns:
-          - '@storyblok/region-helper'
-          - 'jsonwebtoken'
-          - 'openid-client'
-        update-types:
-          - 'minor'
-          - 'patch'
     commit-message:
       prefix: 'chore(deps)'
       include: 'scope'
@@ -39,6 +30,26 @@ updates:
         update-types: ['version-update:semver-major']
     labels:
       - 'automerge'
+
+  - package-ecosystem: 'npm'
+    directory: '/'
+    event: 'dependency-update'
+    groups:
+      core-packages:
+        patterns:
+          - '@storyblok/region-helper'
+          - 'jsonwebtoken'
+          - 'openid-client'
+        update-types:
+          - 'minor'
+          - 'patch'
+    reviewers:
+      - 'storyblok/plugins'
+    commit-message:
+      prefix: 'chore(deps)'
+      include: 'scope'
+    labels:
+      - 'core-update'
 
   - package-ecosystem: 'npm'
     directory: '/'
