@@ -198,6 +198,14 @@ When you redirect the user agent to a new page within your application, you need
 const href = `/my/other/page?spaceId=${spaceId}&userId=${userId}`
 ```
 
+## How to run this application to run in localhost
+
+To have oAuth running on localhost you need to add the env `APP_CUSTOM_OAUTH_ENDPOINT` in the target project, i.e. in the plugin or app you want to test, so the environment variable will be passed and replaced in the oAuth flow.
+
+```shell
+APP_CUSTOM_OAUTH_ENDPOINT="http://YOUR_INSTANCE_OF_BACKEND"
+```
+
 ## Routing for various frameworks
 
 ### Next.js

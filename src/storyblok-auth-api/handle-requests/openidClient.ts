@@ -12,19 +12,19 @@ export type CreateOpenIdClient = (
 ) => BaseClient
 
 export const openidClient: CreateOpenIdClient = (params, region) => {
+  const defaultEndpoint = region
+    ? `${getRegionBaseUrl(region)}`
+    : 'https://app.storyblok.com'
+
+  const oauthEndpoint =
+    process.env['APP_CUSTOM_OAUTH_ENDPOINT'] ?? defaultEndpoint
   const { clientId, clientSecret } = params
+
   const { Client } = new Issuer({
     issuer: 'storyblok',
-    // TODO: at this point there is no region && the subdomains do not have the /oauth/authorize endpoint working at the moment that is why this endpoint is initially requested
-    authorization_endpoint: `https://app.storyblok.com/oauth/authorize`,
-    token_endpoint:
-      typeof region !== 'undefined'
-        ? `${getRegionBaseUrl(region)}/oauth/token`
-        : undefined,
-    userinfo_endpoint:
-      typeof region !== 'undefined'
-        ? `${getRegionBaseUrl(region)}/oauth/user_info`
-        : undefined,
+    authorization_endpoint: `${oauthEndpoint}/oauth/authorize`,
+    token_endpoint: `${oauthEndpoint}/oauth/token`,
+    userinfo_endpoint: `${oauthEndpoint}/oauth/user_info`,
   })
 
   const client = new Client({
