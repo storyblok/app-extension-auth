@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@storyblok/region-helper':
-        specifier: 1.1.0
-        version: 1.1.0
+        specifier: ^1.2.0
+        version: 1.2.0
       jsonwebtoken:
         specifier: ^9.0.0
         version: 9.0.2
@@ -678,8 +678,8 @@ packages:
   '@sinonjs/fake-timers@10.3.0':
     resolution: {integrity: sha512-V4BG07kuYSUkTCSBHG8G8TNhM+F19jXFWnQtzj+we8DrkpSBCee9Z3Ms8yiGer/dlmhe35/Xdgyo3/0rQKg7YA==}
 
-  '@storyblok/region-helper@1.1.0':
-    resolution: {integrity: sha512-2NU/GHeaS9vFtkZJk/mNH6E5HvrV3vT3AN/Wrl44L3lwLIfcK4E0orjgCi7gvl0N3Ul5E+y6vJAVjD3bmjSZVg==}
+  '@storyblok/region-helper@1.2.0':
+    resolution: {integrity: sha512-Ew6okkK7vQvkk/jdjaM7f6szJXYtcBmPJXhl3zzh/rW9QdAaHKOodiIbvdkpvkcOrSNmUpXcx5d2gxYL5HRIzg==}
 
   '@tootallnate/once@2.0.0':
     resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
@@ -3496,7 +3496,7 @@ snapshots:
     dependencies:
       '@sinonjs/commons': 3.0.1
 
-  '@storyblok/region-helper@1.1.0': {}
+  '@storyblok/region-helper@1.2.0': {}
 
   '@tootallnate/once@2.0.0': {}
 
