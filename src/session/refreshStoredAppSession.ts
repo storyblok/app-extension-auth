@@ -7,7 +7,11 @@ import { InternalAdapter } from '../session-adapters/internalAdapter'
 
 export type RefreshParams = Pick<
   AuthHandlerParams,
-  'clientSecret' | 'clientId' | 'baseUrl' | 'endpointPrefix'
+  | 'clientSecret'
+  | 'clientId'
+  | 'baseUrl'
+  | 'endpointPrefix'
+  | 'customAuthEndpoint'
 >
 export type Refresh = (
   params: RefreshParams,
