@@ -9,7 +9,7 @@ export type RefreshTokenWithFetchParams = Pick<
   | 'clientSecret'
   | 'baseUrl'
   | 'endpointPrefix'
-  | 'customAuthEndpoint'
+  | 'storyblokApiBaseUrl'
 >
 
 export type RefreshToken = (

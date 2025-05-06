@@ -10,7 +10,7 @@ export type CreateOpenIdClient = (
     | 'clientSecret'
     | 'baseUrl'
     | 'endpointPrefix'
-    | 'customAuthEndpoint'
+    | 'storyblokApiBaseUrl'
   >,
   region?: Region,
 ) => BaseClient
@@ -20,8 +20,8 @@ export const openidClient: CreateOpenIdClient = (params, region) => {
     ? `${getRegionBaseUrl(region)}`
     : 'https://app.storyblok.com'
 
-  const { clientId, clientSecret, customAuthEndpoint = undefined } = params
-  const oauthEndpoint = customAuthEndpoint ?? defaultEndpoint
+  const { clientId, clientSecret, storyblokApiBaseUrl = undefined } = params
+  const oauthEndpoint = storyblokApiBaseUrl ?? defaultEndpoint
 
   const { Client } = new Issuer({
     issuer: 'storyblok',

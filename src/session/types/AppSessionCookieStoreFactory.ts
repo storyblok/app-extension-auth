@@ -9,7 +9,7 @@ export type AppSessionCookieStoreFactoryParams = Pick<
   | 'clientSecret'
   | 'baseUrl'
   | 'endpointPrefix'
-  | 'customAuthEndpoint'
+  | 'storyblokApiBaseUrl'
 >
 export type AppSessionCookieStoreFactory = (
   staticParams: AppSessionCookieStoreFactoryParams,

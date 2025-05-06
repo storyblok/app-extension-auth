@@ -51,7 +51,7 @@ export type AuthHandlerParams = {
    */
   endpointPrefix: string | undefined // To make explicit, do not make this optional.
   /*
-   *  The `customAuthEndpoint` is a custom URL that allows changing the environment where the OAuth flow will run.
+   *  The `storyblokApiBaseUrl` is a custom URL that allows changing the environment where the OAuth flow will run.
    */
-  customAuthEndpoint?: string
+  storyblokApiBaseUrl?: string
 }

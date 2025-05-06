@@ -11,7 +11,7 @@ export type RefreshParams = Pick<
   | 'clientId'
   | 'baseUrl'
   | 'endpointPrefix'
-  | 'customAuthEndpoint'
+  | 'storyblokApiBaseUrl'
 >
 export type Refresh = (
   params: RefreshParams,
