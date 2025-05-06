@@ -51,8 +51,7 @@ export type AuthHandlerParams = {
    */
   endpointPrefix: string | undefined // To make explicit, do not make this optional.
   /*
-   * The custom Auth Endpoint is a custom URL that specifies a custom endpoint to use for the authentication API.
-   * It's created to run the auth flow in different domains.
+   *  The `customAuthEndpoint` is a custom URL that allows changing the environment where the OAuth flow will run.
    */
   customAuthEndpoint?: string
 }
