@@ -200,10 +200,21 @@ const href = `/my/other/page?spaceId=${spaceId}&userId=${userId}`
 
 ## How to run this application locally
 
-To run OAuth locally, add the `APP_CUSTOM_OAUTH_ENDPOINT` environment variable to the `.env` file of the target project (i.e., the plugin or app you want to test).
+To run OAuth locally, add `customAuthEndpoint` to the paramns object in the target project (i.e. the plugin or application you want to test). With this parameter, you can select the target's backend.
 
-```shell
-APP_CUSTOM_OAUTH_ENDPOINT="http://YOUR_INSTANCE_OF_BACKEND"
+
+```typescript
+import { AuthHandlerParams } from '@storyblok/app-extension-auth'
+
+export const params: AuthHandlerParams = {
+  clientId: process.env.APP_CLIENT_ID,
+  clientSecret: process.env.APP_CLIENT_SECRET,
+  baseUrl: process.env.APP_URL,
+  successCallback: '/',
+  errorCallback: '/401',
+  endpointPrefix: '/api/connect',
+  customAuthEndpoint: 'http://localhost:1234'
+}
 ```
 
 ## Routing for various frameworks

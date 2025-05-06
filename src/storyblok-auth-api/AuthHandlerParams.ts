@@ -50,4 +50,9 @@ export type AuthHandlerParams = {
    *  - `https://my-app.my-domain.com/api/authenticate/storyblok/callback` as the OAuth2 callback URL
    */
   endpointPrefix: string | undefined // To make explicit, do not make this optional.
+  /*
+   * The custom Auth Endpoint is a custom URL that specifies a custom endpoint to use for the authentication API.
+   * It's created to run the auth flow in different domains.
+   */
+  customAuthEndpoint?: string
 }

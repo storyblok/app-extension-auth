@@ -6,7 +6,11 @@ import { getRegionBaseUrl, Region } from '@storyblok/region-helper'
 export type CreateOpenIdClient = (
   params: Pick<
     AuthHandlerParams,
-    'clientId' | 'clientSecret' | 'baseUrl' | 'endpointPrefix'
+    | 'clientId'
+    | 'clientSecret'
+    | 'baseUrl'
+    | 'endpointPrefix'
+    | 'customAuthEndpoint'
   >,
   region?: Region,
 ) => BaseClient
@@ -16,9 +20,8 @@ export const openidClient: CreateOpenIdClient = (params, region) => {
     ? `${getRegionBaseUrl(region)}`
     : 'https://app.storyblok.com'
 
-  const oauthEndpoint =
-    process.env['APP_CUSTOM_OAUTH_ENDPOINT'] ?? defaultEndpoint
-  const { clientId, clientSecret } = params
+  const { clientId, clientSecret, customAuthEndpoint = undefined } = params
+  const oauthEndpoint = customAuthEndpoint ?? defaultEndpoint
 
   const { Client } = new Issuer({
     issuer: 'storyblok',
