@@ -25,6 +25,7 @@ export const openidClient: CreateOpenIdClient = (params, region) => {
 
   const { Client } = new Issuer({
     issuer: 'storyblok',
+    // At this point there is no region && the subdomains do not have the /oauth/authorize endpoint working at the moment that is why this endpoint is initially requested
     authorization_endpoint: `${oauthEndpoint}/oauth/authorize`,
     token_endpoint: `${oauthEndpoint}/oauth/token`,
     userinfo_endpoint: `${oauthEndpoint}/oauth/user_info`,
