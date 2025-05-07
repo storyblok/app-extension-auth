@@ -5,7 +5,11 @@ import { Region } from '@storyblok/region-helper'
 
 export type RefreshTokenWithFetchParams = Pick<
   AuthHandlerParams,
-  'clientId' | 'clientSecret' | 'baseUrl' | 'endpointPrefix'
+  | 'clientId'
+  | 'clientSecret'
+  | 'baseUrl'
+  | 'endpointPrefix'
+  | 'storyblokApiBaseUrl'
 >
 
 export type RefreshToken = (
