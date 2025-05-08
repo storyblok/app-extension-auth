@@ -71,8 +71,8 @@ const getSessionFromUrl = (url: string): AppSessionQuery | undefined => {
     return undefined
   }
 
-  const spaceId = query.get('space_id')
-  const userId = query.get('user_id')
+  const spaceId = query.get('space_id') || query.get('spaceId')
+  const userId = query.get('user_id') || query.get('userId')
 
   if (!spaceId || !userId) {
     return undefined
