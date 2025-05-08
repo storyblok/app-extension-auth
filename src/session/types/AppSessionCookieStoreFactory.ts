@@ -4,7 +4,12 @@ import { AppSessionStore } from './AppSessionStore'
 
 export type AppSessionCookieStoreFactoryParams = Pick<
   AuthHandlerParams,
-  'clientId' | 'sessionKey' | 'clientSecret' | 'baseUrl' | 'endpointPrefix'
+  | 'clientId'
+  | 'sessionKey'
+  | 'clientSecret'
+  | 'baseUrl'
+  | 'endpointPrefix'
+  | 'storyblokApiBaseUrl'
 >
 export type AppSessionCookieStoreFactory = (
   staticParams: AppSessionCookieStoreFactoryParams,

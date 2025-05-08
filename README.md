@@ -198,6 +198,22 @@ When you redirect the user agent to a new page within your application, you need
 const href = `/my/other/page?spaceId=${spaceId}&userId=${userId}`
 ```
 
+## How to run this application locally
+
+To run OAuth locally, pass the `storyblokApiBaseUrl` property to the params object when calling the `authHandler` function in the target project (i.e. the plugin or application you want to test). With this parameter, you can change the target's backend environment.
+
+
+```typescript
+import { AuthHandlerParams } from '@storyblok/app-extension-auth'
+
+import { authHandler } from '@storyblok/app-extension-auth'
+const params: AuthHandlerParams = {
+  // ...
+  storyblokApiBaseUrl: 'http://localhost:1234'
+}
+authHandler(params)
+```
+
 ## Routing for various frameworks
 
 ### Next.js
