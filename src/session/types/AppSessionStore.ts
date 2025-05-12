@@ -8,6 +8,7 @@ export type AppSessionStore = {
       autoRefresh?: boolean
     },
   ) => Promise<AppSession | undefined>
+  getAll: (keys: AppSessionQuery) => Promise<AppSession[] | undefined>
   put: (session: AppSession) => Promise<boolean>
   remove: (keys: AppSessionQuery) => Promise<boolean>
 }
