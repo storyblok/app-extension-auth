@@ -1,5 +1,5 @@
 import httpMocks from 'node-mocks-http'
-import { getCookie } from './getCookie'
+import { getAllCookies, getCookie } from './getCookie'
 
 const cookieName = 'myCookie'
 const cookieValue = 'abc123'
@@ -41,5 +41,15 @@ describe('Getting app cookies', () => {
       `firstCookie=firstCookieValue; lastCookie=lastCookieValue`,
     )
     expect(getCookie(req, cookieName)).toBeUndefined()
+  })
+  it('Should get all the app cookies by name/key (ignoring its scope)', () => {
+    const req = mockRequest(
+      `firstCookie=firstCookieValue; 111111:222222:myCookie=sessionCookieValue1; 888888:999999:myCookie=sessionCookieValue2; lastCookie=lastCookieValue`,
+    )
+
+    expect(getAllCookies(req, cookieName)).toEqual([
+      'sessionCookieValue1',
+      'sessionCookieValue2',
+    ])
   })
 })

@@ -1,4 +1,10 @@
-import { expireCookie, getCookie, setCookie, verifyData } from '../utils'
+import {
+  expireCookie,
+  getAllCookies,
+  getCookie,
+  setCookie,
+  verifyData,
+} from '../utils'
 import jwt from 'jsonwebtoken'
 import { Adapter } from './publicAdapter'
 import { isAppSession } from '../session'
@@ -30,6 +36,20 @@ export const createCookieAdapter: CreateCookieAdapter = (params) => {
       }
 
       return verifiedData
+    },
+
+    getAllSessions: ({ req }) => {
+      return getAllCookies(req, key)
+        .map((cookie) => {
+          const verifiedData = verifyData(clientSecret, cookie)
+
+          if (!isAppSession(verifiedData)) {
+            return undefined
+          }
+
+          return verifiedData
+        })
+        .filter((cookie) => cookie !== undefined)
     },
 
     setSession: ({ res, spaceId, userId, session }) => {

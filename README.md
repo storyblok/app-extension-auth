@@ -25,9 +25,10 @@ const sessionStore = getSessionStore(authHandlerParams)({
 })
 ```
 
-The `sessionStore` created by `sessionCookieStore` now has three methods: `get`, `put`, and `remove`. The `getAll` method is no longer provided. If you believe the `getAll` method is still useful for your use case, please let us know by opening a GitHub issue.
+The `sessionStore` created by `sessionCookieStore` now exposes four methods: `get`, `getAll`, `put`, and `remove`.
 
-The `put` and `remove` methods now return a `Promise<boolean>` instead of a `Promise<void>`.
+- The `getAll` method returns all app sessions, regardless of the space or user they belong to.
+- The `put` and `remove` methods now return a `Promise<boolean>` instead of a `Promise<void>`.
 
 ### `AuthHandlerParams`
 
@@ -202,14 +203,13 @@ const href = `/my/other/page?spaceId=${spaceId}&userId=${userId}`
 
 To run OAuth locally, pass the `storyblokApiBaseUrl` property to the params object when calling the `authHandler` function in the target project (i.e. the plugin or application you want to test). With this parameter, you can change the target's backend environment.
 
-
 ```typescript
 import { AuthHandlerParams } from '@storyblok/app-extension-auth'
 
 import { authHandler } from '@storyblok/app-extension-auth'
 const params: AuthHandlerParams = {
   // ...
-  storyblokApiBaseUrl: 'http://localhost:1234'
+  storyblokApiBaseUrl: 'http://localhost:1234',
 }
 authHandler(params)
 ```
