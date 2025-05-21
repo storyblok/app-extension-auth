@@ -21,7 +21,7 @@ export type InternalAdapter = {
     userId: string
   }) => MaybePromise<AppSession | undefined>
 
-  getAllSessions: () => MaybePromise<AppSession[] | undefined>
+  getAllSessions?: () => MaybePromise<AppSession[] | undefined>
 
   setSession: (params: {
     spaceId: string
@@ -89,6 +89,10 @@ export const createInternalAdapter: CreateInternalAdapter = ({
 
     getAllSessions: async () => {
       try {
+        if (!adapter.getAllSessions) {
+          return undefined
+        }
+
         const sessions = await adapter.getAllSessions({
           req,
         })

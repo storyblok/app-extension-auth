@@ -31,7 +31,7 @@ export const getSessionStore: AppSessionCookieStoreFactory =
         return await refreshStoredAppSession(params, adapter, session)
       },
       getAll: async () => {
-        const sessions = await adapter.getAllSessions()
+        const sessions = await adapter.getAllSessions?.()
 
         return sessions || []
       },
