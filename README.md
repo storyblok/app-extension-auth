@@ -27,7 +27,7 @@ const sessionStore = getSessionStore(authHandlerParams)({
 
 The `sessionStore` created by `sessionCookieStore` now exposes four methods: `get`, `getAll`, `put`, and `remove`.
 
-- The `getAll` method returns all app sessions, regardless of the space or user they belong to.
+- The `getAll` method returns all app sessions, regardless of the spaces that the user has open.
 - The `put` and `remove` methods now return a `Promise<boolean>` instead of a `Promise<void>`.
 
 ### `AuthHandlerParams`
