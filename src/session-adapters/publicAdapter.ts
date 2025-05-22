@@ -3,8 +3,10 @@ import { AppSession } from '../session'
 
 export type MaybePromise<T> = T | Promise<T>
 
+// eslint-disable-next-line functional/no-mixed-types
 export type Adapter = {
   getSession: GetSession
+  getAllSessions?: GetAllSessions
   setSession: SetSession
   removeSession: RemoveSession
   hasSession: HasSession
@@ -21,6 +23,10 @@ type BaseSessionParams = {
 type GetSession = (
   params: BaseSessionParams,
 ) => MaybePromise<AppSession | undefined>
+
+type GetAllSessions = (
+  params: Pick<BaseSessionParams, 'req'>,
+) => MaybePromise<AppSession[]>
 
 type SetSession = (
   params: BaseSessionParams & {

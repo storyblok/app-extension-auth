@@ -10,7 +10,7 @@ export const verifyData = <Data>(secret: string, jwtToken: string): unknown => {
       return undefined
     }
     return payload.data as Data
-  } catch (e) {
+  } catch {
     return undefined
   }
 }

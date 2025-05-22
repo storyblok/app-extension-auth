@@ -30,6 +30,11 @@ export const getSessionStore: AppSessionCookieStoreFactory =
         })
         return await refreshStoredAppSession(params, adapter, session)
       },
+      getAll: async () => {
+        const sessions = await adapter.getAllSessions?.()
+
+        return sessions || []
+      },
       put: async (session) =>
         await adapter.setSession({
           spaceId: String(session.spaceId),

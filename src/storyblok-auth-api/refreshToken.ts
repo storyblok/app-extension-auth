@@ -40,7 +40,7 @@ export const refreshToken =
         )
       }
       return tokenSet
-    } catch (e) {
+    } catch {
       return new Error('Refresh token failed unexpectedly with an exception')
     }
   }
