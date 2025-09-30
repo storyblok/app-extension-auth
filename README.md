@@ -1,5 +1,10 @@
 # @storyblok/app-extension-auth
 
+> ⚠️ **DEPRECATION NOTICE**: Moved to monorepo ⚠️
+>
+> This package has been moved to the new [pluginsblok](https://github.com/storyblok/pluginsblok) monorepo to the [packages/app-extension-auth](https://github.com/storyblok/pluginsblok/tree/main/packages/app-extension-auth). For any new Issues or Pull Requests, go to the new repository and add the label `app-extension-auth`.
+>
+
 A JavaScript library for managing authentication for [Storyblok](https://www.storyblok.com) apps.
 
 ## Migrating v1 to v2
